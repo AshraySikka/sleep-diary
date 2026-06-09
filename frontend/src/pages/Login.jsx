@@ -39,6 +39,8 @@ export default function Login() {
       alignItems: 'center',
       justifyContent: 'center',
       padding: '24px',
+      paddingTop: 'max(24px, env(safe-area-inset-top))', 
+      paddingBottom: 'max(24px, env(safe-area-inset-bottom))',
     }}>
       {/* Subtle background glow */}
       <div style={{

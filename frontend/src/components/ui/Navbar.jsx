@@ -34,12 +34,12 @@ export default function Navbar() {
   if (isMobile) {
     return (
       <nav style={{
-        position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 40,
+        position: 'fixed', bottom: 0, left: 'env(safe-area-inset-left)', right: 'env(safe-area-inset-right)', zIndex: 40,
         background: 'rgba(5, 20, 14, 0.97)',
         borderTop: '1px solid rgba(16,185,129,0.1)',
         backdropFilter: 'blur(20px)',
         display: 'flex', justifyContent: 'space-around', alignItems: 'center',
-        padding: '8px 0 16px',
+        padding: 'calc(8px + env(safe-area-inset-bottom)) 0 calc(16px + env(safe-area-inset-bottom))',
       }}>
         {navItems.slice(0, 5).map(({ to, icon: Icon, label }) => (
           <NavLink

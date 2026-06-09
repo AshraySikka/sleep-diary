@@ -85,7 +85,8 @@ function AppLayout({ children }) {
         flexDirection: 'column',
         width: isMobile ? '100%' : 'calc(100% - 240px)',
         overflowX: 'hidden',
-        paddingBottom: isMobile ? '80px' : '0',
+        paddingBottom: isMobile ? 'calc(80px + env(safe-area-inset-bottom))' : '0',
+        paddingTop: isMobile ? 'env(safe-area-inset-top)' : '0',
       }}>
         <div style={{ flex: 1, width: '100%', overflowX: 'hidden' }}>
           {children}
