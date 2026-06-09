@@ -42,15 +42,21 @@ function Footer() {
       padding: '16px 20px',
       display: 'flex',
       flexDirection: isMobile ? 'column' : 'row',
-      alignItems: isMobile ? 'flex-start' : 'center',
+      alignItems: 'center', // Changed: Keep it centered on both mobile and desktop
       justifyContent: 'space-between',
       gap: '8px',
       marginBottom: isMobile ? '0' : '0',
     }}>
-      <p style={{ fontSize: '12px', color: '#374151' }}>
+      <p style={{ fontSize: '12px', color: '#374151', margin: 0 }}>
         &copy; 2026 Ashray Sikka. All rights reserved.
       </p>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', // Added: ensures links center nicely when they wrap
+        alignItems: 'center', 
+        gap: '12px', 
+        flexWrap: 'wrap' 
+      }}>
         <a href="mailto:ashray15.sikka@gmail.com" style={{ fontSize: '12px', color: '#4b5563', textDecoration: 'none' }}>
           ashray15.sikka@gmail.com
         </a>

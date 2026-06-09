@@ -227,23 +227,23 @@ export default function EntryForm() {
       );
       case 4: return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '280px', boxSizing: 'border-box' }}>
-          <Input label="Q11a. How many times did you nap or doze?" type="number" min="0" placeholder="0" value={form.q11a_nap_count} onChange={set('q11a_nap_count')} />
+          <Input label="Q11a. How many times did you nap or doze yesterday?" type="number" min="0" placeholder="0" value={form.q11a_nap_count} onChange={set('q11a_nap_count')} />
           {parseInt(form.q11a_nap_count) > 0 && (
             <Input label="Q11b. Total nap duration (minutes)" type="number" min="0" placeholder="e.g. 40" value={form.q11b_nap_duration_min} onChange={set('q11b_nap_duration_min')} hint="1 nap of 30 min + 1 nap of 10 min = 40 min" />
           )}
-          <Input label="Q12a. How many alcoholic drinks did you have?" type="number" min="0" placeholder="0" value={form.q12a_alcohol_count} onChange={set('q12a_alcohol_count')} hint="1 drink = 12oz beer, 5oz wine, or 1.5oz liquor" />
+          <Input label="Q12a. How many alcoholic drinks did you have yesterday?" type="number" min="0" placeholder="0" value={form.q12a_alcohol_count} onChange={set('q12a_alcohol_count')} hint="1 drink = 12oz beer, 5oz wine, or 1.5oz liquor" />
           {parseInt(form.q12a_alcohol_count) > 0 && (
-            <Input label="Q12b. What time was your last alcoholic drink?" type="time" value={form.q12b_alcohol_last_time} onChange={set('q12b_alcohol_last_time')} />
+            <Input label="Q12b. What time was your last alcoholic drink yesterday?" type="time" value={form.q12b_alcohol_last_time} onChange={set('q12b_alcohol_last_time')} />
           )}
         </div>
       );
       case 5: return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '280px', boxSizing: 'border-box' }}>
-          <Input label="Q13a. How many caffeinated drinks did you have?" type="number" min="0" placeholder="0" value={form.q13a_caffeine_count} onChange={set('q13a_caffeine_count')} hint="Coffee, tea, soda, energy drinks — 1 drink = 6–8oz" />
+          <Input label="Q13a. How many caffeinated drinks did you have yesterday?" type="number" min="0" placeholder="0" value={form.q13a_caffeine_count} onChange={set('q13a_caffeine_count')} hint="Coffee, tea, soda, energy drinks — 1 drink = 6–8oz" />
           {parseInt(form.q13a_caffeine_count) > 0 && (
-            <Input label="Q13b. What time was your last caffeinated drink?" type="time" value={form.q13b_caffeine_last_time} onChange={set('q13b_caffeine_last_time')} />
+            <Input label="Q13b. What time was your last caffeinated drink yesterday?" type="time" value={form.q13b_caffeine_last_time} onChange={set('q13b_caffeine_last_time')} />
           )}
-          <Select label="Q14a. Did you take any medication to help you sleep?" value={form.q14a_medication_taken} onChange={set('q14a_medication_taken')} options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
+          <Select label="Q14a. Did you take any medication to help you sleep last night?" value={form.q14a_medication_taken} onChange={set('q14a_medication_taken')} options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
           {form.q14a_medication_taken === 'true' && (
             <Textarea label="Q14b. List medication(s), dose, and time taken" placeholder="e.g. Sleepwell 50mg 11pm" value={form.q14b_medication_details} onChange={set('q14b_medication_details')} rows={2} />
           )}
