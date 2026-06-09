@@ -104,7 +104,7 @@ export default function Instructions() {
   ];
 
   return (
-    <div style={{ padding: '28px', maxWidth: '800px' }}>
+    <div style={{ padding: 'clamp(16px, 4vw, 28px)', maxWidth: '800px', width: '100%' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
         <div style={{

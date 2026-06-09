@@ -73,7 +73,7 @@ export default function Export() {
   };
 
   return (
-    <div style={{ padding: '28px', maxWidth: '680px' }}>
+    <div style={{ padding: 'clamp(16px, 4vw, 28px)', maxWidth: '680px', width: '100%' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px' }}>
         <div style={{

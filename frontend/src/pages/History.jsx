@@ -179,7 +179,7 @@ export default function History() {
   };
 
   return (
-    <div style={{ padding: '28px', maxWidth: '900px' }}>
+    <div style={{ padding: 'clamp(16px, 4vw, 28px)', maxWidth: '900px', width: '100%', overflowX: 'hidden' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
           <h1 style={{ fontSize: '22px', fontWeight: '700', color: '#f0fdf4' }}>History</h1>

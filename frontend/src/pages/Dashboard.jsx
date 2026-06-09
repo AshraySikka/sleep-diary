@@ -72,7 +72,7 @@ export default function Dashboard() {
   const seColor = getSEColor(stats?.avg_sleep_efficiency);
 
   return (
-    <div style={{ padding: '28px 28px 40px', maxWidth: '1100px' }}>
+    <div style={{ padding: 'clamp(16px, 4vw, 28px)', maxWidth: '1100px', width: '100%', overflowX: 'auto' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
@@ -171,7 +171,7 @@ export default function Dashboard() {
           {/* Metric cards */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
             gap: '16px', marginBottom: '24px',
           }}>
             <MetricCard

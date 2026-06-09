@@ -92,3 +92,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(0.8);
   cursor: pointer;
 }
+
+html, body, #root {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  table {
+    font-size: 11px;
+  }
+}

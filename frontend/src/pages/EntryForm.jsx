@@ -336,7 +336,7 @@ export default function EntryForm() {
 
   // ── DESKTOP: Full form layout ──────────────────────────────────────────
   return (
-    <div style={{ padding: '28px', maxWidth: '780px' }}>
+    <div style={{ padding: 'clamp(16px, 4vw, 28px)', maxWidth: '780px', width: '100%' }}>
       <Header />
       <Alerts />
 

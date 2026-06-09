@@ -12,6 +12,7 @@ import History from './pages/History';
 import Instructions from './pages/Instructions';
 import Settings from './pages/Settings';
 import Export from './pages/Export';
+import { useState, useEffect } from 'react';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -65,17 +66,28 @@ function Footer() {
 }
 
 function AppLayout({ children }) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
   return (
     <div style={{ minHeight: '100vh', background: '#020c12', display: 'flex' }}>
       <Navbar />
       <main style={{
         flex: 1,
-        marginLeft: '240px',
+        marginLeft: isMobile ? '0' : '240px',
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
+        width: isMobile ? '100%' : 'calc(100% - 240px)',
+        overflowX: 'hidden',
+        paddingBottom: isMobile ? '80px' : '0',
       }}>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, width: '100%', overflowX: 'hidden' }}>
           {children}
         </div>
         <Footer />

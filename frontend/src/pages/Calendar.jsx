@@ -60,7 +60,7 @@ export default function Calendar() {
   const qualityLabels = { 1: 'Very Poor', 2: 'Poor', 3: 'Fair', 4: 'Good', 5: 'Very Good' };
 
   return (
-    <div style={{ padding: '28px', maxWidth: '900px' }}>
+    <div style={{ padding: 'clamp(12px, 4vw, 28px)', maxWidth: '900px', width: '100%', overflowX: 'hidden' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px' }}>
         <div>
@@ -129,7 +129,7 @@ export default function Calendar() {
                     navigate(`/entry/${cell.dateStr}`);
                   }}
                   style={{
-                    minHeight: '80px',
+                    minHeight: 'clamp(55px, 10vw, 80px)',
                     padding: '8px',
                     borderTop: '1px solid rgba(16,185,129,0.05)',
                     borderRight: (idx + 1) % 7 !== 0 ? '1px solid rgba(16,185,129,0.05)' : 'none',

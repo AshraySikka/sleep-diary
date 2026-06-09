@@ -76,7 +76,7 @@ export default function Settings() {
     : '#6b7280';
 
   return (
-    <div style={{ padding: '28px', maxWidth: '680px' }}>
+    <div style={{ padding: 'clamp(16px, 4vw, 28px)', maxWidth: '680px', width: '100%' }}>
       <h1 style={{ fontSize: '22px', fontWeight: '700', color: '#f0fdf4', marginBottom: '6px' }}>Settings</h1>
       <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '24px' }}>Manage your profile and preferences</p>
 
