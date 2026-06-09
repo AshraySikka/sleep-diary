@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { diaryAPI } from '../utils/api';
 import { Input, Select, Textarea } from '../components/ui/Input';
 import { computeTST, computeTIB, computeSleepEfficiency, formatMinutes, getSEColor } from '../utils/sleepMath';
-import { Save, Trash2, ChevronLeft, ChevronRight, Moon, Sun, Coffee, Wine, Pill } from 'lucide-react';
+import { Save, Trash2, ChevronLeft, ChevronRight, Moon, Sun, Coffee, Wine, Pill, Info } from 'lucide-react';
 
 // ── Styles ──────────────────────────────────────────────────────────────
 const sectionStyle = {
@@ -180,20 +180,20 @@ export default function EntryForm() {
   const renderStep = (s) => {
     switch (s) {
       case 0: return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '280px', boxSizing: 'border-box' }}>
           <Input label="Q1. What time did you get into bed?" type="time" value={form.q1_bed_time} onChange={set('q1_bed_time')} />
           <Input label="Q2. What time did you try to go to sleep?" type="time" value={form.q2_sleep_attempt_time} onChange={set('q2_sleep_attempt_time')} hint="This may be different from when you got into bed" />
         </div>
       );
       case 1: return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '280px', boxSizing: 'border-box' }}>
           <Input label="Q3. How long did it take to fall asleep? (minutes)" type="number" min="0" placeholder="e.g. 20" value={form.q3_sleep_latency_min} onChange={set('q3_sleep_latency_min')} hint="Give your best estimate — do not watch the clock" />
           <Input label="Q4. How many times did you wake up during the night?" type="number" min="0" placeholder="e.g. 2" value={form.q4_awakening_count} onChange={set('q4_awakening_count')} hint="Not counting your final awakening" />
           <Input label="Q5. Total time spent awake during the night (minutes)" type="number" min="0" placeholder="e.g. 30" value={form.q5_waso_min} onChange={set('q5_waso_min')} hint="Add up all your mid-night awakenings" />
         </div>
       );
       case 2: return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '280px', boxSizing: 'border-box' }}>
           <Input label="Q6a. What time was your final awakening?" type="time" value={form.q6a_final_awakening_time} onChange={set('q6a_final_awakening_time')} />
           <Input label="Q6b. After final awakening, how long did you stay in bed? (minutes)" type="number" min="0" placeholder="e.g. 15" value={form.q6b_post_awakening_bed_min} onChange={set('q6b_post_awakening_bed_min')} hint="Time spent in bed trying to sleep after final awakening" />
           <Select label="Q6c. Did you wake up earlier than planned?" value={form.q6c_early_awakening} onChange={set('q6c_early_awakening')} options={[{ value: 'true', label: 'Yes' }, { value: 'false', label: 'No' }]} />
@@ -204,7 +204,7 @@ export default function EntryForm() {
         </div>
       );
       case 3: return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '280px', boxSizing: 'border-box' }}>
           <Select label="Q9. How would you rate the quality of your sleep?" value={form.q9_sleep_quality} onChange={set('q9_sleep_quality')} options={[{ value: '1', label: 'Very Poor' }, { value: '2', label: 'Poor' }, { value: '3', label: 'Fair' }, { value: '4', label: 'Good' }, { value: '5', label: 'Very Good' }]} />
           <Select label="Q10. How rested did you feel when you woke up?" value={form.q10_restfulness} onChange={set('q10_restfulness')} options={[{ value: '1', label: 'Not at all rested' }, { value: '2', label: 'Slightly rested' }, { value: '3', label: 'Somewhat rested' }, { value: '4', label: 'Well-rested' }, { value: '5', label: 'Very well-rested' }]} />
           {(tst !== null || tib !== null || se !== null) && (
@@ -217,7 +217,7 @@ export default function EntryForm() {
         </div>
       );
       case 4: return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '280px', boxSizing: 'border-box' }}>
           <Input label="Q11a. How many times did you nap or doze?" type="number" min="0" placeholder="0" value={form.q11a_nap_count} onChange={set('q11a_nap_count')} />
           {parseInt(form.q11a_nap_count) > 0 && (
             <Input label="Q11b. Total nap duration (minutes)" type="number" min="0" placeholder="e.g. 40" value={form.q11b_nap_duration_min} onChange={set('q11b_nap_duration_min')} hint="1 nap of 30 min + 1 nap of 10 min = 40 min" />
@@ -229,7 +229,7 @@ export default function EntryForm() {
         </div>
       );
       case 5: return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '280px', boxSizing: 'border-box' }}>
           <Input label="Q13a. How many caffeinated drinks did you have?" type="number" min="0" placeholder="0" value={form.q13a_caffeine_count} onChange={set('q13a_caffeine_count')} hint="Coffee, tea, soda, energy drinks — 1 drink = 6–8oz" />
           {parseInt(form.q13a_caffeine_count) > 0 && (
             <Input label="Q13b. What time was your last caffeinated drink?" type="time" value={form.q13b_caffeine_last_time} onChange={set('q13b_caffeine_last_time')} />
@@ -241,7 +241,7 @@ export default function EntryForm() {
         </div>
       );
       case 6: return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '280px', boxSizing: 'border-box' }}>
           <Textarea label="Q15. Comments (optional)" placeholder="Note any unusual events — illness, stress, travel, etc." value={form.q15_comments} onChange={set('q15_comments')} rows={4} />
           <div style={{
             display: 'flex', alignItems: 'center', gap: '12px',
@@ -258,7 +258,7 @@ export default function EntryForm() {
   };
 
   // ── Shared header ──────────────────────────────────────────────────────
-  const Header = () => (
+const Header = () => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
       <div>
         <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#4b5563', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', padding: 0, marginBottom: '6px' }}>
@@ -269,7 +269,23 @@ export default function EntryForm() {
           {new Date(today + 'T00:00:00').toLocaleDateString('en-CA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
       </div>
-      <div style={{ display: 'flex', gap: '10px' }}>
+      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+        {/* New Info Button for Mobile */}
+        {isMobile && (
+          <button 
+            onClick={() => navigate('/instructions')} 
+            style={{ 
+              display: 'flex', alignItems: 'center', justifyContent: 'center', 
+              width: '36px', height: '36px', borderRadius: '50%', 
+              background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', 
+              color: '#10b981', cursor: 'pointer' 
+            }}
+            aria-label="Instructions"
+          >
+            <Info size={18} />
+          </button>
+        )}
+        
         {isExisting && (
           <button onClick={handleDelete} disabled={deleting} style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '10px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: '500', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#f87171', cursor: 'pointer' }}>
             <Trash2 size={14} /> {deleting ? 'Deleting...' : 'Delete'}
