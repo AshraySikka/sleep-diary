@@ -69,23 +69,12 @@ def get_restfulness_label(value):
 
 
 def generate_pdf_report(user, entries, start_date, end_date):
-    """
-    Generate a PDF report of sleep diary entries for a date range.
-    Returns a BytesIO buffer containing the PDF bytes.
-
-    Layout:
-    - Header with user info and date range
-    - Summary statistics (averages)
-    - Detailed table with all fields for each date
-    """
     buffer = io.BytesIO()
-
-    # Use landscape A4 for the wide table
     doc = SimpleDocTemplate(
         buffer,
         pagesize=landscape(A4),
-        rightMargin=10 * mm,
-        leftMargin=10 * mm,
+        rightMargin=15 * mm,
+        leftMargin=15 * mm,
         topMargin=15 * mm,
         bottomMargin=15 * mm,
     )
@@ -93,193 +82,199 @@ def generate_pdf_report(user, entries, start_date, end_date):
     styles = getSampleStyleSheet()
     elements = []
 
-    # ---- Title ----
-    title_style = ParagraphStyle(
-        'Title',
-        parent=styles['Heading1'],
-        fontSize=16,
-        textColor=colors.HexColor('#4F46E5'),
-        alignment=TA_CENTER,
-        spaceAfter=4,
-    )
-    subtitle_style = ParagraphStyle(
-        'Subtitle',
-        parent=styles['Normal'],
-        fontSize=10,
-        textColor=colors.HexColor('#6B7280'),
-        alignment=TA_CENTER,
-        spaceAfter=2,
-    )
-    label_style = ParagraphStyle(
-        'Label',
-        parent=styles['Normal'],
-        fontSize=8,
-        textColor=colors.HexColor('#374151'),
-        alignment=TA_LEFT,
-    )
+    # ---- Color palette ----
+    emerald = colors.HexColor('#059669')
+    emerald_dark = colors.HexColor('#065f46')
+    emerald_pale = colors.HexColor('#f0fdf4')
+    emerald_mid = colors.HexColor('#d1fae5')
+    gray_dark = colors.HexColor('#111827')
+    gray_mid = colors.HexColor('#6b7280')
+    gray_light = colors.HexColor('#f9fafb')
+    white = colors.white
 
-    elements.append(Paragraph('Sleep Diary Report', title_style))
+    def ps(name, size, bold=False, color=None, align=TA_LEFT, leading=None):
+        return ParagraphStyle(
+            name, parent=styles['Normal'],
+            fontSize=size,
+            fontName='Helvetica-Bold' if bold else 'Helvetica',
+            textColor=color or gray_dark,
+            alignment=align,
+            leading=leading or size * 1.3,
+        )
+
+    # ---- Header ----
+    elements.append(Spacer(1, 2 * mm))
+    elements.append(Paragraph('Sleep Diary Report', ps('t', 20, bold=True, color=emerald_dark, align=TA_CENTER)))
+    elements.append(Spacer(1, 2 * mm))
     elements.append(Paragraph(
-        f'Consensus Sleep Diary — Modified (CSD-M)',
-        subtitle_style
+        'Consensus Sleep Diary — Modified (CSD-M)',
+        ps('s1', 9, color=gray_mid, align=TA_CENTER)
     ))
+    elements.append(Spacer(1, 1 * mm))
     elements.append(Paragraph(
-        f'Patient: {user.full_name}  |  '
-        f'Date Range: {start_date} to {end_date}  |  '
-        f'Total Entries: {len(entries)}',
-        subtitle_style
+        f'Patient: <b>{user.full_name}</b> &nbsp;&nbsp;|&nbsp;&nbsp; '
+        f'Date Range: <b>{start_date}</b> to <b>{end_date}</b> &nbsp;&nbsp;|&nbsp;&nbsp; '
+        f'Total Entries: <b>{len(entries)}</b>',
+        ps('s2', 8, color=gray_mid, align=TA_CENTER)
     ))
     elements.append(Spacer(1, 6 * mm))
 
-    # ---- Summary Stats ----
+    elements.append(Spacer(1, 1 * mm))
+    elements.append(Paragraph(
+        'Developed by Ashray Sikka &nbsp;|&nbsp; ashray15.sikka@gmail.com',
+        ps('brand', 7, color=emerald, align=TA_CENTER)
+    ))
+
+    # Thin divider line
+    from reportlab.platypus import HRFlowable
+    elements.append(HRFlowable(width='100%', thickness=0.5, color=emerald_mid, spaceAfter=6 * mm))
+
+    # ---- Summary stats ----
     valid = [e for e in entries if e.tst_min is not None]
     if valid:
-        avg_se = sum(float(e.sleep_efficiency) for e in valid if e.sleep_efficiency) / len(valid)
+        se_list = [float(e.sleep_efficiency) for e in valid if e.sleep_efficiency]
+        avg_se = sum(se_list) / len(se_list) if se_list else None
         avg_tst = sum(e.tst_min for e in valid) / len(valid)
-        avg_lat = sum(e.q3_sleep_latency_min for e in valid if e.q3_sleep_latency_min) / max(len([e for e in valid if e.q3_sleep_latency_min]), 1)
+        lat_list = [e.q3_sleep_latency_min for e in valid if e.q3_sleep_latency_min is not None]
+        avg_lat = sum(lat_list) / len(lat_list) if lat_list else None
 
-        summary_data = [
-            ['Average Sleep Efficiency', 'Average Total Sleep Time', 'Average Sleep Latency', 'Total Entries'],
-            [
-                f'{avg_se:.1f}%',
-                f'{avg_tst / 60:.1f} hrs ({avg_tst:.0f} min)',
-                f'{avg_lat:.0f} min',
-                str(len(entries)),
+        def stat_cell(label, value):
+            return [
+                Paragraph(label, ps('sl', 7, color=gray_mid, align=TA_CENTER)),
+                Paragraph(value, ps('sv', 14, bold=True, color=emerald, align=TA_CENTER)),
             ]
-        ]
 
-        summary_table = Table(summary_data, colWidths=[70 * mm, 70 * mm, 60 * mm, 40 * mm])
+        summary_data = [[
+            stat_cell('AVG SLEEP EFFICIENCY', f'{avg_se:.1f}%' if avg_se else 'N/A'),
+            stat_cell('AVG TOTAL SLEEP TIME', f'{avg_tst / 60:.1f} hrs ({avg_tst:.0f} min)'),
+            stat_cell('AVG SLEEP LATENCY', f'{avg_lat:.0f} min' if avg_lat else 'N/A'),
+            stat_cell('TOTAL ENTRIES', str(len(entries))),
+        ]]
+
+        page_w = landscape(A4)[0] - 30 * mm
+        stat_w = page_w / 4
+
+        summary_table = Table(summary_data, colWidths=[stat_w] * 4)
         summary_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#4F46E5')),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-            ('FONTSIZE', (0, 0), (-1, 0), 9),
-            ('FONTSIZE', (0, 1), (-1, 1), 11),
-            ('FONTNAME', (0, 1), (-1, 1), 'Helvetica-Bold'),
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('BACKGROUND', (0, 0), (-1, -1), emerald_pale),
+            ('BOX', (0, 0), (-1, -1), 0.5, emerald_mid),
+            ('LINEAFTER', (0, 0), (2, -1), 0.5, emerald_mid),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('ROWBACKGROUNDS', (0, 1), (-1, 1), [colors.HexColor('#EEF2FF')]),
-            ('BOX', (0, 0), (-1, -1), 0.5, colors.HexColor('#C7D2FE')),
-            ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.HexColor('#C7D2FE')),
-            ('TOPPADDING', (0, 0), (-1, -1), 4),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('TOPPADDING', (0, 0), (-1, -1), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 10),
+            ('ROUNDEDCORNERS', [4, 4, 4, 4]),
         ]))
         elements.append(summary_table)
-        elements.append(Spacer(1, 6 * mm))
+        elements.append(Spacer(1, 8 * mm))
 
-    # ---- Detailed Table ----
-    elements.append(Paragraph('Detailed Sleep Log', ParagraphStyle(
-        'SectionHeader',
-        parent=styles['Heading2'],
-        fontSize=11,
-        textColor=colors.HexColor('#4F46E5'),
-        spaceAfter=3,
-    )))
+    # ---- Helper to make table cells ----
+    def hdr(text):
+        return Paragraph(text, ps('h', 6.5, bold=True, color=white, align=TA_CENTER))
 
-    # Table headers — all CSD-M fields
-    headers = [
-        'Date',
-        'Bed\nTime',
-        'Sleep\nAttempt',
-        'Latency\n(min)',
-        'Wake\nUps',
-        'WASO\n(min)',
-        'Final\nAwakening',
-        'Post-Awake\nBed (min)',
-        'Early\nAwake',
-        'Early\nBy (min)',
-        'Out of\nBed',
-        'TST\n(min)',
-        'TIB\n(min)',
-        'SE\n(%)',
-        'Quality',
-        'Restfulness',
-        'Naps',
-        'Nap\n(min)',
-        'Alcohol',
-        'Last\nAlcohol',
-        'Caffeine',
-        'Last\nCaffeine',
-        'Meds',
-        'Comments',
-    ]
+    def dat(text):
+        return Paragraph(str(text), ps('d', 6.5, color=gray_dark, align=TA_CENTER))
 
-    table_data = [headers]
+    row_style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), emerald_dark),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [white, emerald_pale]),
+        ('BOX', (0, 0), (-1, -1), 0.3, emerald_mid),
+        ('INNERGRID', (0, 0), (-1, -1), 0.2, emerald_mid),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ('LEFTPADDING', (0, 0), (-1, -1), 3),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 3),
+    ])
 
-    for entry in entries:
-        row = [
-            str(entry.date),
-            format_time(entry.q1_bed_time),
-            format_time(entry.q2_sleep_attempt_time),
-            format_value(entry.q3_sleep_latency_min),
-            format_value(entry.q4_awakening_count),
-            format_value(entry.q5_waso_min),
-            format_time(entry.q6a_final_awakening_time),
-            format_value(entry.q6b_post_awakening_bed_min),
-            format_bool(entry.q6c_early_awakening),
-            format_value(entry.q6d_early_awakening_min) if entry.q6c_early_awakening else 'N/A',
-            format_time(entry.q7_out_of_bed_time),
-            format_value(entry.tst_min),
-            format_value(entry.tib_min),
-            f'{entry.sleep_efficiency:.1f}%' if entry.sleep_efficiency else 'N/A',
-            get_quality_label(entry.q9_sleep_quality),
-            get_restfulness_label(entry.q10_restfulness),
-            format_value(entry.q11a_nap_count),
-            format_value(entry.q11b_nap_duration_min) if entry.q11a_nap_count else 'N/A',
-            format_value(entry.q12a_alcohol_count),
-            format_time(entry.q12b_alcohol_last_time) if entry.q12a_alcohol_count else 'N/A',
-            format_value(entry.q13a_caffeine_count),
-            format_time(entry.q13b_caffeine_last_time) if entry.q13a_caffeine_count else 'N/A',
-            format_bool(entry.q14a_medication_taken),
-            (entry.q15_comments or '')[:30],
-        ]
-        table_data.append(row)
+    # ---- Table 1: Night metrics ----
+    elements.append(Paragraph('Night Metrics', ps('sec', 9, bold=True, color=emerald_dark)))
+    elements.append(Spacer(1, 2 * mm))
 
-    # Column widths — tighter for boolean/count columns, wider for time/text
-    col_widths = [
-        18*mm, 14*mm, 14*mm, 12*mm, 11*mm, 11*mm, 14*mm, 13*mm,
-        11*mm, 11*mm, 14*mm, 11*mm, 11*mm, 10*mm, 14*mm, 20*mm,
-        10*mm, 11*mm, 12*mm, 14*mm, 12*mm, 14*mm, 10*mm, 20*mm,
-    ]
+    h1 = ['Date', 'Bed Time', 'Sleep\nAttempt', 'Latency\n(min)', 'Wake\nUps', 'WASO\n(min)',
+          'Final\nAwakening', 'Post-Awake\nBed (min)', 'Early\nAwake', 'Earlier\nBy (min)',
+          'Out of\nBed', 'TST\n(min)', 'TIB\n(min)', 'SE (%)']
 
-    detail_table = Table(table_data, colWidths=col_widths, repeatRows=1)
-    detail_table.setStyle(TableStyle([
-        # Header row
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#4F46E5')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 7),
-        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-        ('VALIGN', (0, 0), (-1, 0), 'MIDDLE'),
-        # Data rows
-        ('FONTSIZE', (0, 1), (-1, -1), 7),
-        ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
-        ('VALIGN', (0, 1), (-1, -1), 'MIDDLE'),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
-            colors.white,
-            colors.HexColor('#F5F3FF'),
-        ]),
-        # Grid
-        ('BOX', (0, 0), (-1, -1), 0.5, colors.HexColor('#C7D2FE')),
-        ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.HexColor('#E5E7EB')),
-        ('TOPPADDING', (0, 0), (-1, -1), 3),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 3),
-    ]))
+    cw1 = [18, 16, 16, 14, 12, 12, 16, 15, 12, 13, 16, 13, 13, 12]
+    cw1 = [x * mm for x in cw1]
 
-    elements.append(detail_table)
+    t1_data = [[hdr(h) for h in h1]]
+    for e in entries:
+        t1_data.append([
+            dat(str(e.date)),
+            dat(format_time(e.q1_bed_time)),
+            dat(format_time(e.q2_sleep_attempt_time)),
+            dat(format_value(e.q3_sleep_latency_min)),
+            dat(format_value(e.q4_awakening_count)),
+            dat(format_value(e.q5_waso_min)),
+            dat(format_time(e.q6a_final_awakening_time)),
+            dat(format_value(e.q6b_post_awakening_bed_min)),
+            dat(format_bool(e.q6c_early_awakening)),
+            dat(format_value(e.q6d_early_awakening_min) if e.q6c_early_awakening else 'N/A'),
+            dat(format_time(e.q7_out_of_bed_time)),
+            dat(format_value(e.tst_min)),
+            dat(format_value(e.tib_min)),
+            dat(f'{float(e.sleep_efficiency):.1f}%' if e.sleep_efficiency else 'N/A'),
+        ])
+
+    t1 = Table(t1_data, colWidths=cw1, repeatRows=1)
+    t1.setStyle(row_style)
+    elements.append(t1)
     elements.append(Spacer(1, 6 * mm))
 
-    # Footer note
+    # ---- Table 2: Subjective + daytime ----
+    elements.append(Paragraph('Sleep Quality & Daytime Behaviours', ps('sec2', 9, bold=True, color=emerald_dark)))
+    elements.append(Spacer(1, 2 * mm))
+
+    h2 = ['Date', 'Quality', 'Restfulness', 'Naps', 'Nap\n(min)', 'Alcohol', 'Last\nAlcohol',
+          'Caffeine', 'Last\nCaffeine', 'Meds', 'Medication Details', 'Comments']
+
+    cw2 = [18, 16, 18, 10, 12, 14, 14, 12, 14, 10, 28, 50]
+    cw2 = [x * mm for x in cw2]
+
+    t2_data = [[hdr(h) for h in h2]]
+    for e in entries:
+        t2_data.append([
+            dat(str(e.date)),
+            dat(get_quality_label(e.q9_sleep_quality)),
+            dat(get_restfulness_label(e.q10_restfulness)),
+            dat(format_value(e.q11a_nap_count)),
+            dat(format_value(e.q11b_nap_duration_min) if e.q11a_nap_count else 'N/A'),
+            dat(format_value(e.q12a_alcohol_count)),
+            dat(format_time(e.q12b_alcohol_last_time) if e.q12a_alcohol_count else 'N/A'),
+            dat(format_value(e.q13a_caffeine_count)),
+            dat(format_time(e.q13b_caffeine_last_time) if e.q13a_caffeine_count else 'N/A'),
+            dat(format_bool(e.q14a_medication_taken)),
+            dat((e.q14b_medication_details or 'N/A')[:30]),
+            dat((e.q15_comments or '')[:50]),
+        ])
+
+    t2 = Table(t2_data, colWidths=cw2, repeatRows=1)
+    t2.setStyle(row_style)
+    elements.append(t2)
+    elements.append(Spacer(1, 8 * mm))
+
+    # ---- Footer ----
+    elements.append(HRFlowable(width='100%', thickness=0.3, color=emerald_mid, spaceBefore=2 * mm, spaceAfter=3 * mm))
     elements.append(Paragraph(
-        'Generated by Sleep Diary App — CSD-M clinical instrument. '
-        'All metrics calculated using validated CSD-M formulas. '
-        'This report is for clinical reference only.',
-        ParagraphStyle(
-            'Footer',
-            parent=styles['Normal'],
-            fontSize=7,
-            textColor=colors.HexColor('#9CA3AF'),
-            alignment=TA_CENTER,
-        )
+        'Generated by <b>Sleep Diary App</b> &nbsp;|&nbsp; CSD-M Clinical Instrument &nbsp;|&nbsp; '
+        'All metrics calculated using validated CSD-M formulas &nbsp;|&nbsp; For clinical reference only.',
+        ps('ft', 7, color=gray_mid, align=TA_CENTER)
+    ))
+    elements.append(Spacer(1, 2 * mm))
+    elements.append(Paragraph(
+        '<b>Built by Ashray Sikka</b> &nbsp;|&nbsp; '
+        'ashray15.sikka@gmail.com &nbsp;|&nbsp; '
+        'github.com/AshraySikka',
+        ps('ft2', 7, color=emerald, align=TA_CENTER)
+    ))
+    elements.append(Spacer(1, 1 * mm))
+    elements.append(Paragraph(
+        '© 2026 Ashray Sikka. All rights reserved. '
+        'This application and its reports are provided for personal and clinical reference only. '
+        'Unauthorized reproduction or distribution is prohibited.',
+        ps('ft3', 6.5, color=gray_mid, align=TA_CENTER)
     ))
 
     doc.build(elements)

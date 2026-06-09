@@ -272,9 +272,21 @@ export default function Register() {
           </p>
         </div>
 
-        <p style={{ textAlign: 'center', fontSize: '12px', color: '#374151', marginTop: '20px' }}>
-          Based on the Consensus Sleep Diary — Modified (CSD-M)
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+        <p style={{ fontSize: '12px', color: '#374151', marginBottom: '4px' }}>
+            Based on the Consensus Sleep Diary — Modified (CSD-M)
         </p>
+        <p style={{ fontSize: '11px', color: '#374151' }}>
+            Built by{' '}
+            <a href="mailto:ashray15.sikka@gmail.com" style={{ color: '#10b981', textDecoration: 'none', fontWeight: '500' }}>
+            Ashray Sikka
+            </a>
+            {' '}·{' '}
+            <a href="https://github.com/AshraySikka" target="_blank" rel="noreferrer" style={{ color: '#10b981', textDecoration: 'none', fontWeight: '500' }}>
+            GitHub
+            </a>
+        </p>
+        </div>
       </div>
 
       {/* Terms Modal */}
