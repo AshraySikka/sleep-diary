@@ -1,9 +1,11 @@
+aiofiles==25.1.0
 amqp==5.3.1
 asgiref==3.11.1
 billiard==4.2.4
 brotli==1.2.0
 celery==5.6.3
 cffi==2.0.0
+charset-normalizer==3.4.7
 click==8.4.1
 click-didyoumean==0.3.1
 click-plugins==1.1.1.2
@@ -19,7 +21,9 @@ Faker==40.21.0
 fonttools==4.63.0
 gunicorn==26.0.0
 iniconfig==2.3.0
+Jinja2==3.1.6
 kombu==5.6.2
+MarkupSafe==3.0.3
 packaging==26.2
 pillow==12.2.0
 pluggy==1.6.0
@@ -34,7 +38,9 @@ pytest==9.0.3
 pytest-django==4.12.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.2
+PyYAML==6.0.3
 redis==8.0.0
+reportlab==4.5.1
 six==1.17.0
 sqlparse==0.5.5
 tinycss2==1.5.1

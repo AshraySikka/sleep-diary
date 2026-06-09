@@ -1,4 +1,7 @@
 from django.urls import path
+from reports.views import GenerateReportView, EmailReportView
 
-# Report endpoints — filled in when we build the export feature
-urlpatterns = []
+urlpatterns = [
+    path('generate/', GenerateReportView.as_view(), name='generate-report'),
+    path('email/', EmailReportView.as_view(), name='email-report'),
+]
