@@ -83,8 +83,7 @@ export default function VerifyOTP() {
       background: 'linear-gradient(135deg, #020c12 0%, #051a14 50%, #020c12 100%)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: '24px',
-      paddingTop: 'max(24px, env(safe-area-inset-top))',
-      paddingBottom: 'max(24px, env(safe-area-inset-bottom))',
+      paddingTop: 'max(24px, env(safe-area-inset-top))'
     }}>
       <div style={{
         position: 'fixed', top: '20%', left: '50%', transform: 'translateX(-50%)',
