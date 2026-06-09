@@ -1,4 +1,6 @@
 from django.urls import path
+from notifications.views import SendTestNotificationView
 
-# Notification endpoints — filled in when we build push notifications
-urlpatterns = []
+urlpatterns = [
+    path('send-test/', SendTestNotificationView.as_view(), name='send-test'),
+]

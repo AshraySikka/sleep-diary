@@ -350,3 +350,10 @@ class PushSubscriptionView(APIView):
             {'message': 'Push subscription saved.'},
             status=status.HTTP_200_OK,
         )
+    
+class VAPIDPublicKeyView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        from django.conf import settings
+        return Response({'public_key': settings.VAPID_PUBLIC_KEY})

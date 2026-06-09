@@ -12,6 +12,11 @@ from users.views import (
     PushSubscriptionView,
 )
 from rest_framework_simplejwt.views import TokenRefreshView
+from users.views import (
+    RegisterView, VerifyOTPView, ResendOTPView, LoginView,
+    LogoutView, ProfileView, PushSubscriptionView, VAPIDPublicKeyView,
+)
+
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -22,4 +27,5 @@ urlpatterns = [
     path('profile/', ProfileView.as_view(), name='profile'),
     path('push-subscription/', PushSubscriptionView.as_view(), name='push-subscription'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
+    path('vapid-public-key/', VAPIDPublicKeyView.as_view(), name='vapid-public-key'),
 ]

@@ -185,3 +185,8 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+
+VAPID_PUBLIC_KEY = os.getenv('VAPID_PUBLIC_KEY', '')
+VAPID_PRIVATE_KEY = os.getenv('VAPID_PRIVATE_KEY', '')
+VAPID_CLAIMS_EMAIL = os.getenv('VAPID_CLAIMS_EMAIL', 'mailto:ashray15.sikka@gmail.com')
