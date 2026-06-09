@@ -41,7 +41,13 @@ export default function Navbar() {
         display: 'flex', justifyContent: 'space-around', alignItems: 'center',
         padding: '8px 0 16px',
       }}>
-        {navItems.slice(0, 5).map(({ to, icon: Icon, label }) => (
+        {[
+        { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+        { to: '/calendar', icon: Calendar, label: 'Calendar' },
+        { to: '/history', icon: History, label: 'History' },
+        { to: '/export', icon: Download, label: 'Export' },
+        { to: '/settings', icon: Settings, label: 'Settings' },
+        ].map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
             to={to}

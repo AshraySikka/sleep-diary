@@ -129,7 +129,7 @@ export default function Export() {
           ))}
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '100%', maxWidth: '280px', boxSizing: 'border-box' }}>
           <Input
             label="Start Date"
             type="date"
