@@ -28,37 +28,36 @@ function ProtectedRoute({ children }) {
 }
 
 function Footer() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
   return (
     <footer style={{
       borderTop: '1px solid rgba(16,185,129,0.08)',
-      padding: '16px 28px',
+      padding: '16px 20px',
       display: 'flex',
-      alignItems: 'center',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: isMobile ? 'flex-start' : 'center',
       justifyContent: 'space-between',
-      flexWrap: 'wrap',
       gap: '8px',
+      marginBottom: isMobile ? '0' : '0',
     }}>
       <p style={{ fontSize: '12px', color: '#374151' }}>
         &copy; 2026 Ashray Sikka. All rights reserved.
       </p>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-        <a
-          href="mailto:ashray15.sikka@gmail.com"
-          style={{ fontSize: '12px', color: '#4b5563', textDecoration: 'none' }}
-        >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+        <a href="mailto:ashray15.sikka@gmail.com" style={{ fontSize: '12px', color: '#4b5563', textDecoration: 'none' }}>
           ashray15.sikka@gmail.com
         </a>
-        <a
-          href="https://github.com/AshraySikka"
-          target="_blank"
-          rel="noreferrer"
-          style={{ fontSize: '12px', color: '#4b5563', textDecoration: 'none' }}
-        >
+        <a href="https://github.com/AshraySikka" target="_blank" rel="noreferrer" style={{ fontSize: '12px', color: '#4b5563', textDecoration: 'none' }}>
           github.com/AshraySikka
         </a>
         <span style={{ fontSize: '12px', color: '#374151' }}>
-          Built by{' '}
-          <span style={{ color: '#10b981', fontWeight: '600' }}>Ashray Sikka</span>
+          Built by <span style={{ color: '#10b981', fontWeight: '600' }}>Ashray Sikka</span>
         </span>
       </div>
     </footer>

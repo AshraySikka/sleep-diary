@@ -25,49 +25,20 @@ function EntryRow({ entry, onDelete }) {
     <div style={{
       background: 'rgba(15,30,24,0.5)',
       border: '1px solid rgba(16,185,129,0.1)',
-      borderRadius: '14px', overflow: 'hidden', marginBottom: '10px',
+      borderRadius: '14px', overflow: 'hidden', marginBottom: '12px',
     }}>
-      {/* Summary row */}
+      {/* Top row — date + actions */}
       <div style={{
-        display: 'flex', alignItems: 'center', gap: '12px',
-        padding: '14px 18px', flexWrap: 'wrap',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '14px 16px', borderBottom: '1px solid rgba(16,185,129,0.06)',
       }}>
-        {/* Date */}
-        <div style={{ minWidth: '110px' }}>
-          <p style={{ fontSize: '13px', fontWeight: '600', color: '#d1fae5' }}>
-            {new Date(entry.date + 'T00:00:00').toLocaleDateString('en-CA', { weekday: 'short', month: 'short', day: 'numeric' })}
+        <div>
+          <p style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5' }}>
+            {new Date(entry.date + 'T00:00:00').toLocaleDateString('en-CA', {
+              weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+            })}
           </p>
-          <p style={{ fontSize: '11px', color: '#4b5563' }}>{entry.date}</p>
-        </div>
-
-        {/* Key metrics */}
-        <div style={{ display: 'flex', gap: '20px', flex: 1, flexWrap: 'wrap' }}>
-          <div>
-            <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em' }}>TST</p>
-            <p style={{ fontSize: '14px', fontWeight: '600', color: '#818cf8' }}>
-              {entry.tst_min ? formatMinutes(entry.tst_min) : '—'}
-            </p>
-          </div>
-          <div>
-            <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em' }}>TIB</p>
-            <p style={{ fontSize: '14px', fontWeight: '600', color: '#10b981' }}>
-              {entry.tib_min ? formatMinutes(entry.tib_min) : '—'}
-            </p>
-          </div>
-          <div>
-            <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em' }}>SE</p>
-            <p style={{ fontSize: '14px', fontWeight: '600', color: seColor }}>
-              {entry.sleep_efficiency ? `${parseFloat(entry.sleep_efficiency).toFixed(1)}%` : '—'}
-            </p>
-          </div>
-          <div>
-            <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Quality</p>
-            <p style={{ fontSize: '13px', color: '#9ca3af' }}>
-              {qualityLabels[entry.q9_sleep_quality] || '—'}
-            </p>
-          </div>
-          <div>
-            <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Status</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
             <span style={{
               fontSize: '11px', fontWeight: '500', padding: '2px 8px', borderRadius: '6px',
               background: entry.is_complete ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.05)',
@@ -78,34 +49,50 @@ function EntryRow({ entry, onDelete }) {
             </span>
           </div>
         </div>
-
-        {/* Actions */}
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '8px' }}>
           <button
             onClick={() => navigate(`/entry/${entry.date}`)}
-            style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: '8px', padding: '7px 10px', cursor: 'pointer', color: '#10b981', display: 'flex', alignItems: 'center' }}
+            style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: '8px', padding: '8px 10px', cursor: 'pointer', color: '#10b981', display: 'flex', alignItems: 'center' }}
           >
             <Edit2 size={13} />
           </button>
           <button
             onClick={() => onDelete(entry.date)}
-            style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '8px', padding: '7px 10px', cursor: 'pointer', color: '#f87171', display: 'flex', alignItems: 'center' }}
+            style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '8px', padding: '8px 10px', cursor: 'pointer', color: '#f87171', display: 'flex', alignItems: 'center' }}
           >
             <Trash2 size={13} />
           </button>
           <button
             onClick={() => setExpanded(!expanded)}
-            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '7px 10px', cursor: 'pointer', color: '#6b7280', display: 'flex', alignItems: 'center' }}
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '8px 10px', cursor: 'pointer', color: '#6b7280', display: 'flex', alignItems: 'center' }}
           >
             {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
           </button>
         </div>
       </div>
 
+      {/* Metrics grid */}
+      <div style={{
+        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+        padding: '12px 16px', gap: '8px',
+      }}>
+        {[
+          { label: 'TST', value: entry.tst_min ? formatMinutes(entry.tst_min) : '—', color: '#818cf8' },
+          { label: 'TIB', value: entry.tib_min ? formatMinutes(entry.tib_min) : '—', color: '#10b981' },
+          { label: 'SE', value: entry.sleep_efficiency ? `${parseFloat(entry.sleep_efficiency).toFixed(1)}%` : '—', color: seColor },
+          { label: 'Quality', value: qualityLabels[entry.q9_sleep_quality] || '—', color: '#9ca3af' },
+        ].map(({ label, value, color }) => (
+          <div key={label} style={{ textAlign: 'center' }}>
+            <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '3px' }}>{label}</p>
+            <p style={{ fontSize: '13px', fontWeight: '600', color }}>{value}</p>
+          </div>
+        ))}
+      </div>
+
       {/* Expanded detail */}
       {expanded && (
-        <div style={{ padding: '16px 18px', borderTop: '1px solid rgba(16,185,129,0.08)', background: 'rgba(0,0,0,0.2)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px' }}>
+        <div style={{ padding: '16px', borderTop: '1px solid rgba(16,185,129,0.08)', background: 'rgba(0,0,0,0.2)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
             {[
               { label: 'Bed Time (Q1)', value: fmt(entry.q1_bed_time) },
               { label: 'Sleep Attempt (Q2)', value: fmt(entry.q2_sleep_attempt_time) },
@@ -117,7 +104,6 @@ function EntryRow({ entry, onDelete }) {
               { label: 'Early Awakening (Q6c)', value: entry.q6c_early_awakening === true ? 'Yes' : entry.q6c_early_awakening === false ? 'No' : '—' },
               { label: 'Earlier By (Q6d)', value: entry.q6d_early_awakening_min != null ? `${entry.q6d_early_awakening_min} min` : 'N/A' },
               { label: 'Out of Bed (Q7)', value: fmt(entry.q7_out_of_bed_time) },
-              { label: 'Sleep Quality (Q9)', value: qualityLabels[entry.q9_sleep_quality] || '—' },
               { label: 'Restfulness (Q10)', value: restLabels[entry.q10_restfulness] || '—' },
               { label: 'Nap Count (Q11a)', value: entry.q11a_nap_count != null ? entry.q11a_nap_count : '—' },
               { label: 'Nap Duration (Q11b)', value: entry.q11b_nap_duration_min != null ? `${entry.q11b_nap_duration_min} min` : 'N/A' },
@@ -129,20 +115,20 @@ function EntryRow({ entry, onDelete }) {
             ].map(({ label, value }) => (
               <div key={label}>
                 <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '2px' }}>{label}</p>
-                <p style={{ fontSize: '13px', color: '#9ca3af' }}>{value}</p>
+                <p style={{ fontSize: '12px', color: '#9ca3af' }}>{value}</p>
               </div>
             ))}
           </div>
           {entry.q14b_medication_details && (
-            <div style={{ marginTop: '12px' }}>
+            <div style={{ marginTop: '10px' }}>
               <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>Medication Details (Q14b)</p>
-              <p style={{ fontSize: '13px', color: '#9ca3af' }}>{entry.q14b_medication_details}</p>
+              <p style={{ fontSize: '12px', color: '#9ca3af' }}>{entry.q14b_medication_details}</p>
             </div>
           )}
           {entry.q15_comments && (
-            <div style={{ marginTop: '12px' }}>
+            <div style={{ marginTop: '10px' }}>
               <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>Comments (Q15)</p>
-              <p style={{ fontSize: '13px', color: '#9ca3af' }}>{entry.q15_comments}</p>
+              <p style={{ fontSize: '12px', color: '#9ca3af' }}>{entry.q15_comments}</p>
             </div>
           )}
         </div>

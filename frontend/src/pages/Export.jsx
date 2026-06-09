@@ -129,7 +129,7 @@ export default function Export() {
           ))}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <Input
             label="Start Date"
             type="date"
