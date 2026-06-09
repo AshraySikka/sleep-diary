@@ -17,10 +17,10 @@ const sectionStyle = {
 const LiveMetric = ({ label, value, color }) => (
   <div style={{
     background: 'rgba(0,0,0,0.2)', border: `1px solid ${color}25`,
-    borderRadius: '12px', padding: '12px 16px', textAlign: 'center', flex: 1,
+    borderRadius: '12px', padding: '12px 8px', textAlign: 'center', flex: 1, minWidth: 0,
   }}>
-    <p style={{ fontSize: '11px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>{label}</p>
-    <p style={{ fontSize: '20px', fontWeight: '700', color }}>{value || '—'}</p>
+    <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', whiteSpace: 'nowrap' }}>{label}</p>
+    <p style={{ fontSize: '18px', fontWeight: '700', color, whiteSpace: 'nowrap' }}>{value || '—'}</p>
   </div>
 );
 
@@ -55,19 +55,23 @@ export default function EntryForm() {
     return () => window.removeEventListener('resize', handler);
   }, []);
 
-  const [form, setForm] = useState({
-    date: today,
-    q1_bed_time: '', q2_sleep_attempt_time: '',
-    q3_sleep_latency_min: '', q4_awakening_count: '',
-    q5_waso_min: '', q6a_final_awakening_time: '',
-    q6b_post_awakening_bed_min: '', q6c_early_awakening: '',
-    q6d_early_awakening_min: '', q7_out_of_bed_time: '',
-    q9_sleep_quality: '', q10_restfulness: '',
-    q11a_nap_count: '', q11b_nap_duration_min: '',
-    q12a_alcohol_count: '', q12b_alcohol_last_time: '',
-    q13a_caffeine_count: '', q13b_caffeine_last_time: '',
-    q14a_medication_taken: '', q14b_medication_details: '',
-    q15_comments: '', is_complete: false,
+  const [form, setForm] = useState(() => {
+    const saved = sessionStorage.getItem(`entry_draft_${today}`);
+    if (saved) return JSON.parse(saved);
+    return {
+      date: today,
+      q1_bed_time: '', q2_sleep_attempt_time: '',
+      q3_sleep_latency_min: '', q4_awakening_count: '',
+      q5_waso_min: '', q6a_final_awakening_time: '',
+      q6b_post_awakening_bed_min: '', q6c_early_awakening: '',
+      q6d_early_awakening_min: '', q7_out_of_bed_time: '',
+      q9_sleep_quality: '', q10_restfulness: '',
+      q11a_nap_count: '', q11b_nap_duration_min: '',
+      q12a_alcohol_count: '', q12b_alcohol_last_time: '',
+      q13a_caffeine_count: '', q13b_caffeine_last_time: '',
+      q14a_medication_taken: '', q14b_medication_details: '',
+      q15_comments: '', is_complete: false,
+    };
   });
 
   useEffect(() => {
@@ -106,7 +110,11 @@ export default function EntryForm() {
       .finally(() => setLoading(false));
   }, [today]);
 
-  const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
+  const set = (field) => (e) => {
+    const updated = { ...form, [field]: e.target.value };
+    setForm(updated);
+    sessionStorage.setItem(`entry_draft_${today}`, JSON.stringify(updated));
+  };
 
   const tst = computeTST(form.q2_sleep_attempt_time, form.q6a_final_awakening_time, parseInt(form.q3_sleep_latency_min) || 0, parseInt(form.q5_waso_min) || 0);
   const tib = computeTIB(form.q2_sleep_attempt_time, form.q7_out_of_bed_time);
@@ -149,6 +157,7 @@ export default function EntryForm() {
         setIsExisting(true);
       }
       setSuccess('Entry saved!');
+      sessionStorage.removeItem(`entry_draft_${today}`);
       setTimeout(() => navigate('/dashboard'), 1200);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to save entry.');

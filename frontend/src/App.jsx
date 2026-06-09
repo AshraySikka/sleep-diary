@@ -38,6 +38,7 @@ function Footer() {
   return (
     <footer style={{
       borderTop: '1px solid rgba(16,185,129,0.08)',
+      textAlign: 'center',
       padding: '16px 20px',
       display: 'flex',
       flexDirection: isMobile ? 'column' : 'row',
@@ -85,6 +86,7 @@ function AppLayout({ children }) {
         width: isMobile ? '100%' : 'calc(100% - 240px)',
         overflowX: 'hidden',
         paddingTop: isMobile ? 'env(safe-area-inset-top)' : '0',
+        paddingBottom: isMobile ? 'calc(80px + env(safe-area-inset-bottom))' : '0',
       }}>
         <div style={{ flex: 1, width: '100%', overflowX: 'hidden' }}>
           {children}

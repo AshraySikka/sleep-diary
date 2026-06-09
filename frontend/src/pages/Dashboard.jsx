@@ -35,7 +35,7 @@ function MetricCard({ label, value, sub, color, formula, icon: Icon }) {
           {value ?? '—'}
         </span>
         {sub && (
-          <span style={{ fontSize: '13px', color: '#4b5563', marginLeft: '6px' }}>{sub}</span>
+          <span style={{ fontSize: '12px', color: '#4b5563', marginLeft: '6px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '80px', display: 'inline-block', verticalAlign: 'middle' }}>{sub}</span>
         )}
       </div>
     </div>
@@ -103,7 +103,7 @@ export default function Dashboard() {
         <div style={{
           background: 'rgba(15,30,24,0.4)', border: '1px solid rgba(16,185,129,0.1)',
           borderRadius: '14px', padding: '14px 20px', marginBottom: '24px',
-          display: 'flex', gap: '28px', flexWrap: 'wrap',
+          display: 'flex', gap: '28px', flexWrap: 'wrap', justifyContent: 'center',
         }}>
           {[
             { label: 'BMI', value: profile.bmi, sub: profile.bmi_category },
@@ -111,7 +111,7 @@ export default function Dashboard() {
             { label: 'Height', value: profile.height_cm ? `${profile.height_cm} cm` : '—' },
             { label: 'Weight', value: profile.weight_kg ? `${profile.weight_kg} kg` : '—' },
           ].map(({ label, value, sub }) => (
-            <div key={label}>
+            <div key={label} style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '11px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '2px' }}>{label}</p>
               <p style={{ fontSize: '15px', fontWeight: '600', color: '#d1fae5' }}>
                 {value} {sub && <span style={{ fontSize: '12px', color: '#6b7280', fontWeight: '400' }}>({sub})</span>}
@@ -228,7 +228,9 @@ export default function Dashboard() {
                   <tbody>
                     {[...trendData].reverse().map((entry) => (
                       <tr key={entry.date} style={{ borderTop: '1px solid rgba(16,185,129,0.05)' }}>
-                        <td style={{ padding: '10px 16px', color: '#d1fae5', fontWeight: '500' }}>{entry.date}</td>
+                        <td style={{ padding: '10px 16px', color: '#d1fae5', fontWeight: '500', whiteSpace: 'nowrap' }}>
+                          {new Date(entry.date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+                        </td>
                         <td style={{ padding: '10px 16px', color: '#9ca3af' }}>{entry.tst_min ? formatMinutes(entry.tst_min) : '—'}</td>
                         <td style={{ padding: '10px 16px', color: '#9ca3af' }}>{entry.tib_min ? formatMinutes(entry.tib_min) : '—'}</td>
                         <td style={{ padding: '10px 16px' }}>

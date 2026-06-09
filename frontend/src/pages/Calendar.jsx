@@ -70,8 +70,8 @@ export default function Calendar() {
         <button
           onClick={() => navigate(`/entry/${today}`)}
           style={{
-            display: 'flex', alignItems: 'center', gap: '8px',
-            padding: '10px 18px', borderRadius: '12px',
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            padding: '8px 16px', borderRadius: '20px',
             background: 'linear-gradient(135deg, #10b981, #059669)',
             border: 'none', color: 'white', fontSize: '13px', fontWeight: '600',
             cursor: 'pointer', boxShadow: '0 4px 15px rgba(16,185,129,0.3)',

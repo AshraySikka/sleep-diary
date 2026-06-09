@@ -8,31 +8,45 @@ export default function Tooltip({ text, className = '' }) {
   const [visible, setVisible] = useState(false);
 
   return (
-    <div className={`relative inline-flex ${className}`}>
+    <div style={{ position: 'relative', display: 'inline-flex' }} className={className}>
       <button
         type="button"
         onMouseEnter={() => setVisible(true)}
         onMouseLeave={() => setVisible(false)}
         onFocus={() => setVisible(true)}
         onBlur={() => setVisible(false)}
-        className="text-slate-500 hover:text-indigo-400 transition-colors"
+        onClick={() => setVisible(!visible)}
+        style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280', padding: '2px', display: 'flex', alignItems: 'center' }}
         aria-label="Formula information"
       >
         <Info size={14} />
       </button>
       {visible && (
-        <div className="
-          absolute z-50 bottom-6 left-1/2 -translate-x-1/2
-          w-72 p-3 rounded-xl text-xs text-slate-300
-          bg-slate-900 border border-slate-700
-          shadow-xl shadow-black/50
-        ">
-          {text}
-          <div className="
-            absolute top-full left-1/2 -translate-x-1/2
-            border-4 border-transparent border-t-slate-700
-          " />
-        </div>
+        <>
+          {/* backdrop to dismiss on mobile tap-outside */}
+          <div
+            onClick={() => setVisible(false)}
+            style={{ position: 'fixed', inset: 0, zIndex: 98 }}
+          />
+          <div style={{
+            position: 'fixed',
+            bottom: '80px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '260px',
+            background: '#0f1e18',
+            border: '1px solid rgba(16,185,129,0.2)',
+            borderRadius: '12px',
+            padding: '12px 14px',
+            fontSize: '12px',
+            lineHeight: '1.6',
+            color: '#9ca3af',
+            zIndex: 99,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+          }}>
+            {text}
+          </div>
+        </>
       )}
     </div>
   );
