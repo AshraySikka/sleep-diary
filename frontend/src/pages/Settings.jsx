@@ -53,10 +53,12 @@ export default function Settings() {
   const handleSave = async () => {
     setError(''); setSuccess(''); setSaving(true);
     try {
+      const tzOffset = -new Date().getTimezoneOffset(); // minutes, positive = ahead of UTC
       const res = await authAPI.updateProfile({
         ...profile,
         height_cm: profile.height_cm ? parseFloat(profile.height_cm) : null,
         weight_kg: profile.weight_kg ? parseFloat(profile.weight_kg) : null,
+        notification_tz_offset: tzOffset,
       });
       updateUser(res.data);
       setSuccess('Settings saved successfully.');

@@ -72,12 +72,26 @@ class CronSendRemindersView(APIView):
             if not profile.notification_time:
                 continue
 
+            # Convert user's local notification time to UTC
+            # by subtracting their timezone offset
             notif_hour = profile.notification_time.hour
             notif_minute = profile.notification_time.minute
-            total_notif = notif_hour * 60 + notif_minute
+            tz_offset = getattr(profile, 'notification_tz_offset', 0)
+
+            # Convert local time to UTC minutes
+            local_total = notif_hour * 60 + notif_minute
+            utc_total = (local_total - tz_offset) % (24 * 60)  # wrap around midnight
+
+            # Current UTC time in minutes
             total_now = current_hour * 60 + current_minute
 
-            if abs(total_now - total_notif) > 30:
+            # Allow 35-minute window to account for cron job timing variance
+            diff = abs(total_now - utc_total)
+            # Handle day boundary wraparound
+            if diff > 12 * 60:
+                diff = 24 * 60 - diff
+
+            if diff > 35:
                 continue
 
             try:

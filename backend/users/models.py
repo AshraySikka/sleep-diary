@@ -64,6 +64,7 @@ class UserProfile(models.Model):
     notification_time = models.TimeField(default='09:00')
     push_subscription = models.JSONField(null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
+    notification_tz_offset = models.IntegerField(default=0)  # UTC offset in minutes
 
     def __str__(self):
         return f'{self.user.email} profile'

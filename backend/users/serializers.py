@@ -38,7 +38,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'updated_at',
         ]
         # These fields are calculated — frontend can read but never write them
-        read_only_fields = ['bmi', 'bmi_category', 'age', 'updated_at']
+        read_only_fields = ['bmi', 'bmi_category', 'age', 'updated_at', 'notification_tz_offset']
 
 
 class UserSerializer(serializers.ModelSerializer):
