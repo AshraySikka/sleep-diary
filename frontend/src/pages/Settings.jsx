@@ -67,36 +67,60 @@ export default function Settings() {
     }
   };
 
-  const handleEnableNotifications = async () => {
+    const handleEnableNotifications = async () => {
     setEnableLoading(true);
     setError('');
     setSuccess('');
     try {
+      console.log('Step 1: checking support...');
+      console.log('serviceWorker:', 'serviceWorker' in navigator);
+      console.log('PushManager:', 'PushManager' in window);
+      console.log('Notification:', 'Notification' in window);
+
       if (!('serviceWorker' in navigator)) {
-        setError('Service workers are not supported on this browser.');
+        setError('Service workers not supported.');
         return;
       }
       if (!('PushManager' in window)) {
-        setError('Push notifications are not supported. Make sure the app is installed to your home screen.');
+        setError('Push not supported. Install app to home screen first.');
         return;
       }
+
+      console.log('Step 2: requesting permission...');
       const permission = await Notification.requestPermission();
+      console.log('Permission result:', permission);
+
       if (permission !== 'granted') {
-        setError('Permission denied. Enable notifications in iPhone Settings → Sleep Diary.');
+        setError('Permission denied. Enable in iPhone Settings → Sleep Diary.');
         return;
       }
+
+      console.log('Step 3: fetching VAPID key...');
       const keyRes = await fetch(
         `${import.meta.env.VITE_API_URL}/api/auth/vapid-public-key/`,
         { headers: { 'Content-Type': 'application/json' } }
       );
-      if (!keyRes.ok) { setError('Failed to get notification config from server.'); return; }
+      console.log('VAPID key response status:', keyRes.status);
       const { public_key } = await keyRes.json();
-      if (!public_key) { setError('Push notifications not configured on server yet.'); return; }
+      console.log('VAPID public key received:', !!public_key);
+
+      if (!public_key) {
+        setError('Push notifications not configured on server.');
+        return;
+      }
+
+      console.log('Step 4: waiting for service worker...');
       const reg = await navigator.serviceWorker.ready;
+      console.log('Service worker state:', reg.active?.state);
+
+      console.log('Step 5: subscribing to push...');
       const sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(public_key),
       });
+      console.log('Subscription created:', JSON.stringify(sub.toJSON()));
+
+      console.log('Step 6: saving subscription to backend...');
       const token = localStorage.getItem('access_token');
       const saveRes = await fetch(
         `${import.meta.env.VITE_API_URL}/api/auth/push-subscription/`,
@@ -109,11 +133,20 @@ export default function Settings() {
           body: JSON.stringify({ subscription: sub.toJSON() }),
         }
       );
-      if (!saveRes.ok) { setError('Failed to save notification subscription.'); return; }
+      const saveData = await saveRes.json();
+      console.log('Save result:', saveRes.status, saveData);
+
+      if (!saveRes.ok) {
+        setError('Failed to save subscription.');
+        return;
+      }
+
       setProfile(prev => ({ ...prev, notification_enabled: true }));
-      setSuccess('Notifications enabled! Tap Send Test Notification to verify.');
+      setSuccess('Notifications enabled! Tap Send Test to verify.');
+
     } catch (e) {
-      setError(`Failed to enable notifications: ${e.message}`);
+      console.error('Push subscription error:', e);
+      setError(`Failed: ${e.message}`);
     } finally {
       setEnableLoading(false);
     }
