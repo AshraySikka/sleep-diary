@@ -345,7 +345,8 @@ export default function Settings() {
               type="time"
               value={profile.notification_time}
               onChange={(e) => setProfile(prev => ({ ...prev, notification_time: e.target.value }))}
-              hint="We'll remind you to fill in your diary at this time each morning"
+              hint="Set in your local time, we will convert it to UTC timezone automatically for accuracy."
+              hint="We'll remind you to fill in your diary at this time each morning at your local time."
             />
           )}
 
