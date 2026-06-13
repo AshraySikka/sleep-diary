@@ -14,6 +14,36 @@ const sectionStyle = {
   marginBottom: '20px',
 };
 
+const Counter = ({ label, value, onChange, max = 20, hint }) => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <label style={{ fontSize: '13px', color: '#6b7280' }}>{label}</label>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      <button
+        type="button"
+        onClick={() => onChange(Math.max(0, (value || 0) - 1))}
+        style={{
+          width: '36px', height: '36px', borderRadius: '8px',
+          background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)',
+          color: '#10b981', fontSize: '20px', cursor: 'pointer', lineHeight: 1,
+        }}
+      >-</button>
+      <span style={{ minWidth: '24px', textAlign: 'center', fontSize: '20px', fontWeight: '700', color: '#f9fafb' }}>
+        {value || 0}
+      </span>
+      <button
+        type="button"
+        onClick={() => onChange(Math.min(max, (value || 0) + 1))}
+        style={{
+          width: '36px', height: '36px', borderRadius: '8px',
+          background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)',
+          color: '#10b981', fontSize: '20px', cursor: 'pointer', lineHeight: 1,
+        }}
+      >+</button>
+    </div>
+    {hint && <p style={{ fontSize: '11px', color: '#4b5563', marginTop: '2px' }}>{hint}</p>}
+  </div>
+);
+
 const LiveMetric = ({ label, value, color }) => (
   <div style={{
     background: 'rgba(0,0,0,0.2)', border: `1px solid ${color}25`,
@@ -112,6 +142,12 @@ export default function EntryForm() {
 
   const set = (field) => (e) => {
     const updated = { ...form, [field]: e.target.value };
+    setForm(updated);
+    sessionStorage.setItem(`entry_draft_${today}`, JSON.stringify(updated));
+  };
+
+  const setVal = (field) => (val) => {
+    const updated = { ...form, [field]: val };
     setForm(updated);
     sessionStorage.setItem(`entry_draft_${today}`, JSON.stringify(updated));
   };
@@ -227,11 +263,11 @@ export default function EntryForm() {
       );
       case 4: return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '280px', boxSizing: 'border-box' }}>
-          <Input label="Q11a. How many times did you nap or doze yesterday?" type="number" min="0" placeholder="0" value={form.q11a_nap_count} onChange={set('q11a_nap_count')} />
+          <Counter label="Q11a. How many times did you nap or doze?" value={form.q11a_nap_count} onChange={setVal('q11a_nap_count')} max={20} />
           {parseInt(form.q11a_nap_count) > 0 && (
             <Input label="Q11b. Total nap duration (minutes)" type="number" min="0" placeholder="e.g. 40" value={form.q11b_nap_duration_min} onChange={set('q11b_nap_duration_min')} hint="1 nap of 30 min + 1 nap of 10 min = 40 min" />
           )}
-          <Input label="Q12a. How many alcoholic drinks did you have yesterday?" type="number" min="0" placeholder="0" value={form.q12a_alcohol_count} onChange={set('q12a_alcohol_count')} hint="1 drink = 12oz beer, 5oz wine, or 1.5oz liquor" />
+          <Counter label="Q12a. How many alcoholic drinks did you have?" value={form.q12a_alcohol_count} onChange={setVal('q12a_alcohol_count')} max={20} hint="1 drink = 12oz beer, 5oz wine, or 1.5oz liquor" />
           {parseInt(form.q12a_alcohol_count) > 0 && (
             <Input label="Q12b. What time was your last alcoholic drink yesterday?" type="time" value={form.q12b_alcohol_last_time} onChange={set('q12b_alcohol_last_time')} />
           )}
@@ -239,7 +275,7 @@ export default function EntryForm() {
       );
       case 5: return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '280px', boxSizing: 'border-box' }}>
-          <Input label="Q13a. How many caffeinated drinks did you have yesterday?" type="number" min="0" placeholder="0" value={form.q13a_caffeine_count} onChange={set('q13a_caffeine_count')} hint="Coffee, tea, soda, energy drinks — 1 drink = 6–8oz" />
+          <Counter label="Q13a. How many caffeinated drinks did you have?" value={form.q13a_caffeine_count} onChange={setVal('q13a_caffeine_count')} max={20} hint="Coffee, tea, soda, energy drinks — 1 drink = 6-8oz" />
           {parseInt(form.q13a_caffeine_count) > 0 && (
             <Input label="Q13b. What time was your last caffeinated drink yesterday?" type="time" value={form.q13b_caffeine_last_time} onChange={set('q13b_caffeine_last_time')} />
           )}
@@ -411,15 +447,15 @@ const Header = () => (
           <p style={{ fontSize: '12px', color: '#4b5563', marginLeft: '24px' }}>Complete in the evening</p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <Input label="Q11a. How many times did you nap or doze?" type="number" min="0" placeholder="0" value={form.q11a_nap_count} onChange={set('q11a_nap_count')} />
+          <Counter label="Q11a. How many times did you nap or doze?" value={form.q11a_nap_count} onChange={setVal('q11a_nap_count')} max={10} />
           {parseInt(form.q11a_nap_count) > 0 && (
             <Input label="Q11b. Total nap duration (minutes)" type="number" min="0" placeholder="e.g. 40" value={form.q11b_nap_duration_min} onChange={set('q11b_nap_duration_min')} hint="1 nap of 30 min + 1 nap of 10 min = 40 min" />
           )}
-          <Input label="Q12a. How many alcoholic drinks did you have?" type="number" min="0" placeholder="0" value={form.q12a_alcohol_count} onChange={set('q12a_alcohol_count')} hint="1 drink = 12oz beer, 5oz wine, or 1.5oz liquor" />
+          <Counter label="Q12a. How many alcoholic drinks did you have?" value={form.q12a_alcohol_count} onChange={setVal('q12a_alcohol_count')} max={20} hint="1 drink = 12oz beer, 5oz wine, or 1.5oz liquor" />
           {parseInt(form.q12a_alcohol_count) > 0 && (
             <Input label="Q12b. What time was your last alcoholic drink?" type="time" value={form.q12b_alcohol_last_time} onChange={set('q12b_alcohol_last_time')} />
           )}
-          <Input label="Q13a. How many caffeinated drinks did you have?" type="number" min="0" placeholder="0" value={form.q13a_caffeine_count} onChange={set('q13a_caffeine_count')} hint="Coffee, tea, soda, energy drinks — 1 drink = 6–8oz" />
+          <Counter label="Q13a. How many caffeinated drinks did you have?" value={form.q13a_caffeine_count} onChange={setVal('q13a_caffeine_count')} max={20} hint="Coffee, tea, soda, energy drinks — 1 drink = 6-8oz" />
           {parseInt(form.q13a_caffeine_count) > 0 && (
             <Input label="Q13b. What time was your last caffeinated drink?" type="time" value={form.q13b_caffeine_last_time} onChange={set('q13b_caffeine_last_time')} />
           )}

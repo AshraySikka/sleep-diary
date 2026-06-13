@@ -198,6 +198,34 @@ export default function Settings() {
               hint="We'll remind you to fill in your diary at this time each morning"
             />
           )}
+          {profile.notification_enabled && (
+            <button
+              onClick={async () => {
+                try {
+                  const token = localStorage.getItem('access_token');
+                  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/notifications/send-test/`, {
+                    method: 'POST',
+                    headers: {
+                      'Authorization': `Bearer ${token}`,
+                      'Content-Type': 'application/json',
+                    },
+                  });
+                  const data = await res.json();
+                  if (res.ok) setSuccess('Test notification sent! Check your phone.');
+                  else setError(data.error || 'Failed to send test notification.');
+                } catch {
+                  setError('Failed to send test notification.');
+                }
+              }}
+              style={{
+                padding: '10px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: '500',
+                background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)',
+                color: '#10b981', cursor: 'pointer', width: '100%',
+              }}
+            >
+              Send Test Notification
+            </button>
+          )}
         </div>
       </div>
 
