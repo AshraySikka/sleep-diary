@@ -201,20 +201,90 @@ export default function Settings() {
           {profile.notification_enabled && (
             <button
               onClick={async () => {
-                try {
-                  const token = localStorage.getItem('access_token');
-                  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/notifications/send-test/`, {
-                    method: 'POST',
-                    headers: {
-                      'Authorization': `Bearer ${token}`,
-                      'Content-Type': 'application/json',
-                    },
-                  });
-                  const data = await res.json();
-                  if (res.ok) setSuccess('Test notification sent! Check your phone.');
-                  else setError(data.error || 'Failed to send test notification.');
-                } catch {
-                  setError('Failed to send test notification.');
+                const newVal = !profile.notification_enabled;
+
+                if (newVal) {
+                  try {
+                    // Check if push is supported
+                    if (!('serviceWorker' in navigator)) {
+                      setError('Service workers are not supported on this browser.');
+                      return;
+                    }
+                    if (!('PushManager' in window)) {
+                      setError('Push notifications are not supported. Make sure the app is installed to your home screen.');
+                      return;
+                    }
+
+                    // Request notification permission
+                    const permission = await Notification.requestPermission();
+                    if (permission !== 'granted') {
+                      setError('Notification permission was denied. Please enable it in your iPhone Settings → Sleep Diary.');
+                      return;
+                    }
+
+                    // Get VAPID public key from backend
+                    const keyRes = await fetch(
+                      `${import.meta.env.VITE_API_URL}/api/auth/vapid-public-key/`,
+                      { headers: { 'Content-Type': 'application/json' } }
+                    );
+
+                    if (!keyRes.ok) {
+                      setError('Failed to get notification config from server.');
+                      return;
+                    }
+
+                    const { public_key } = await keyRes.json();
+
+                    if (!public_key) {
+                      setError('Push notifications not configured on server yet.');
+                      return;
+                    }
+
+                    // Convert VAPID key to Uint8Array
+                    const urlBase64ToUint8Array = (base64String) => {
+                      const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+                      const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+                      const rawData = window.atob(base64);
+                      return new Uint8Array([...rawData].map((char) => char.charCodeAt(0)));
+                    };
+
+                    // Wait for service worker
+                    const reg = await navigator.serviceWorker.ready;
+
+                    // Subscribe to push
+                    const sub = await reg.pushManager.subscribe({
+                      userVisibleOnly: true,
+                      applicationServerKey: urlBase64ToUint8Array(public_key),
+                    });
+
+                    // Save subscription to backend
+                    const token = localStorage.getItem('access_token');
+                    const saveRes = await fetch(
+                      `${import.meta.env.VITE_API_URL}/api/auth/push-subscription/`,
+                      {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Authorization': `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({ subscription: sub.toJSON() }),
+                      }
+                    );
+
+                    if (!saveRes.ok) {
+                      setError('Failed to save notification subscription.');
+                      return;
+                    }
+
+                    setProfile({ ...profile, notification_enabled: true });
+                    setSuccess('Notifications enabled! Tap "Send Test Notification" to verify.');
+
+                  } catch (e) {
+                    setError(`Failed to enable notifications: ${e.message}`);
+                  }
+                } else {
+                  setProfile({ ...profile, notification_enabled: false });
+                  setSuccess('Notifications disabled.');
                 }
               }}
               style={{
