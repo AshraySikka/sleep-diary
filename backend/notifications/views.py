@@ -72,26 +72,25 @@ class CronSendRemindersView(APIView):
             if not profile.notification_time:
                 continue
 
-            # Convert user's local notification time to UTC
-            # by subtracting their timezone offset
+            # Don't send more than once per day
+            from django.utils.timezone import now as tz_now
+            today_utc = tz_now().date()
+            if profile.last_notification_sent == today_utc:
+                continue
+
             notif_hour = profile.notification_time.hour
             notif_minute = profile.notification_time.minute
             tz_offset = getattr(profile, 'notification_tz_offset', 0)
 
-            # Convert local time to UTC minutes
             local_total = notif_hour * 60 + notif_minute
-            utc_total = (local_total - tz_offset) % (24 * 60)  # wrap around midnight
-
-            # Current UTC time in minutes
+            utc_total = (local_total - tz_offset) % (24 * 60)
             total_now = current_hour * 60 + current_minute
 
-            # Allow 2-minute window to account for cron job timing variance
             diff = abs(total_now - utc_total)
-            # Handle day boundary wraparound
             if diff > 12 * 60:
                 diff = 24 * 60 - diff
 
-            if diff > 2:
+            if diff > 1:
                 continue
 
             try:
@@ -106,6 +105,9 @@ class CronSendRemindersView(APIView):
                     vapid_private_key=settings.VAPID_PRIVATE_KEY,
                     vapid_claims={'sub': settings.VAPID_CLAIMS_EMAIL},
                 )
+                # Mark as sent today so it doesn't fire again
+                profile.last_notification_sent = today_utc
+                profile.save(update_fields=['last_notification_sent'])
                 sent += 1
             except Exception as e:
                 failed += 1
