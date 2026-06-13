@@ -68,7 +68,9 @@ const STEPS = [
 export default function EntryForm() {
   const { date } = useParams();
   const navigate = useNavigate();
-  const today = date || new Date().toISOString().split('T')[0];
+  const now = new Date();
+  const localToday = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const today = date || localToday;
 
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
