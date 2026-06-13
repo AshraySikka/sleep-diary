@@ -53,12 +53,22 @@ export default function Settings() {
   const handleSave = async () => {
     setError(''); setSuccess(''); setSaving(true);
     try {
-      const tzOffset = -new Date().getTimezoneOffset(); // minutes, positive = ahead of UTC
+      // Convert local notification time to UTC before saving
+      let notificationTimeUTC = profile.notification_time;
+      if (profile.notification_time) {
+        const [hours, minutes] = profile.notification_time.split(':').map(Number);
+        const now = new Date();
+        now.setHours(hours, minutes, 0, 0);
+        const utcHours = String(now.getUTCHours()).padStart(2, '0');
+        const utcMinutes = String(now.getUTCMinutes()).padStart(2, '0');
+        notificationTimeUTC = `${utcHours}:${utcMinutes}`;
+      }
+
       const res = await authAPI.updateProfile({
         ...profile,
+        notification_time: notificationTimeUTC,
         height_cm: profile.height_cm ? parseFloat(profile.height_cm) : null,
         weight_kg: profile.weight_kg ? parseFloat(profile.weight_kg) : null,
-        notification_tz_offset: tzOffset,
       });
       updateUser(res.data);
       setSuccess('Settings saved successfully.');
