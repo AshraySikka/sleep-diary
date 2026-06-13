@@ -85,13 +85,13 @@ class CronSendRemindersView(APIView):
             # Current UTC time in minutes
             total_now = current_hour * 60 + current_minute
 
-            # Allow 35-minute window to account for cron job timing variance
+            # Allow 2-minute window to account for cron job timing variance
             diff = abs(total_now - utc_total)
             # Handle day boundary wraparound
             if diff > 12 * 60:
                 diff = 24 * 60 - diff
 
-            if diff > 35:
+            if diff > 2:
                 continue
 
             try:
