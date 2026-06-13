@@ -10,11 +10,20 @@ const sectionStyle = {
   borderRadius: '16px', padding: '24px', marginBottom: '16px',
 };
 
+const urlBase64ToUint8Array = (base64String) => {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  return new Uint8Array([...rawData].map((char) => char.charCodeAt(0)));
+};
+
 export default function Settings() {
   const { user, updateUser } = useAuth();
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const [testSending, setTestSending] = useState(false);
+  const [enableLoading, setEnableLoading] = useState(false);
 
   const [profile, setProfile] = useState({
     date_of_birth: '',
@@ -22,13 +31,8 @@ export default function Settings() {
     height_cm: '',
     weight_kg: '',
     clinician_email: '',
-    notification_enabled: true,
+    notification_enabled: false,
     notification_time: '09:00',
-  });
-
-  const [name, setName] = useState({
-    first_name: user?.first_name || '',
-    last_name: user?.last_name || '',
   });
 
   useEffect(() => {
@@ -40,7 +44,7 @@ export default function Settings() {
         height_cm: p.height_cm || '',
         weight_kg: p.weight_kg || '',
         clinician_email: p.clinician_email || '',
-        notification_enabled: p.notification_enabled ?? true,
+        notification_enabled: p.notification_enabled ?? false,
         notification_time: p.notification_time || '09:00',
       });
     }
@@ -60,6 +64,89 @@ export default function Settings() {
       setError('Failed to save settings.');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleEnableNotifications = async () => {
+    setEnableLoading(true);
+    setError('');
+    setSuccess('');
+    try {
+      if (!('serviceWorker' in navigator)) {
+        setError('Service workers are not supported on this browser.');
+        return;
+      }
+      if (!('PushManager' in window)) {
+        setError('Push notifications are not supported. Make sure the app is installed to your home screen.');
+        return;
+      }
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        setError('Permission denied. Enable notifications in iPhone Settings → Sleep Diary.');
+        return;
+      }
+      const keyRes = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/vapid-public-key/`,
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      if (!keyRes.ok) { setError('Failed to get notification config from server.'); return; }
+      const { public_key } = await keyRes.json();
+      if (!public_key) { setError('Push notifications not configured on server yet.'); return; }
+      const reg = await navigator.serviceWorker.ready;
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(public_key),
+      });
+      const token = localStorage.getItem('access_token');
+      const saveRes = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/push-subscription/`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ subscription: sub.toJSON() }),
+        }
+      );
+      if (!saveRes.ok) { setError('Failed to save notification subscription.'); return; }
+      setProfile(prev => ({ ...prev, notification_enabled: true }));
+      setSuccess('Notifications enabled! Tap Send Test Notification to verify.');
+    } catch (e) {
+      setError(`Failed to enable notifications: ${e.message}`);
+    } finally {
+      setEnableLoading(false);
+    }
+  };
+
+  const handleDisableNotifications = () => {
+    setProfile(prev => ({ ...prev, notification_enabled: false }));
+    setSuccess('Notifications disabled. Save Settings to apply.');
+  };
+
+  const handleTestNotification = async () => {
+    setTestSending(true);
+    setError('');
+    setSuccess('');
+    try {
+      const token = localStorage.getItem('access_token');
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/notifications/send-test/`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const data = await res.json();
+      if (res.ok) setSuccess('Test notification sent! Check your phone.');
+      else setError(data.error || 'Failed to send test notification.');
+    } catch {
+      setError('Failed to send test notification.');
+    } finally {
+      setTestSending(false);
     }
   };
 
@@ -167,18 +254,34 @@ export default function Settings() {
           <h2 style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5' }}>Morning Reminder</h2>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px', borderRadius: '12px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(16,185,129,0.08)' }}>
+
+          {/* Toggle row */}
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '14px 16px', borderRadius: '12px',
+            background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(16,185,129,0.08)',
+          }}>
             <div>
-              <p style={{ fontSize: '13px', fontWeight: '500', color: '#d1fae5', marginBottom: '2px' }}>Daily reminder</p>
-              <p style={{ fontSize: '12px', color: '#6b7280' }}>Reminds you to log your sleep each morning</p>
+              <p style={{ fontSize: '13px', fontWeight: '500', color: '#d1fae5', marginBottom: '2px' }}>
+                Daily sleep reminder
+              </p>
+              <p style={{ fontSize: '12px', color: '#6b7280' }}>
+                Reminds you to log your sleep each morning
+              </p>
             </div>
+            {/* Toggle button — only changes enabled/disabled state */}
             <button
-              onClick={() => setProfile({ ...profile, notification_enabled: !profile.notification_enabled })}
+              type="button"
+              onClick={profile.notification_enabled ? handleDisableNotifications : handleEnableNotifications}
+              disabled={enableLoading}
               style={{
                 width: '44px', height: '24px', borderRadius: '12px', border: 'none',
-                background: profile.notification_enabled ? 'linear-gradient(135deg, #10b981, #059669)' : 'rgba(255,255,255,0.1)',
-                cursor: 'pointer', position: 'relative', transition: 'background 0.2s ease',
-                flexShrink: 0,
+                background: profile.notification_enabled
+                  ? 'linear-gradient(135deg, #10b981, #059669)'
+                  : 'rgba(255,255,255,0.1)',
+                cursor: enableLoading ? 'not-allowed' : 'pointer',
+                position: 'relative', transition: 'background 0.2s ease',
+                flexShrink: 0, opacity: enableLoading ? 0.6 : 1,
               }}
             >
               <div style={{
@@ -189,111 +292,32 @@ export default function Settings() {
               }} />
             </button>
           </div>
+
+          {/* Reminder time — only shown when enabled */}
           {profile.notification_enabled && (
             <Input
               label="Reminder time"
               type="time"
               value={profile.notification_time}
-              onChange={(e) => setProfile({ ...profile, notification_time: e.target.value })}
+              onChange={(e) => setProfile(prev => ({ ...prev, notification_time: e.target.value }))}
               hint="We'll remind you to fill in your diary at this time each morning"
             />
           )}
+
+          {/* Test notification button — completely separate from toggle */}
           {profile.notification_enabled && (
             <button
-              onClick={async () => {
-                const newVal = !profile.notification_enabled;
-
-                if (newVal) {
-                  try {
-                    // Check if push is supported
-                    if (!('serviceWorker' in navigator)) {
-                      setError('Service workers are not supported on this browser.');
-                      return;
-                    }
-                    if (!('PushManager' in window)) {
-                      setError('Push notifications are not supported. Make sure the app is installed to your home screen.');
-                      return;
-                    }
-
-                    // Request notification permission
-                    const permission = await Notification.requestPermission();
-                    if (permission !== 'granted') {
-                      setError('Notification permission was denied. Please enable it in your iPhone Settings → Sleep Diary.');
-                      return;
-                    }
-
-                    // Get VAPID public key from backend
-                    const keyRes = await fetch(
-                      `${import.meta.env.VITE_API_URL}/api/auth/vapid-public-key/`,
-                      { headers: { 'Content-Type': 'application/json' } }
-                    );
-
-                    if (!keyRes.ok) {
-                      setError('Failed to get notification config from server.');
-                      return;
-                    }
-
-                    const { public_key } = await keyRes.json();
-
-                    if (!public_key) {
-                      setError('Push notifications not configured on server yet.');
-                      return;
-                    }
-
-                    // Convert VAPID key to Uint8Array
-                    const urlBase64ToUint8Array = (base64String) => {
-                      const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-                      const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-                      const rawData = window.atob(base64);
-                      return new Uint8Array([...rawData].map((char) => char.charCodeAt(0)));
-                    };
-
-                    // Wait for service worker
-                    const reg = await navigator.serviceWorker.ready;
-
-                    // Subscribe to push
-                    const sub = await reg.pushManager.subscribe({
-                      userVisibleOnly: true,
-                      applicationServerKey: urlBase64ToUint8Array(public_key),
-                    });
-
-                    // Save subscription to backend
-                    const token = localStorage.getItem('access_token');
-                    const saveRes = await fetch(
-                      `${import.meta.env.VITE_API_URL}/api/auth/push-subscription/`,
-                      {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json',
-                          'Authorization': `Bearer ${token}`,
-                        },
-                        body: JSON.stringify({ subscription: sub.toJSON() }),
-                      }
-                    );
-
-                    if (!saveRes.ok) {
-                      setError('Failed to save notification subscription.');
-                      return;
-                    }
-
-                    setProfile({ ...profile, notification_enabled: true });
-                    setSuccess('Notifications enabled! Tap "Send Test Notification" to verify.');
-
-                  } catch (e) {
-                    setError(`Failed to enable notifications: ${e.message}`);
-                  }
-                } else {
-                  setProfile({ ...profile, notification_enabled: false });
-                  setSuccess('Notifications disabled.');
-                }
-              }}
+              type="button"
+              onClick={handleTestNotification}
+              disabled={testSending}
               style={{
                 padding: '10px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: '500',
                 background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)',
-                color: '#10b981', cursor: 'pointer', width: '100%',
+                color: '#10b981', cursor: testSending ? 'not-allowed' : 'pointer',
+                width: '100%', opacity: testSending ? 0.6 : 1,
               }}
             >
-              Send Test Notification
+              {testSending ? 'Sending...' : 'Send Test Notification'}
             </button>
           )}
         </div>
@@ -301,6 +325,7 @@ export default function Settings() {
 
       {/* Save button */}
       <button
+        type="button"
         onClick={handleSave}
         disabled={saving}
         style={{
