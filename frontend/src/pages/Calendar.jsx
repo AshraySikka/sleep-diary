@@ -61,7 +61,7 @@ export default function Calendar() {
   const qualityLabels = { 1: 'Very Poor', 2: 'Poor', 3: 'Fair', 4: 'Good', 5: 'Very Good' };
 
   return (
-    <div style={{ padding: 'clamp(12px, 4vw, 28px)', maxWidth: '900px', width: '100%', overflowX: 'hidden' }}>
+    <div style={{ padding: 'clamp(12px, 4vw, 28px)', maxWidth: '900px', width: '100%', overflow: 'hidden' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px' }}>
         <div>

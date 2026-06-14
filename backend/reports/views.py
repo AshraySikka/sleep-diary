@@ -413,7 +413,7 @@ class EmailReportView(APIView):
 
         # Build and send the email with PDF attached
         email = EmailMessage(
-            subject=f'Sleep Diary Report — {request.user.full_name} ({start_str} to {end_str})',
+            subject=f'Sleep Diary Report - {request.user.full_name} ({start_str} to {end_str})',
             body=(
                 f'Please find attached the Sleep Diary report for {request.user.full_name}.\n\n'
                 f'Date Range: {start_str} to {end_str}\n'

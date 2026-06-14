@@ -425,7 +425,7 @@ const Header = () => (
           <Input label="Q1. What time did you get into bed?" type="time" value={form.q1_bed_time} onChange={set('q1_bed_time')} />
           <Input label="Q2. What time did you try to go to sleep?" type="time" value={form.q2_sleep_attempt_time} onChange={set('q2_sleep_attempt_time')} hint="May differ from when you got into bed" />
           <Input label="Q3. How long did it take to fall asleep? (minutes)" type="number" min="0" placeholder="e.g. 20" value={form.q3_sleep_latency_min} onChange={set('q3_sleep_latency_min')} hint="Best estimate — do not watch the clock" />
-          <Input label="Q4. How many times did you wake up during the night?" type="number" min="0" placeholder="e.g. 2" value={form.q4_awakening_count} onChange={set('q4_awakening_count')} hint="Not counting your final awakening" />
+          <Counter label="Q4. How many times did you wake up during the night?" value={form.q4_awakening_count} onChange={setVal('q4_awakening_count')} max={10} hint="Not counting your final awakening" />
           <Input label="Q5. Total time awake during the night (minutes)" type="number" min="0" placeholder="e.g. 30" value={form.q5_waso_min} onChange={set('q5_waso_min')} hint="Add up all mid-night awakenings" />
           <Input label="Q6a. What time was your final awakening?" type="time" value={form.q6a_final_awakening_time} onChange={set('q6a_final_awakening_time')} />
           <Input label="Q6b. After final awakening, how long did you stay in bed? (minutes)" type="number" min="0" placeholder="e.g. 15" value={form.q6b_post_awakening_bed_min} onChange={set('q6b_post_awakening_bed_min')} />
