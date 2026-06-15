@@ -110,6 +110,12 @@ export default function Login() {
               required
             />
 
+            <div style={{ textAlign: 'right', marginTop: '-8px' }}>
+              <Link to="/forgot-password" style={{ fontSize: '13px', color: '#10b981', textDecoration: 'none' }}>
+                Forgot password?
+              </Link>
+            </div>
+
             <button
               type="submit"
               disabled={loading}

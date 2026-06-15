@@ -15,6 +15,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from users.views import (
     RegisterView, VerifyOTPView, ResendOTPView, LoginView,
     LogoutView, ProfileView, PushSubscriptionView, VAPIDPublicKeyView,
+    ForgotPasswordView, ResetPasswordView,
 )
 
 
@@ -28,4 +29,6 @@ urlpatterns = [
     path('push-subscription/', PushSubscriptionView.as_view(), name='push-subscription'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
     path('vapid-public-key/', VAPIDPublicKeyView.as_view(), name='vapid-public-key'),
+    path('forgot-password/', ForgotPasswordView.as_view(), name='forgot-password'),
+    path('reset-password/', ResetPasswordView.as_view(), name='reset-password'),
 ]

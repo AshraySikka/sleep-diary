@@ -357,3 +357,118 @@ class VAPIDPublicKeyView(APIView):
     def get(self, request):
         from django.conf import settings
         return Response({'public_key': settings.VAPID_PUBLIC_KEY})
+    
+
+
+class ForgotPasswordView(APIView):
+    """
+    POST /api/auth/forgot-password/
+    Sends an OTP to the user's email for password reset.
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email', '').lower()
+        if not email:
+            return Response(
+                {'error': 'Email is required.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            # Don't reveal if email exists or not — security best practice
+            return Response(
+                {'message': 'If an account exists with this email, a reset code has been sent.'},
+                status=status.HTTP_200_OK
+            )
+
+        # Invalidate old OTPs
+        OTPToken.objects.filter(user=user, is_used=False).update(is_used=True)
+
+        # Generate and send fresh OTP
+        otp = generate_otp()
+        OTPToken.objects.create(user=user, token=otp)
+
+        try:
+            send_mail(
+                subject='Your Sleep Diary password reset code',
+                message=(
+                    f'Your password reset code is: {otp}\n\n'
+                    f'This code expires in {settings.OTP_EXPIRY_MINUTES} minutes.\n\n'
+                    f'If you did not request this, please ignore this email.'
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[email],
+                fail_silently=False,
+            )
+        except Exception as e:
+            print(f'Reset email failed: {e}')
+
+        return Response(
+            {'message': 'If an account exists with this email, a reset code has been sent.'},
+            status=status.HTTP_200_OK
+        )
+
+
+class ResetPasswordView(APIView):
+    """
+    POST /api/auth/reset-password/
+    Verifies OTP and sets new password.
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email', '').lower()
+        otp = request.data.get('otp', '')
+        new_password = request.data.get('new_password', '')
+
+        if not all([email, otp, new_password]):
+            return Response(
+                {'error': 'Email, OTP, and new password are required.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if len(new_password) < 8:
+            return Response(
+                {'error': 'Password must be at least 8 characters.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response(
+                {'error': 'Invalid request.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        token = (
+            OTPToken.objects
+            .filter(user=user, token=otp, is_used=False)
+            .order_by('-created_at')
+            .first()
+        )
+
+        if not token:
+            return Response(
+                {'error': 'Invalid reset code.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if token.is_expired:
+            return Response(
+                {'error': 'This code has expired. Please request a new one.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Mark OTP used and set new password
+        token.is_used = True
+        token.save()
+        user.set_password(new_password)
+        user.save()
+
+        return Response(
+            {'message': 'Password reset successfully. You can now log in.'},
+            status=status.HTTP_200_OK
+        )
