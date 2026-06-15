@@ -235,7 +235,7 @@ export default function EntryForm() {
       case 1: return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '280px', boxSizing: 'border-box' }}>
           <Input label="Q3. How long did it take to fall asleep? (minutes)" type="number" min="0" placeholder="e.g. 20" value={form.q3_sleep_latency_min} onChange={set('q3_sleep_latency_min')} hint="Give your best estimate — do not watch the clock" />
-          <Input label="Q4. How many times did you wake up during the night?" type="number" min="0" placeholder="e.g. 2" value={form.q4_awakening_count} onChange={set('q4_awakening_count')} hint="Not counting your final awakening" />
+          <Counter label="Q4. How many times did you wake up during the night?" value={form.q4_awakening_count} onChange={setVal('q4_awakening_count')} max={10} hint="Not counting your final awakening" />
           <Input label="Q5. Total time spent awake during the night (minutes)" type="number" min="0" placeholder="e.g. 30" value={form.q5_waso_min} onChange={set('q5_waso_min')} hint="Add up all your mid-night awakenings" />
         </div>
       );
