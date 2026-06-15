@@ -428,7 +428,6 @@ class EmailReportView(APIView):
             from_email=settings.DEFAULT_FROM_EMAIL,
             to=[clinician_email],
             reply_to=[request.user.email],
-            headers={'List-Unsubscribe': f'<mailto:{settings.DEFAULT_FROM_EMAIL}>'},
         )
 
         email.attach(
