@@ -17,13 +17,41 @@ const urlBase64ToUint8Array = (base64String) => {
   return new Uint8Array([...rawData].map((char) => char.charCodeAt(0)));
 };
 
+const TERMS_TEXT = `TERMS AND CONDITIONS — SLEEP DIARY APP
+
+Last updated: June 2025
+
+IMPORTANT: Please read these terms carefully before using this application.
+
+1. NOT A MEDICAL DEVICE
+This application is not a medical device and is not intended to diagnose, treat, cure, or prevent any medical condition. The Sleep Diary app is a tool for personal sleep tracking based on the Consensus Sleep Diary-Modified (CSD-M) instrument.
+
+2. NO CLINICAL ADVICE
+Information provided by this application, including sleep metrics and calculations, is for informational purposes only. It does not constitute medical advice. Always consult a qualified healthcare professional for medical concerns.
+
+3. ACCURACY OF DATA
+Sleep metrics (TST, TIB, SE) are calculated from data you enter. The accuracy of results depends entirely on the accuracy of your input. The developer assumes no responsibility for decisions made based on this data.
+
+4. DATA PRIVACY
+Your sleep data is stored securely. Data is not shared with third parties without your consent, except when you explicitly use the Email Report feature to send your data to a clinician.
+
+5. LIMITATION OF LIABILITY
+By using this application, you agree that the developer shall not be liable for any direct, indirect, incidental, or consequential damages arising from the use or inability to use this application.
+
+6. USER RESPONSIBILITY
+You are solely responsible for the accuracy of data entered and any decisions made based on the information provided by this application.
+
+7. ACCEPTANCE
+By creating an account, you acknowledge that you have read, understood, and agree to these Terms and Conditions.`;
+
 export default function Settings() {
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, logout } = useAuth();
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [testSending, setTestSending] = useState(false);
   const [enableLoading, setEnableLoading] = useState(false);
+  const [termsOpen, setTermsOpen] = useState(false);
 
   const [profile, setProfile] = useState({
     date_of_birth: '',
@@ -53,7 +81,6 @@ export default function Settings() {
   const handleSave = async () => {
     setError(''); setSuccess(''); setSaving(true);
     try {
-      // Convert local notification time to UTC before saving
       let notificationTimeUTC = profile.notification_time;
       if (profile.notification_time) {
         const [hours, minutes] = profile.notification_time.split(':').map(Number);
@@ -63,7 +90,6 @@ export default function Settings() {
         const utcMinutes = String(now.getUTCMinutes()).padStart(2, '0');
         notificationTimeUTC = `${utcHours}:${utcMinutes}`;
       }
-
       const res = await authAPI.updateProfile({
         ...profile,
         notification_time: notificationTimeUTC,
@@ -79,7 +105,7 @@ export default function Settings() {
     }
   };
 
-    const handleEnableNotifications = async () => {
+  const handleEnableNotifications = async () => {
     setEnableLoading(true);
     setError('');
     setSuccess('');
@@ -195,6 +221,11 @@ export default function Settings() {
     }
   };
 
+  const handleSignOut = async () => {
+    await logout();
+    window.location.href = '/login';
+  };
+
   const bmi = profile.height_cm && profile.weight_kg
     ? (parseFloat(profile.weight_kg) / ((parseFloat(profile.height_cm) / 100) ** 2)).toFixed(1)
     : null;
@@ -299,8 +330,6 @@ export default function Settings() {
           <h2 style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5' }}>Morning Reminder</h2>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-
-          {/* Toggle row */}
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: '14px 16px', borderRadius: '12px',
@@ -314,7 +343,6 @@ export default function Settings() {
                 Reminds you to log your sleep each morning
               </p>
             </div>
-            {/* Toggle button — only changes enabled/disabled state */}
             <button
               type="button"
               onClick={profile.notification_enabled ? handleDisableNotifications : handleEnableNotifications}
@@ -338,18 +366,16 @@ export default function Settings() {
             </button>
           </div>
 
-          {/* Reminder time — only shown when enabled */}
           {profile.notification_enabled && (
             <Input
               label="Reminder time"
               type="time"
               value={profile.notification_time}
               onChange={(e) => setProfile(prev => ({ ...prev, notification_time: e.target.value }))}
-              hint="We'll remind you at this time each morning. Your local time, we handle the UTC conversion."
+              hint="Your local time — we handle the UTC conversion automatically"
             />
           )}
 
-          {/* Test notification button — completely separate from toggle */}
           {profile.notification_enabled && (
             <button
               type="button"
@@ -385,7 +411,15 @@ export default function Settings() {
       </button>
 
       {/* Terms */}
-      <div style={{ marginTop: '16px', padding: '14px 18px', borderRadius: '12px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div
+        onClick={() => setTermsOpen(true)}
+        style={{
+          marginTop: '16px', padding: '14px 18px', borderRadius: '12px',
+          background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.04)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          cursor: 'pointer',
+        }}
+      >
         <div>
           <p style={{ fontSize: '13px', color: '#6b7280' }}>Terms & Conditions</p>
           <p style={{ fontSize: '12px', color: '#374151' }}>
@@ -393,9 +427,74 @@ export default function Settings() {
           </p>
         </div>
         <span style={{ fontSize: '11px', color: '#10b981', padding: '3px 10px', borderRadius: '6px', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}>
-          ✓ Accepted
+          ✓ View
         </span>
       </div>
+
+      {/* Sign out */}
+      <button
+        type="button"
+        onClick={handleSignOut}
+        style={{
+          marginTop: '12px', width: '100%', padding: '14px', borderRadius: '12px',
+          background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)',
+          color: '#f87171', fontSize: '15px', fontWeight: '600',
+          cursor: 'pointer',
+        }}
+      >
+        Sign Out
+      </button>
+
+      {/* Terms modal */}
+      {termsOpen && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 50,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: '24px',
+        }}>
+          <div
+            style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
+            onClick={() => setTermsOpen(false)}
+          />
+          <div style={{
+            position: 'relative', width: '100%', maxWidth: '560px',
+            background: '#0f1e18', border: '1px solid rgba(16,185,129,0.2)',
+            borderRadius: '20px', maxHeight: '80vh', display: 'flex', flexDirection: 'column',
+            boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+          }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '20px 24px', borderBottom: '1px solid rgba(16,185,129,0.1)',
+            }}>
+              <h2 style={{ fontSize: '16px', fontWeight: '600', color: '#f0fdf4' }}>Terms and Conditions</h2>
+              <button
+                onClick={() => setTermsOpen(false)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280', fontSize: '22px', lineHeight: 1 }}
+              >
+                ×
+              </button>
+            </div>
+            <div style={{ overflowY: 'auto', padding: '24px' }}>
+              <pre style={{ fontSize: '13px', color: '#9ca3af', whiteSpace: 'pre-wrap', fontFamily: 'inherit', lineHeight: '1.7' }}>
+                {TERMS_TEXT}
+              </pre>
+            </div>
+            <div style={{ padding: '16px 24px', borderTop: '1px solid rgba(16,185,129,0.1)' }}>
+              <button
+                onClick={() => setTermsOpen(false)}
+                style={{
+                  width: '100%', padding: '12px', borderRadius: '12px',
+                  background: 'linear-gradient(135deg, #10b981, #059669)',
+                  border: 'none', color: 'white', fontSize: '14px', fontWeight: '600',
+                  cursor: 'pointer',
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
