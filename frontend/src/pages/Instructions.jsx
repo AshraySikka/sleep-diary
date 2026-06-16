@@ -47,13 +47,13 @@ const questions = [
 const formulas = [
   {
     name: 'Total Sleep Time (TST)',
-    formula: 'TST = (Final Awakening Time − Sleep Attempt Time) − Sleep Latency (Q3) − WASO (Q5)',
+    formula: 'TST = (Final Awakening Time - Sleep Attempt Time) - Sleep Latency (Q3) - WASO (Q5)',
     note: 'If the final awakening crosses midnight, 1440 minutes (24 hours) is added before subtracting. TST cannot be negative.',
     color: '#818cf8',
   },
   {
     name: 'Time in Bed (TIB)',
-    formula: 'TIB = Out of Bed Time (Q7) − Sleep Attempt Time (Q2)',
+    formula: 'TIB = (Final Awakening Time (Q6a) - Sleep Attempt Time (Q2)) + Post-Awakening Bed Time (Q6b)',
     note: 'If out of bed time crosses midnight, 1440 minutes is added.',
     color: '#10b981',
   },

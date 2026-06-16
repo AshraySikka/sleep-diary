@@ -206,7 +206,7 @@ export default function Dashboard() {
               label="Nights Logged"
               value={stats?.total_entries ?? '—'}
               sub={`last ${days} days`}
-              color="#10b981"
+              color="#a415c7"
               icon={TrendingUp}
             />
             <MetricCard
@@ -220,7 +220,7 @@ export default function Dashboard() {
             <MetricCard
               label="Avg WASO"
               value={stats?.avg_waso ? `${Math.round(stats.avg_waso)} min` : '—'}
-              sub="awake mid-night"
+              sub="awake time"
               color="#f87171"
               formula={FORMULA_DESCRIPTIONS.waso}
               icon={Activity}
