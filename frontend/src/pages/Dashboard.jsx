@@ -209,6 +209,22 @@ export default function Dashboard() {
               color="#10b981"
               icon={TrendingUp}
             />
+            <MetricCard
+              label="Avg Time in Bed"
+              value={stats?.avg_tib_min ? formatMinutes(Math.round(stats.avg_tib_min)) : '—'}
+              sub="avg per night"
+              color="#99c325"
+              formula={FORMULA_DESCRIPTIONS.tib}
+              icon={Moon}
+            />
+            <MetricCard
+              label="Avg WASO"
+              value={stats?.avg_waso ? `${Math.round(stats.avg_waso)} min` : '—'}
+              sub="awake mid-night"
+              color="#f87171"
+              formula={FORMULA_DESCRIPTIONS.waso}
+              icon={Activity}
+            />
           </div>
 
           {/* Trend table */}

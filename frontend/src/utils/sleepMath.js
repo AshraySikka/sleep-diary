@@ -71,27 +71,24 @@ export function computeTST(q2, q6a, q3, q5) {
 }
 
 /**
- * Time in Bed (TIB) in minutes.
- * Formula: OutOfBedTime - SleepAttemptTime
+ * Time in Bed (TIB) in Minutes.
+ * Formula: (FinalAwakening - SleepAttempt) + PostAwakeningBedTime
  * Handles midnight crossover.
- *
- * @param {string} q2 - Sleep attempt time "HH:MM"
- * @param {string} q7 - Out of bed time "HH:MM"
- * @returns {number|null}
  */
-export function computeTIB(q2, q7) {
-  if (!q2 || !q7) return null;
+export function computeTIB(q2, q6a, q6b = 0) {
+  if (!q2 || !q6a) return null;
 
   const q2Min = timeToMinutes(q2);
-  const q7Min = timeToMinutes(q7);
+  const q6aMin = timeToMinutes(q6a);
 
   let tib;
-  if (q7Min > q2Min) {
-    tib = q7Min - q2Min;
+  if (q6aMin > q2Min) {
+    tib = q6aMin - q2Min;
   } else {
-    tib = q7Min + 1440 - q2Min;
+    tib = q6aMin + 1440 - q2Min;
   }
 
+  tib += (parseInt(q6b) || 0);
   return Math.max(tib, 0);
 }
 

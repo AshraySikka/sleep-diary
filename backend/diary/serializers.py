@@ -137,6 +137,33 @@ class SleepEntryWriteSerializer(serializers.ModelSerializer):
         ]
 
     def validate(self, data):
+    # Block marking complete if calculation fields are missing
+        if data.get('is_complete'):
+            required_for_complete = [
+                'q2_sleep_attempt_time',
+                'q3_sleep_latency_min',
+                'q5_waso_min',
+                'q6a_final_awakening_time',
+                'q6b_post_awakening_bed_min',
+                'q9_sleep_quality',
+                'q10_restfulness',
+            ]
+            missing = [f for f in required_for_complete if not data.get(f) and data.get(f) != 0]
+            if missing:
+                readable = {
+                    'q2_sleep_attempt_time': 'Sleep attempt time (Q2)',
+                    'q3_sleep_latency_min': 'Sleep latency (Q3)',
+                    'q5_waso_min': 'Total wake time (Q5)',
+                    'q6a_final_awakening_time': 'Final awakening time (Q6a)',
+                    'q6b_post_awakening_bed_min': 'Post-awakening bed time (Q6b)',
+                    'q9_sleep_quality': 'Sleep quality (Q9)',
+                    'q10_restfulness': 'Restfulness (Q10)',
+                }
+                missing_labels = [readable[f] for f in missing]
+                raise serializers.ValidationError(
+                    f'Cannot mark complete. Missing required fields: {", ".join(missing_labels)}'
+                )
+        
         # Q6d: early awakening duration only makes sense if Q6c is True
         if data.get('q6c_early_awakening') is False:
             data['q6d_early_awakening_min'] = None

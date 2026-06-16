@@ -155,7 +155,7 @@ export default function EntryForm() {
   };
 
   const tst = computeTST(form.q2_sleep_attempt_time, form.q6a_final_awakening_time, parseInt(form.q3_sleep_latency_min) || 0, parseInt(form.q5_waso_min) || 0);
-  const tib = computeTIB(form.q2_sleep_attempt_time, form.q7_out_of_bed_time);
+  const tib = computeTIB(form.q2_sleep_attempt_time, form.q6a_final_awakening_time, parseInt(form.q6b_post_awakening_bed_min) || 0);
   const se = computeSleepEfficiency(tst, tib);
 
   const buildPayload = () => ({
@@ -186,6 +186,25 @@ export default function EntryForm() {
 
   const handleSave = async () => {
     setError(''); setSuccess(''); setSaving(true);
+
+    // Block marking complete if required fields are missing
+    if (form.is_complete) {
+      const missing = [];
+      if (!form.q2_sleep_attempt_time) missing.push('Sleep attempt time (Q2)');
+      if (form.q3_sleep_latency_min === '' || form.q3_sleep_latency_min === null) missing.push('Sleep latency (Q3)');
+      if (form.q5_waso_min === '' || form.q5_waso_min === null) missing.push('Total wake time (Q5)');
+      if (!form.q6a_final_awakening_time) missing.push('Final awakening time (Q6a)');
+      if (form.q6b_post_awakening_bed_min === '' || form.q6b_post_awakening_bed_min === null) missing.push('Post-awakening bed time (Q6b)');
+      if (!form.q9_sleep_quality) missing.push('Sleep quality (Q9)');
+      if (!form.q10_restfulness) missing.push('Restfulness (Q10)');
+
+      if (missing.length > 0) {
+        setError(`Cannot mark as complete. Please fill in: ${missing.join(', ')}`);
+        setSaving(false);
+        return;
+      }
+    }
+
     try {
       const payload = buildPayload();
       if (isExisting) {

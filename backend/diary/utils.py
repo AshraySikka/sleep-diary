@@ -57,36 +57,40 @@ def compute_tst(q2, q6a, q3, q5):
     return max(tst, 0)
 
 
-def compute_tib(q2, q7):
+def compute_tib(q2, q6a, q6b):
     """
     Time in Bed (TIB) in Minutes.
 
     Clinical formula:
-        TIB = OutOfBedTime - SleepAttemptTime
+        TIB = (FinalAwakeningTime - SleepAttemptTime) + PostAwakeningBedTime
 
-    Midnight crossover handling:
-        Same logic as TST — if out of bed time is earlier in the day
-        than sleep attempt time, add 1440 minutes.
+    This measures actual time spent in bed attempting sleep,
+    ending at the final awakening plus any time lying in bed after.
+    Q7 (out of bed time) is NOT used — that includes time out of bed
+    which is not part of the sleep period.
 
     Arguments:
-        q2  — Sleep attempt time (time object from Q2)
-        q7  — Out of bed time (time object from Q7)
+        q2   — Sleep attempt time (time object from Q2)
+        q6a  — Final awakening time (time object from Q6a)
+        q6b  — Post-awakening time in bed in minutes (integer from Q6b)
 
     Returns:
-        TIB in minutes as an integer, or None if any required input is missing.
+        TIB in minutes as an integer, or None if required inputs missing.
     """
-    if any(v is None for v in [q2, q7]):
+    if any(v is None for v in [q2, q6a]):
         return None
 
     q2_min = time_to_minutes(q2)
-    q7_min = time_to_minutes(q7)
+    q6a_min = time_to_minutes(q6a)
 
-    if q7_min > q2_min:
-        # Normal case: got out of bed same calendar day
-        tib = q7_min - q2_min
+    if q6a_min > q2_min:
+        tib = q6a_min - q2_min
     else:
-        # Midnight crossover: got out of bed the next calendar day
-        tib = q7_min + 1440 - q2_min
+        # Midnight crossover
+        tib = q6a_min + 1440 - q2_min
+
+    # Add post-awakening time in bed
+    tib += (q6b or 0)
 
     return max(tib, 0)
 
@@ -143,7 +147,8 @@ def compute_sleep_metrics(entry):
     # Run TIB formula — from sleep attempt to getting out of bed
     tib_min = compute_tib(
         entry.q2_sleep_attempt_time,
-        entry.q7_out_of_bed_time,
+        entry.q6a_final_awakening_time,
+        entry.q6b_post_awakening_bed_min or 0,
     )
 
     # Sleep efficiency from the two computed values above
@@ -222,6 +227,13 @@ def compute_dashboard_stats(entries):
         if awakening_entries else None
     )
 
+    # Average TIB
+    tib_entries = [e for e in valid_entries if e.tib_min is not None]
+    avg_tib = (
+        sum(e.tib_min for e in tib_entries) / len(tib_entries)
+        if tib_entries else None
+    )
+
     return {
         'avg_tst_min': round(avg_tst_min, 1),
         'avg_tst_hours': round(avg_tst_min / 60, 2),
@@ -230,6 +242,7 @@ def compute_dashboard_stats(entries):
         'avg_waso': round(avg_waso, 1) if avg_waso else None,
         'avg_awakening_count': round(avg_awakenings, 1) if avg_awakenings else None,
         'total_entries': len(entries),
+        'avg_tib_min': round(avg_tib, 1) if avg_tib else None,
     }
 
 
