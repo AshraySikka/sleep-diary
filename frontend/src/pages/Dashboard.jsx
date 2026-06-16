@@ -230,7 +230,7 @@ export default function Dashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {[...trendData].reverse().map((entry) => (
+                    {[...trendData].reverse().slice(0, 3).map((entry) => (
                       <tr key={entry.date} style={{ borderTop: '1px solid rgba(16,185,129,0.05)' }}>
                         <td style={{ padding: '10px 16px', color: '#d1fae5', fontWeight: '500', whiteSpace: 'nowrap' }}>
                           {new Date(entry.date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}

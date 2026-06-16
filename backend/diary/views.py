@@ -224,7 +224,7 @@ class DashboardView(APIView):
         if days not in [7, 14, 30]:
             days = 7
 
-        cutoff = timezone.now().date() - timedelta(days=days)
+        cutoff = timezone.now().date() - timedelta(days=days - 1)
         entries = list(
             SleepEntry.objects.filter(
                 user=request.user,
