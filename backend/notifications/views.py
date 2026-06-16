@@ -117,3 +117,25 @@ class CronSendRemindersView(APIView):
             'failed': failed,
             'checked_at': now.strftime('%H:%M UTC'),
         })
+    
+class RecalculateEntriesView(APIView):
+    """
+    GET /api/notifications/recalculate/?token=your-cron-secret
+    One-time endpoint to recalculate all cached sleep metrics.
+    Delete after use.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        token = request.query_params.get('token')
+        if token != settings.CRON_SECRET:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+
+        from diary.models import SleepEntry
+        entries = SleepEntry.objects.all()
+        count = 0
+        for entry in entries:
+            entry.save()
+            count += 1
+
+        return Response({'recalculated': count}, status=status.HTTP_200_OK)
