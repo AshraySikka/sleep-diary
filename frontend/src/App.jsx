@@ -14,6 +14,7 @@ import Settings from './pages/Settings';
 import Export from './pages/Export';
 import { useState, useEffect } from 'react';
 import ForgotPassword from './pages/ForgotPassword';
+import DemoEntry from './pages/DemoEntry';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -121,7 +122,8 @@ export default function App() {
       <Route path="/instructions" element={<ProtectedRoute><AppLayout><Instructions /></AppLayout></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><AppLayout><Settings /></AppLayout></ProtectedRoute>} />
       <Route path="/export" element={<ProtectedRoute><AppLayout><Export /></AppLayout></ProtectedRoute>} />
-
+      <Route path="/demo" element={<DemoEntry />} />
+      
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>

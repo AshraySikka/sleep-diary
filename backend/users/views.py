@@ -472,3 +472,33 @@ class ResetPasswordView(APIView):
             {'message': 'Password reset successfully. You can now log in.'},
             status=status.HTTP_200_OK
         )
+    
+class DemoLoginView(APIView):
+    """
+    GET /api/auth/demo-login/
+    Issues JWT tokens for the demo user and redirects to the frontend.
+    No password required — this is a read-only demo account.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        from django.http import HttpResponseRedirect
+
+        DEMO_EMAIL = 'sleepdiarydemo@yopmail.com'
+
+        try:
+            user = User.objects.get(email=DEMO_EMAIL)
+        except User.DoesNotExist:
+            return Response(
+                {'error': 'Demo user not configured.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+        refresh = RefreshToken.for_user(user)
+        access = str(refresh.access_token)
+        refresh_token = str(refresh)
+
+        frontend_url = settings.FRONTEND_URL
+        redirect_url = f"{frontend_url}/demo?access={access}&refresh={refresh_token}"
+
+        return HttpResponseRedirect(redirect_url)
