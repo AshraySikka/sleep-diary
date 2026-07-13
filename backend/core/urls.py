@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from users.views import DemoLoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,5 +23,4 @@ urlpatterns = [
     path('api/diary/', include('diary.urls')),
     path('api/reports/', include('reports.urls')),
     path('api/notifications/', include('notifications.urls')),
-    path('api/auth/demo-login/', DemoLoginView.as_view(), name='demo-login'),
 ]

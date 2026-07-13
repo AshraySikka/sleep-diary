@@ -1,23 +1,10 @@
-# users/urls.py
-# Maps URL paths to the auth views above.
-
 from django.urls import path
-from users.views import (
-    RegisterView,
-    VerifyOTPView,
-    ResendOTPView,
-    LoginView,
-    LogoutView,
-    ProfileView,
-    PushSubscriptionView,
-)
-from rest_framework_simplejwt.views import TokenRefreshView
 from users.views import (
     RegisterView, VerifyOTPView, ResendOTPView, LoginView,
     LogoutView, ProfileView, PushSubscriptionView, VAPIDPublicKeyView,
-    ForgotPasswordView, ResetPasswordView,
+    ForgotPasswordView, ResetPasswordView, DemoLoginView,
 )
-
+from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -31,4 +18,5 @@ urlpatterns = [
     path('vapid-public-key/', VAPIDPublicKeyView.as_view(), name='vapid-public-key'),
     path('forgot-password/', ForgotPasswordView.as_view(), name='forgot-password'),
     path('reset-password/', ResetPasswordView.as_view(), name='reset-password'),
+    path('demo-login/', DemoLoginView.as_view(), name='demo-login'),
 ]
