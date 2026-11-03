@@ -34,7 +34,7 @@ export default function Login() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #020c12 0%, #051a14 50%, #020c12 100%)',
+      background: 'linear-gradient(135deg, var(--sd-bg) 0%, var(--sd-bg-alt) 50%, var(--sd-bg) 100%)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -45,7 +45,7 @@ export default function Login() {
       <div style={{
         position: 'fixed', top: '20%', left: '50%', transform: 'translateX(-50%)',
         width: '600px', height: '400px',
-        background: 'radial-gradient(ellipse, rgba(16,185,129,0.06) 0%, transparent 70%)',
+        background: 'radial-gradient(ellipse, var(--sd-em-06) 0%, transparent 70%)',
         pointerEvents: 'none',
       }} />
 
@@ -59,25 +59,25 @@ export default function Login() {
           }}>
             <Moon size={20} color="white" />
           </div>
-          <span style={{ fontSize: '22px', fontWeight: '700', color: '#f0fdf4', letterSpacing: '-0.5px' }}>
+          <span style={{ fontSize: '22px', fontWeight: '700', color: 'var(--sd-text-strong)', letterSpacing: '-0.5px' }}>
             Sleep Diary
           </span>
         </div>
 
         {/* Card */}
         <div style={{
-          background: 'rgba(15, 30, 24, 0.8)',
-          border: '1px solid rgba(16,185,129,0.15)',
+          background: 'var(--sd-surface-80)',
+          border: '1px solid var(--sd-em-15)',
           borderRadius: '20px',
           padding: '40px',
           backdropFilter: 'blur(20px)',
-          boxShadow: '0 25px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(16,185,129,0.05)',
+          boxShadow: '0 25px 50px var(--sd-shadow-50), 0 0 0 1px var(--sd-em-05)',
         }}>
           <div style={{ marginBottom: '28px' }}>
-            <h1 style={{ fontSize: '24px', fontWeight: '700', color: '#f0fdf4', marginBottom: '6px' }}>
+            <h1 style={{ fontSize: '24px', fontWeight: '700', color: 'var(--sd-text-strong)', marginBottom: '6px' }}>
               Welcome back
             </h1>
-            <p style={{ fontSize: '14px', color: '#6b7280' }}>
+            <p style={{ fontSize: '14px', color: 'var(--sd-text-muted)' }}>
               Sign in to continue tracking your sleep
             </p>
           </div>
@@ -86,7 +86,7 @@ export default function Login() {
             <div style={{
               marginBottom: '20px', padding: '12px 16px', borderRadius: '12px',
               background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
-              color: '#fca5a5', fontSize: '14px',
+              color: 'var(--sd-danger-soft)', fontSize: '14px',
             }}>
               {error}
             </div>
@@ -111,7 +111,7 @@ export default function Login() {
             />
 
             <div style={{ textAlign: 'right', marginTop: '-8px' }}>
-              <Link to="/forgot-password" style={{ fontSize: '13px', color: '#10b981', textDecoration: 'none' }}>
+              <Link to="/forgot-password" style={{ fontSize: '13px', color: 'var(--sd-accent)', textDecoration: 'none' }}>
                 Forgot password?
               </Link>
             </div>
@@ -126,7 +126,7 @@ export default function Login() {
                 color: 'white', fontSize: '15px', fontWeight: '600',
                 cursor: loading ? 'not-allowed' : 'pointer',
                 marginTop: '4px',
-                boxShadow: '0 4px 15px rgba(16,185,129,0.3)',
+                boxShadow: '0 4px 15px var(--sd-em-30)',
                 transition: 'all 0.2s ease',
               }}
             >
@@ -134,9 +134,9 @@ export default function Login() {
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', fontSize: '14px', color: '#6b7280', marginTop: '24px' }}>
+          <p style={{ textAlign: 'center', fontSize: '14px', color: 'var(--sd-text-muted)', marginTop: '24px' }}>
             Don't have an account?{' '}
-            <Link to="/register" style={{ color: '#10b981', fontWeight: '600', textDecoration: 'none' }}>
+            <Link to="/register" style={{ color: 'var(--sd-accent)', fontWeight: '600', textDecoration: 'none' }}>
               Create one
             </Link>
           </p>
@@ -144,16 +144,16 @@ export default function Login() {
 
         {/* Footer note */}
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        <p style={{ fontSize: '12px', color: '#374151', marginBottom: '4px' }}>
+        <p style={{ fontSize: '12px', color: 'var(--sd-text-faint)', marginBottom: '4px' }}>
             Based on the Consensus Sleep Diary — Modified (CSD-M)
         </p>
-        <p style={{ fontSize: '11px', color: '#374151' }}>
+        <p style={{ fontSize: '11px', color: 'var(--sd-text-faint)' }}>
             Built by{' '}
-            <a href="mailto:ashray15.sikka@gmail.com" style={{ color: '#10b981', textDecoration: 'none', fontWeight: '500' }}>
+            <a href="mailto:ashray15.sikka@gmail.com" style={{ color: 'var(--sd-accent)', textDecoration: 'none', fontWeight: '500' }}>
             Ashray Sikka
             </a>
             {' '}·{' '}
-            <a href="https://github.com/AshraySikka" target="_blank" rel="noreferrer" style={{ color: '#10b981', textDecoration: 'none', fontWeight: '500' }}>
+            <a href="https://github.com/AshraySikka" target="_blank" rel="noreferrer" style={{ color: 'var(--sd-accent)', textDecoration: 'none', fontWeight: '500' }}>
             GitHub
             </a>
         </p>

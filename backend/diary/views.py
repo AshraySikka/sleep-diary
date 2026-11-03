@@ -211,26 +211,42 @@ class CalendarView(APIView):
 
 class DashboardView(APIView):
     """
-    GET /api/diary/dashboard/?days=7  (or 14, 30)
+    GET /api/diary/dashboard/?days=7  (or 14, 30, all)
     Returns aggregate stats for the dashboard metric cards and charts.
     Includes per-entry data for trend charts alongside the averages.
+
+    days=all returns every entry the user has ever logged (no date cutoff).
     """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        days = int(request.query_params.get('days', 7))
+        raw_days = str(request.query_params.get('days', 7)).lower()
 
-        # Clamp to sensible range
-        if days not in [7, 14, 30]:
-            days = 7
+        if raw_days == 'all':
+            # All-time view — no cutoff, every entry the user has logged
+            days = 'all'
+            entries = list(
+                SleepEntry.objects.filter(
+                    user=request.user,
+                ).order_by('date')
+            )
+        else:
+            try:
+                days = int(raw_days)
+            except ValueError:
+                days = 7
 
-        cutoff = timezone.now().date() - timedelta(days=days - 1)
-        entries = list(
-            SleepEntry.objects.filter(
-                user=request.user,
-                date__gte=cutoff,
-            ).order_by('date')
-        )
+            # Clamp to sensible range
+            if days not in [7, 14, 30]:
+                days = 7
+
+            cutoff = timezone.now().date() - timedelta(days=days - 1)
+            entries = list(
+                SleepEntry.objects.filter(
+                    user=request.user,
+                    date__gte=cutoff,
+                ).order_by('date')
+            )
 
         # Aggregate stats for the metric cards
         stats = compute_dashboard_stats(entries)

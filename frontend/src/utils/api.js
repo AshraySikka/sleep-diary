@@ -9,6 +9,13 @@ import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
+// Clears the stored session but keeps the user's light/dark theme choice.
+function clearStorageKeepTheme() {
+  const theme = localStorage.getItem('sleep-diary-theme');
+  localStorage.clear();
+  if (theme) localStorage.setItem('sleep-diary-theme', theme);
+}
+
 const api = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -45,7 +52,7 @@ api.interceptors.response.use(
       const refreshToken = localStorage.getItem('refresh_token');
       if (!refreshToken) {
         // No refresh token — clear everything and redirect to login
-        localStorage.clear();
+        clearStorageKeepTheme();
         window.location.href = '/login';
         return Promise.reject(error);
       }
@@ -64,7 +71,7 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch {
         // Refresh failed — session expired, log out
-        localStorage.clear();
+        clearStorageKeepTheme();
         window.location.href = '/login';
         return Promise.reject(error);
       }

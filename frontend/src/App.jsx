@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Navbar from './components/ui/Navbar';
+import ThemeToggle from './components/ui/ThemeToggle';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -39,7 +40,7 @@ function Footer() {
 
   return (
     <footer style={{
-      borderTop: '1px solid rgba(16,185,129,0.08)',
+      borderTop: '1px solid var(--sd-em-08)',
       textAlign: 'center',
       padding: '16px 20px',
       display: 'flex',
@@ -49,7 +50,7 @@ function Footer() {
       gap: '8px',
       marginBottom: isMobile ? '0' : '0',
     }}>
-      <p style={{ fontSize: '12px', color: '#374151', margin: 0 }}>
+      <p style={{ fontSize: '12px', color: 'var(--sd-text-faint)', margin: 0 }}>
         &copy; 2026 Ashray Sikka. All rights reserved.
       </p>
       <div style={{ 
@@ -59,14 +60,14 @@ function Footer() {
         gap: '12px', 
         flexWrap: 'wrap' 
       }}>
-        <a href="mailto:ashray15.sikka@gmail.com" style={{ fontSize: '12px', color: '#4b5563', textDecoration: 'none' }}>
+        <a href="mailto:ashray15.sikka@gmail.com" style={{ fontSize: '12px', color: 'var(--sd-text-subtle)', textDecoration: 'none' }}>
           ashray15.sikka@gmail.com
         </a>
-        <a href="https://github.com/AshraySikka" target="_blank" rel="noreferrer" style={{ fontSize: '12px', color: '#4b5563', textDecoration: 'none' }}>
+        <a href="https://github.com/AshraySikka" target="_blank" rel="noreferrer" style={{ fontSize: '12px', color: 'var(--sd-text-subtle)', textDecoration: 'none' }}>
           github.com/AshraySikka
         </a>
-        <span style={{ fontSize: '12px', color: '#374151' }}>
-          Built by <span style={{ color: '#10b981', fontWeight: '600' }}>Ashray Sikka</span>
+        <span style={{ fontSize: '12px', color: 'var(--sd-text-faint)' }}>
+          Built by <span style={{ color: 'var(--sd-accent)', fontWeight: '600' }}>Ashray Sikka</span>
         </span>
       </div>
     </footer>
@@ -83,7 +84,7 @@ function AppLayout({ children }) {
   }, []);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#020c12', display: 'flex' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--sd-bg)', display: 'flex' }}>
       <Navbar />
       <main style={{
         flex: 1,
@@ -109,6 +110,9 @@ export default function App() {
   const { user } = useAuth();
 
   return (
+    <>
+    {/* Signed-out pages (login, register, OTP, reset) have no sidebar, so they get a floating toggle */}
+    {!user && <ThemeToggle />}
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
       <Route path="/register" element={user ? <Navigate to="/dashboard" replace /> : <Register />} />
@@ -127,5 +131,6 @@ export default function App() {
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
+    </>
   );
 }

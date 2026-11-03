@@ -69,7 +69,7 @@ function Accordion({ title, content }) {
   const [open, setOpen] = useState(false);
   return (
     <div style={{
-      border: '1px solid rgba(16,185,129,0.12)',
+      border: '1px solid var(--sd-em-12)',
       borderRadius: '12px', overflow: 'hidden', marginBottom: '8px',
     }}>
       <button
@@ -77,17 +77,17 @@ function Accordion({ title, content }) {
         style={{
           width: '100%', padding: '16px 20px',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          background: open ? 'rgba(16,185,129,0.08)' : 'rgba(15,30,24,0.4)',
+          background: open ? 'var(--sd-em-08)' : 'var(--sd-surface-40)',
           border: 'none', cursor: 'pointer', textAlign: 'left',
           transition: 'background 0.15s ease',
         }}
       >
-        <span style={{ fontSize: '14px', fontWeight: '500', color: '#d1fae5' }}>{title}</span>
+        <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--sd-text-heading)' }}>{title}</span>
         {open ? <ChevronUp size={16} color="#10b981" /> : <ChevronDown size={16} color="#4b5563" />}
       </button>
       {open && (
-        <div style={{ padding: '16px 20px', background: 'rgba(0,0,0,0.2)', borderTop: '1px solid rgba(16,185,129,0.08)' }}>
-          <p style={{ fontSize: '14px', color: '#9ca3af', lineHeight: '1.7' }}>{content}</p>
+        <div style={{ padding: '16px 20px', background: 'var(--sd-inset-20)', borderTop: '1px solid var(--sd-em-08)' }}>
+          <p style={{ fontSize: '14px', color: 'var(--sd-text-body)', lineHeight: '1.7' }}>{content}</p>
         </div>
       )}
     </div>
@@ -109,23 +109,23 @@ export default function Instructions() {
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
         <div style={{
           width: '40px', height: '40px', borderRadius: '12px',
-          background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.2)',
+          background: 'var(--sd-em-15)', border: '1px solid var(--sd-em-20)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <BookOpen size={18} color="#10b981" />
         </div>
         <div>
-          <h1 style={{ fontSize: '22px', fontWeight: '700', color: '#f0fdf4' }}>Instructions</h1>
-          <p style={{ fontSize: '13px', color: '#6b7280' }}>Consensus Sleep Diary — Modified (CSD-M)</p>
+          <h1 style={{ fontSize: '22px', fontWeight: '700', color: 'var(--sd-text-strong)' }}>Instructions</h1>
+          <p style={{ fontSize: '13px', color: 'var(--sd-text-muted)' }}>Consensus Sleep Diary — Modified (CSD-M)</p>
         </div>
       </div>
 
       {/* Clinical note */}
       <div style={{
         padding: '14px 18px', borderRadius: '12px', marginBottom: '24px', marginTop: '16px',
-        background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)',
+        background: 'var(--sd-em-06)', border: '1px solid var(--sd-em-15)',
       }}>
-        <p style={{ fontSize: '13px', color: '#6ee7b7', lineHeight: '1.6' }}>
+        <p style={{ fontSize: '13px', color: 'var(--sd-accent-soft)', lineHeight: '1.6' }}>
           <strong>Clinical instrument:</strong> The CSD-M is a validated clinical tool for tracking sleep patterns.
           Complete your diary every morning within <strong>1 hour</strong> of getting out of bed.
           Give your best estimates — do not watch the clock.
@@ -133,7 +133,7 @@ export default function Instructions() {
       </div>
 
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', background: 'rgba(0,0,0,0.2)', padding: '4px', borderRadius: '12px', width: 'fit-content' }}>
+      <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', background: 'var(--sd-inset-20)', padding: '4px', borderRadius: '12px', width: 'fit-content' }}>
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -141,8 +141,8 @@ export default function Instructions() {
             style={{
               padding: '8px 16px', borderRadius: '9px', fontSize: '13px', fontWeight: '500',
               border: 'none', cursor: 'pointer', transition: 'all 0.15s ease',
-              background: activeTab === tab.id ? 'rgba(16,185,129,0.2)' : 'transparent',
-              color: activeTab === tab.id ? '#10b981' : '#6b7280',
+              background: activeTab === tab.id ? 'var(--sd-em-20)' : 'transparent',
+              color: activeTab === tab.id ? 'var(--sd-accent)' : 'var(--sd-text-muted)',
             }}
           >
             {tab.label}
@@ -161,11 +161,11 @@ export default function Instructions() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {questions.map((item) => (
             <div key={item.q} style={{
-              background: 'rgba(15,30,24,0.6)', border: '1px solid rgba(16,185,129,0.1)',
+              background: 'var(--sd-surface)', border: '1px solid var(--sd-em-10)',
               borderRadius: '12px', padding: '16px 20px',
             }}>
-              <p style={{ fontSize: '13px', fontWeight: '600', color: '#10b981', marginBottom: '6px' }}>{item.q}</p>
-              <p style={{ fontSize: '13px', color: '#9ca3af', lineHeight: '1.7' }}>{item.a}</p>
+              <p style={{ fontSize: '13px', fontWeight: '600', color: 'var(--sd-accent)', marginBottom: '6px' }}>{item.q}</p>
+              <p style={{ fontSize: '13px', color: 'var(--sd-text-body)', lineHeight: '1.7' }}>{item.a}</p>
             </div>
           ))}
         </div>
@@ -173,12 +173,12 @@ export default function Instructions() {
 
       {activeTab === 'formulas' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <p style={{ fontSize: '13px', color: '#6b7280', marginBottom: '4px' }}>
+          <p style={{ fontSize: '13px', color: 'var(--sd-text-muted)', marginBottom: '4px' }}>
             All metrics are calculated using validated CSD-M formulas. No AI or estimation is involved — pure math from your inputs.
           </p>
           {formulas.map((f) => (
             <div key={f.name} style={{
-              background: 'rgba(15,30,24,0.6)',
+              background: 'var(--sd-surface)',
               border: `1px solid ${f.color}20`,
               borderRadius: '16px', padding: '20px',
             }}>
@@ -188,21 +188,21 @@ export default function Instructions() {
               </div>
               <div style={{
                 padding: '12px 16px', borderRadius: '10px', marginBottom: '10px',
-                background: 'rgba(0,0,0,0.3)', border: `1px solid ${f.color}15`,
-                fontFamily: 'monospace', fontSize: '13px', color: '#d1fae5',
+                background: 'var(--sd-inset-30)', border: `1px solid ${f.color}15`,
+                fontFamily: 'monospace', fontSize: '13px', color: 'var(--sd-text-heading)',
               }}>
                 {f.formula}
               </div>
-              <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6' }}>{f.note}</p>
+              <p style={{ fontSize: '13px', color: 'var(--sd-text-muted)', lineHeight: '1.6' }}>{f.note}</p>
             </div>
           ))}
 
           {/* SE thresholds */}
           <div style={{
-            background: 'rgba(15,30,24,0.6)', border: '1px solid rgba(16,185,129,0.1)',
+            background: 'var(--sd-surface)', border: '1px solid var(--sd-em-10)',
             borderRadius: '16px', padding: '20px',
           }}>
-            <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5', marginBottom: '14px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--sd-text-heading)', marginBottom: '14px' }}>
               Sleep Efficiency Thresholds
             </h3>
             {[
@@ -212,7 +212,7 @@ export default function Instructions() {
             ].map(({ range, label, color, desc }) => (
               <div key={range} style={{
                 display: 'flex', alignItems: 'center', gap: '14px',
-                padding: '10px 0', borderBottom: '1px solid rgba(16,185,129,0.06)',
+                padding: '10px 0', borderBottom: '1px solid var(--sd-em-06)',
               }}>
                 <div style={{ width: '60px', flexShrink: 0 }}>
                   <span style={{ fontSize: '13px', fontWeight: '700', color }}>{range}</span>
@@ -225,7 +225,7 @@ export default function Instructions() {
                 }}>
                   <span style={{ fontSize: '11px', fontWeight: '600', color }}>{label}</span>
                 </div>
-                <p style={{ fontSize: '13px', color: '#6b7280' }}>{desc}</p>
+                <p style={{ fontSize: '13px', color: 'var(--sd-text-muted)' }}>{desc}</p>
               </div>
             ))}
           </div>

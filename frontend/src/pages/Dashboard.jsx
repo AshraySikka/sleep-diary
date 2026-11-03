@@ -9,8 +9,8 @@ import { Plus, TrendingUp, Clock, Zap, Moon, Activity } from 'lucide-react';
 function MetricCard({ label, value, sub, color, formula, icon: Icon }) {
   return (
     <div style={{
-      background: 'rgba(15, 30, 24, 0.6)',
-      border: '1px solid rgba(16,185,129,0.12)',
+      background: 'var(--sd-surface)',
+      border: '1px solid var(--sd-em-12)',
       borderRadius: '16px', padding: '20px',
       display: 'flex', flexDirection: 'column', gap: '8px',
     }}>
@@ -24,18 +24,18 @@ function MetricCard({ label, value, sub, color, formula, icon: Icon }) {
           }}>
             <Icon size={15} color={color} />
           </div>
-          <span style={{ fontSize: '12px', fontWeight: '500', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <span style={{ fontSize: '12px', fontWeight: '500', color: 'var(--sd-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {label}
           </span>
         </div>
         {formula && <Tooltip text={formula} />}
       </div>
       <div>
-        <span style={{ fontSize: '28px', fontWeight: '700', color: color || '#f0fdf4', letterSpacing: '-0.5px' }}>
+        <span style={{ fontSize: '28px', fontWeight: '700', color: color || 'var(--sd-text-strong)', letterSpacing: '-0.5px' }}>
           {value ?? '—'}
         </span>
         {sub && (
-          <span style={{ fontSize: '12px', color: '#4b5563', marginLeft: '6px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '80px', display: 'inline-block', verticalAlign: 'middle' }}>{sub}</span>
+          <span style={{ fontSize: '12px', color: 'var(--sd-text-subtle)', marginLeft: '6px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '80px', display: 'inline-block', verticalAlign: 'middle' }}>{sub}</span>
         )}
       </div>
     </div>
@@ -76,10 +76,10 @@ export default function Dashboard() {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '24px', fontWeight: '700', color: '#f0fdf4', marginBottom: '4px' }}>
+          <h1 style={{ fontSize: '24px', fontWeight: '700', color: 'var(--sd-text-strong)', marginBottom: '4px' }}>
             {greeting()}, {user?.first_name} 👋
           </h1>
-          <p style={{ fontSize: '14px', color: '#6b7280' }}>
+          <p style={{ fontSize: '14px', color: 'var(--sd-text-muted)' }}>
             {new Date().toLocaleDateString('en-CA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function Dashboard() {
             padding: '12px 20px', borderRadius: '12px',
             background: 'linear-gradient(135deg, #10b981, #059669)',
             border: 'none', color: 'white', fontSize: '14px', fontWeight: '600',
-            cursor: 'pointer', boxShadow: '0 4px 15px rgba(16,185,129,0.3)',
+            cursor: 'pointer', boxShadow: '0 4px 15px var(--sd-em-30)',
           }}
         >
           <Plus size={16} />
@@ -105,7 +105,7 @@ export default function Dashboard() {
       {/* BMI + Profile strip */}
       {profile?.bmi && (
         <div style={{
-          background: 'rgba(15,30,24,0.4)', border: '1px solid rgba(16,185,129,0.1)',
+          background: 'var(--sd-surface-40)', border: '1px solid var(--sd-em-10)',
           borderRadius: '14px', padding: '14px 20px', marginBottom: '24px',
           display: 'flex', gap: '28px', flexWrap: 'wrap', justifyContent: 'center',
         }}>
@@ -116,9 +116,9 @@ export default function Dashboard() {
             { label: 'Weight', value: profile.weight_kg ? `${profile.weight_kg} kg` : '—' },
           ].map(({ label, value, sub }) => (
             <div key={label} style={{ textAlign: 'center' }}>
-              <p style={{ fontSize: '11px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '2px' }}>{label}</p>
-              <p style={{ fontSize: '15px', fontWeight: '600', color: '#d1fae5' }}>
-                {value} {sub && <span style={{ fontSize: '12px', color: '#6b7280', fontWeight: '400' }}>({sub})</span>}
+              <p style={{ fontSize: '11px', color: 'var(--sd-text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '2px' }}>{label}</p>
+              <p style={{ fontSize: '15px', fontWeight: '600', color: 'var(--sd-text-heading)' }}>
+                {value} {sub && <span style={{ fontSize: '12px', color: 'var(--sd-text-muted)', fontWeight: '400' }}>({sub})</span>}
               </p>
             </div>
           ))}
@@ -127,35 +127,35 @@ export default function Dashboard() {
 
       {/* Day range toggle */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
-        {[7, 14, 30].map((d) => (
+        {[7, 14, 30, 'all'].map((d) => (
           <button
             key={d}
             onClick={() => setDays(d)}
             style={{
               padding: '6px 16px', borderRadius: '8px', fontSize: '13px', fontWeight: '500',
-              border: days === d ? '1px solid rgba(16,185,129,0.4)' : '1px solid rgba(255,255,255,0.06)',
-              background: days === d ? 'rgba(16,185,129,0.15)' : 'transparent',
-              color: days === d ? '#10b981' : '#6b7280',
+              border: days === d ? '1px solid var(--sd-em-40)' : '1px solid var(--sd-ink-06)',
+              background: days === d ? 'var(--sd-em-15)' : 'transparent',
+              color: days === d ? 'var(--sd-accent)' : 'var(--sd-text-muted)',
               cursor: 'pointer', transition: 'all 0.15s ease',
             }}
           >
-            {d}d
+            {d === 'all' ? 'All time' : `${d}d`}
           </button>
         ))}
       </div>
 
       {loading ? (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '200px' }}>
-          <p style={{ color: '#4b5563' }}>Loading your sleep data...</p>
+          <p style={{ color: 'var(--sd-text-subtle)' }}>Loading your sleep data...</p>
         </div>
       ) : stats?.total_entries === 0 ? (
         <div style={{
-          background: 'rgba(15,30,24,0.4)', border: '1px solid rgba(16,185,129,0.1)',
+          background: 'var(--sd-surface-40)', border: '1px solid var(--sd-em-10)',
           borderRadius: '16px', padding: '48px', textAlign: 'center',
         }}>
           <Moon size={40} color="#10b981" style={{ margin: '0 auto 16px', opacity: 0.5 }} />
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#f0fdf4', marginBottom: '8px' }}>No entries yet</h3>
-          <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '24px' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--sd-text-strong)', marginBottom: '8px' }}>No entries yet</h3>
+          <p style={{ fontSize: '14px', color: 'var(--sd-text-muted)', marginBottom: '24px' }}>
             Start logging your sleep to see your metrics here.
           </p>
           <button
@@ -205,7 +205,7 @@ export default function Dashboard() {
             <MetricCard
               label="Nights Logged"
               value={stats?.total_entries ?? '—'}
-              sub={`last ${days} days`}
+              sub={days === 'all' ? 'all time' : `last ${days} days`}
               color="#a415c7"
               icon={TrendingUp}
             />
@@ -230,37 +230,37 @@ export default function Dashboard() {
           {/* Trend table */}
           {trendData.length > 0 && (
             <div style={{
-              background: 'rgba(15,30,24,0.6)', border: '1px solid rgba(16,185,129,0.12)',
+              background: 'var(--sd-surface)', border: '1px solid var(--sd-em-12)',
               borderRadius: '16px', overflow: 'hidden',
             }}>
-              <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(16,185,129,0.08)' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5' }}>Recent Nights</h3>
+              <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--sd-em-08)' }}>
+                <h3 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--sd-text-heading)' }}>Recent Nights</h3>
               </div>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
                   <thead>
-                    <tr style={{ background: 'rgba(0,0,0,0.2)' }}>
+                    <tr style={{ background: 'var(--sd-inset-20)' }}>
                       {['Date', 'TST', 'TIB', 'SE %', 'Latency', 'Caffeine', 'Alcohol'].map((h) => (
-                        <th key={h} style={{ padding: '10px 16px', textAlign: 'left', color: '#4b5563', fontWeight: '500', whiteSpace: 'nowrap' }}>{h}</th>
+                        <th key={h} style={{ padding: '10px 16px', textAlign: 'left', color: 'var(--sd-text-subtle)', fontWeight: '500', whiteSpace: 'nowrap' }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {[...trendData].reverse().slice(0, 3).map((entry) => (
-                      <tr key={entry.date} style={{ borderTop: '1px solid rgba(16,185,129,0.05)' }}>
-                        <td style={{ padding: '10px 16px', color: '#d1fae5', fontWeight: '500', whiteSpace: 'nowrap' }}>
+                      <tr key={entry.date} style={{ borderTop: '1px solid var(--sd-em-05)' }}>
+                        <td style={{ padding: '10px 16px', color: 'var(--sd-text-heading)', fontWeight: '500', whiteSpace: 'nowrap' }}>
                           {new Date(entry.date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                         </td>
-                        <td style={{ padding: '10px 16px', color: '#9ca3af' }}>{entry.tst_min ? formatMinutes(entry.tst_min) : '—'}</td>
-                        <td style={{ padding: '10px 16px', color: '#9ca3af' }}>{entry.tib_min ? formatMinutes(entry.tib_min) : '—'}</td>
+                        <td style={{ padding: '10px 16px', color: 'var(--sd-text-body)' }}>{entry.tst_min ? formatMinutes(entry.tst_min) : '—'}</td>
+                        <td style={{ padding: '10px 16px', color: 'var(--sd-text-body)' }}>{entry.tib_min ? formatMinutes(entry.tib_min) : '—'}</td>
                         <td style={{ padding: '10px 16px' }}>
                           <span style={{ color: getSEColor(entry.sleep_efficiency), fontWeight: '600' }}>
                             {entry.sleep_efficiency ? `${entry.sleep_efficiency}%` : '—'}
                           </span>
                         </td>
-                        <td style={{ padding: '10px 16px', color: '#9ca3af' }}>{entry.sleep_latency != null ? `${entry.sleep_latency} min` : '—'}</td>
-                        <td style={{ padding: '10px 16px', color: '#9ca3af' }}>{entry.caffeine_count ?? '—'}</td>
-                        <td style={{ padding: '10px 16px', color: '#9ca3af' }}>{entry.alcohol_count ?? '—'}</td>
+                        <td style={{ padding: '10px 16px', color: 'var(--sd-text-body)' }}>{entry.sleep_latency != null ? `${entry.sleep_latency} min` : '—'}</td>
+                        <td style={{ padding: '10px 16px', color: 'var(--sd-text-body)' }}>{entry.caffeine_count ?? '—'}</td>
+                        <td style={{ padding: '10px 16px', color: 'var(--sd-text-body)' }}>{entry.alcohol_count ?? '—'}</td>
                       </tr>
                     ))}
                   </tbody>

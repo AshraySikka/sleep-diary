@@ -80,7 +80,7 @@ export default function VerifyOTP() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #020c12 0%, #051a14 50%, #020c12 100%)',
+      background: 'linear-gradient(135deg, var(--sd-bg) 0%, var(--sd-bg-alt) 50%, var(--sd-bg) 100%)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: '24px',
       paddingTop: 'max(24px, env(safe-area-inset-top))'
@@ -88,7 +88,7 @@ export default function VerifyOTP() {
       <div style={{
         position: 'fixed', top: '20%', left: '50%', transform: 'translateX(-50%)',
         width: '600px', height: '400px',
-        background: 'radial-gradient(ellipse, rgba(16,185,129,0.06) 0%, transparent 70%)',
+        background: 'radial-gradient(ellipse, var(--sd-em-06) 0%, transparent 70%)',
         pointerEvents: 'none',
       }} />
 
@@ -102,43 +102,43 @@ export default function VerifyOTP() {
           }}>
             <Moon size={20} color="white" />
           </div>
-          <span style={{ fontSize: '22px', fontWeight: '700', color: '#f0fdf4', letterSpacing: '-0.5px' }}>
+          <span style={{ fontSize: '22px', fontWeight: '700', color: 'var(--sd-text-strong)', letterSpacing: '-0.5px' }}>
             Sleep Diary
           </span>
         </div>
 
         <div style={{
-          background: 'rgba(15, 30, 24, 0.8)',
-          border: '1px solid rgba(16,185,129,0.15)',
+          background: 'var(--sd-surface-80)',
+          border: '1px solid var(--sd-em-15)',
           borderRadius: '20px',
           padding: '40px',
           backdropFilter: 'blur(20px)',
-          boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+          boxShadow: '0 25px 50px var(--sd-shadow-50)',
           textAlign: 'center'
         }}>
           {/* Icon */}
           <div style={{
             width: '56px', height: '56px', borderRadius: '16px', margin: '0 auto 20px',
-            background: 'rgba(16,185,129,0.15)',
-            border: '1px solid rgba(16,185,129,0.2)',
+            background: 'var(--sd-em-15)',
+            border: '1px solid var(--sd-em-20)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <Mail size={24} color="#10b981" />
           </div>
 
-          <h1 style={{ fontSize: '22px', fontWeight: '700', color: '#f0fdf4', marginBottom: '8px' }}>
+          <h1 style={{ fontSize: '22px', fontWeight: '700', color: 'var(--sd-text-strong)', marginBottom: '8px' }}>
             Check your email
           </h1>
-          <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '32px', lineHeight: '1.6' }}>
+          <p style={{ fontSize: '14px', color: 'var(--sd-text-muted)', marginBottom: '32px', lineHeight: '1.6' }}>
             We sent a 6-digit verification code to{' '}
-            <span style={{ color: '#10b981', fontWeight: '500' }}>{email}</span>
+            <span style={{ color: 'var(--sd-accent)', fontWeight: '500' }}>{email}</span>
           </p>
 
           {error && (
             <div style={{
               marginBottom: '20px', padding: '12px 16px', borderRadius: '12px',
               background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
-              color: '#fca5a5', fontSize: '14px',
+              color: 'var(--sd-danger-soft)', fontSize: '14px',
             }}>
               {error}
             </div>
@@ -147,8 +147,8 @@ export default function VerifyOTP() {
           {resendMsg && (
             <div style={{
               marginBottom: '20px', padding: '12px 16px', borderRadius: '12px',
-              background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)',
-              color: '#6ee7b7', fontSize: '14px',
+              background: 'var(--sd-em-10)', border: '1px solid var(--sd-em-20)',
+              color: 'var(--sd-accent-soft)', fontSize: '14px',
             }}>
               {resendMsg}
             </div>
@@ -170,14 +170,14 @@ export default function VerifyOTP() {
                 style={{
                   width: '48px', height: '58px',
                   textAlign: 'center', fontSize: '22px', fontWeight: '700',
-                  background: 'rgba(0,0,0,0.3)',
-                  border: digit ? '1px solid rgba(16,185,129,0.5)' : '1px solid rgba(16,185,129,0.15)',
-                  borderRadius: '12px', color: '#f0fdf4',
+                  background: 'var(--sd-inset-30)',
+                  border: digit ? '1px solid var(--sd-em-50)' : '1px solid var(--sd-em-15)',
+                  borderRadius: '12px', color: 'var(--sd-text-strong)',
                   outline: 'none',
                   transition: 'border-color 0.2s ease',
                 }}
-                onFocus={(e) => { e.target.style.borderColor = '#10b981'; e.target.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.15)'; }}
-                onBlur={(e) => { e.target.style.borderColor = digit ? 'rgba(16,185,129,0.5)' : 'rgba(16,185,129,0.15)'; e.target.style.boxShadow = 'none'; }}
+                onFocus={(e) => { e.target.style.borderColor = 'var(--sd-accent)'; e.target.style.boxShadow = '0 0 0 3px var(--sd-em-15)'; }}
+                onBlur={(e) => { e.target.style.borderColor = digit ? 'var(--sd-em-50)' : 'var(--sd-em-15)'; e.target.style.boxShadow = 'none'; }}
               />
             ))}
           </div>
@@ -191,21 +191,21 @@ export default function VerifyOTP() {
               border: 'none', borderRadius: '12px',
               color: 'white', fontSize: '15px', fontWeight: '600',
               cursor: loading ? 'not-allowed' : 'pointer',
-              boxShadow: '0 4px 15px rgba(16,185,129,0.3)',
+              boxShadow: '0 4px 15px var(--sd-em-30)',
               marginBottom: '20px',
             }}
           >
             {loading ? 'Verifying...' : 'Verify Email'}
           </button>
 
-          <p style={{ fontSize: '14px', color: '#6b7280' }}>
+          <p style={{ fontSize: '14px', color: 'var(--sd-text-muted)' }}>
             {"Didn't get the code? "}
             <button
               onClick={handleResend}
               disabled={resendLoading}
               style={{
                 background: 'none', border: 'none', cursor: 'pointer',
-                color: '#10b981', fontWeight: '600', fontSize: '14px',
+                color: 'var(--sd-accent)', fontWeight: '600', fontSize: '14px',
                 opacity: resendLoading ? 0.5 : 1,
               }}
             >
@@ -214,7 +214,7 @@ export default function VerifyOTP() {
           </p>
         </div>
 
-        <p style={{ textAlign: 'center', fontSize: '12px', color: '#374151', marginTop: '20px' }}>
+        <p style={{ textAlign: 'center', fontSize: '12px', color: 'var(--sd-text-faint)', marginTop: '20px' }}>
           Code expires in 10 minutes
         </p>
       </div>

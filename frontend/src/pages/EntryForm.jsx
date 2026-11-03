@@ -7,8 +7,8 @@ import { Save, Trash2, ChevronLeft, ChevronRight, Moon, Sun, Coffee, Wine, Pill,
 
 // ── Styles ──────────────────────────────────────────────────────────────
 const sectionStyle = {
-  background: 'rgba(15,30,24,0.6)',
-  border: '1px solid rgba(16,185,129,0.12)',
+  background: 'var(--sd-surface)',
+  border: '1px solid var(--sd-em-12)',
   borderRadius: '16px',
   padding: '24px',
   marginBottom: '20px',
@@ -16,18 +16,18 @@ const sectionStyle = {
 
 const Counter = ({ label, value, onChange, max = 20, hint }) => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-    <label style={{ fontSize: '13px', color: '#6b7280' }}>{label}</label>
+    <label style={{ fontSize: '13px', color: 'var(--sd-text-muted)' }}>{label}</label>
     <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
       <button
         type="button"
         onClick={() => onChange(Math.max(0, (value || 0) - 1))}
         style={{
           width: '36px', height: '36px', borderRadius: '8px',
-          background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)',
-          color: '#10b981', fontSize: '20px', cursor: 'pointer', lineHeight: 1,
+          background: 'var(--sd-em-10)', border: '1px solid var(--sd-em-25)',
+          color: 'var(--sd-accent)', fontSize: '20px', cursor: 'pointer', lineHeight: 1,
         }}
       >-</button>
-      <span style={{ minWidth: '24px', textAlign: 'center', fontSize: '20px', fontWeight: '700', color: '#f9fafb' }}>
+      <span style={{ minWidth: '24px', textAlign: 'center', fontSize: '20px', fontWeight: '700', color: 'var(--sd-text-strong-2)' }}>
         {value || 0}
       </span>
       <button
@@ -35,21 +35,21 @@ const Counter = ({ label, value, onChange, max = 20, hint }) => (
         onClick={() => onChange(Math.min(max, (value || 0) + 1))}
         style={{
           width: '36px', height: '36px', borderRadius: '8px',
-          background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)',
-          color: '#10b981', fontSize: '20px', cursor: 'pointer', lineHeight: 1,
+          background: 'var(--sd-em-10)', border: '1px solid var(--sd-em-25)',
+          color: 'var(--sd-accent)', fontSize: '20px', cursor: 'pointer', lineHeight: 1,
         }}
       >+</button>
     </div>
-    {hint && <p style={{ fontSize: '11px', color: '#4b5563', marginTop: '2px' }}>{hint}</p>}
+    {hint && <p style={{ fontSize: '11px', color: 'var(--sd-text-subtle)', marginTop: '2px' }}>{hint}</p>}
   </div>
 );
 
 const LiveMetric = ({ label, value, color }) => (
   <div style={{
-    background: 'rgba(0,0,0,0.2)', border: `1px solid ${color}25`,
+    background: 'var(--sd-inset-20)', border: `1px solid ${color}25`,
     borderRadius: '12px', padding: '12px 8px', textAlign: 'center', flex: 1, minWidth: 0,
   }}>
-    <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', whiteSpace: 'nowrap' }}>{label}</p>
+    <p style={{ fontSize: '10px', color: 'var(--sd-text-subtle)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', whiteSpace: 'nowrap' }}>{label}</p>
     <p style={{ fontSize: '18px', fontWeight: '700', color, whiteSpace: 'nowrap' }}>{value || '—'}</p>
   </div>
 );
@@ -238,7 +238,7 @@ export default function EntryForm() {
 
   if (loading) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh' }}>
-      <p style={{ color: '#4b5563' }}>Loading...</p>
+      <p style={{ color: 'var(--sd-text-subtle)' }}>Loading...</p>
     </div>
   );
 
@@ -312,10 +312,10 @@ export default function EntryForm() {
           <div style={{
             display: 'flex', alignItems: 'center', gap: '12px',
             padding: '14px 16px', borderRadius: '12px',
-            background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(16,185,129,0.1)',
+            background: 'var(--sd-inset-20)', border: '1px solid var(--sd-em-10)',
           }}>
-            <input type="checkbox" id="is_complete" checked={form.is_complete} onChange={(e) => setForm({ ...form, is_complete: e.target.checked })} style={{ accentColor: '#10b981', width: '16px', height: '16px', cursor: 'pointer' }} />
-            <label htmlFor="is_complete" style={{ fontSize: '13px', color: '#9ca3af', cursor: 'pointer' }}>Mark this entry as complete for the day</label>
+            <input type="checkbox" id="is_complete" checked={form.is_complete} onChange={(e) => setForm({ ...form, is_complete: e.target.checked })} style={{ accentColor: 'var(--sd-accent)', width: '16px', height: '16px', cursor: 'pointer' }} />
+            <label htmlFor="is_complete" style={{ fontSize: '13px', color: 'var(--sd-text-body)', cursor: 'pointer' }}>Mark this entry as complete for the day</label>
           </div>
         </div>
       );
@@ -327,11 +327,11 @@ export default function EntryForm() {
 const Header = () => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
       <div>
-        <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#4b5563', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', padding: 0, marginBottom: '6px' }}>
+        <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--sd-text-subtle)', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', padding: 0, marginBottom: '6px' }}>
           <ChevronLeft size={16} /> Back
         </button>
-        <h1 style={{ fontSize: '22px', fontWeight: '700', color: '#f0fdf4' }}>Sleep Entry</h1>
-        <p style={{ fontSize: '14px', color: '#6b7280' }}>
+        <h1 style={{ fontSize: '22px', fontWeight: '700', color: 'var(--sd-text-strong)' }}>Sleep Entry</h1>
+        <p style={{ fontSize: '14px', color: 'var(--sd-text-muted)' }}>
           {new Date(today + 'T00:00:00').toLocaleDateString('en-CA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
       </div>
@@ -343,8 +343,8 @@ const Header = () => (
             style={{ 
               display: 'flex', alignItems: 'center', justifyContent: 'center', 
               width: '36px', height: '36px', borderRadius: '50%', 
-              background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', 
-              color: '#10b981', cursor: 'pointer' 
+              background: 'var(--sd-em-10)', border: '1px solid var(--sd-em-20)', 
+              color: 'var(--sd-accent)', cursor: 'pointer' 
             }}
             aria-label="Instructions"
           >
@@ -353,11 +353,11 @@ const Header = () => (
         )}
         
         {isExisting && (
-          <button onClick={handleDelete} disabled={deleting} style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '10px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: '500', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#f87171', cursor: 'pointer' }}>
+          <button onClick={handleDelete} disabled={deleting} style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '10px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: '500', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: 'var(--sd-danger)', cursor: 'pointer' }}>
             <Trash2 size={14} /> {deleting ? 'Deleting...' : 'Delete'}
           </button>
         )}
-        <button onClick={handleSave} disabled={saving} style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '10px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600', background: saving ? '#065f46' : 'linear-gradient(135deg, #10b981, #059669)', border: 'none', color: 'white', cursor: saving ? 'not-allowed' : 'pointer', boxShadow: '0 4px 15px rgba(16,185,129,0.25)' }}>
+        <button onClick={handleSave} disabled={saving} style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '10px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: '600', background: saving ? '#065f46' : 'linear-gradient(135deg, #10b981, #059669)', border: 'none', color: 'white', cursor: saving ? 'not-allowed' : 'pointer', boxShadow: '0 4px 15px var(--sd-em-25)' }}>
           <Save size={14} /> {saving ? 'Saving...' : isExisting ? 'Update Entry' : 'Save Entry'}
         </button>
       </div>
@@ -366,8 +366,8 @@ const Header = () => (
 
   const Alerts = () => (
     <>
-      {error && <div style={{ marginBottom: '16px', padding: '12px 16px', borderRadius: '12px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#fca5a5', fontSize: '14px' }}>{error}</div>}
-      {success && <div style={{ marginBottom: '16px', padding: '12px 16px', borderRadius: '12px', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', color: '#6ee7b7', fontSize: '14px' }}>{success}</div>}
+      {error && <div style={{ marginBottom: '16px', padding: '12px 16px', borderRadius: '12px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: 'var(--sd-danger-soft)', fontSize: '14px' }}>{error}</div>}
+      {success && <div style={{ marginBottom: '16px', padding: '12px 16px', borderRadius: '12px', background: 'var(--sd-em-10)', border: '1px solid var(--sd-em-20)', color: 'var(--sd-accent-soft)', fontSize: '14px' }}>{success}</div>}
     </>
   );
 
@@ -382,10 +382,10 @@ const Header = () => (
         {/* Progress bar */}
         <div style={{ marginBottom: '20px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <span style={{ fontSize: '12px', color: '#4b5563' }}>Step {step + 1} of {STEPS.length}</span>
-            <span style={{ fontSize: '12px', color: '#10b981', fontWeight: '500' }}>{STEPS[step].icon} {STEPS[step].title}</span>
+            <span style={{ fontSize: '12px', color: 'var(--sd-text-subtle)' }}>Step {step + 1} of {STEPS.length}</span>
+            <span style={{ fontSize: '12px', color: 'var(--sd-accent)', fontWeight: '500' }}>{STEPS[step].icon} {STEPS[step].title}</span>
           </div>
-          <div style={{ height: '4px', background: 'rgba(255,255,255,0.06)', borderRadius: '2px', overflow: 'hidden' }}>
+          <div style={{ height: '4px', background: 'var(--sd-ink-06)', borderRadius: '2px', overflow: 'hidden' }}>
             <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg, #10b981, #059669)', borderRadius: '2px', transition: 'width 0.3s ease' }} />
           </div>
         </div>
@@ -398,16 +398,16 @@ const Header = () => (
         {/* Nav buttons */}
         <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
           {step > 0 && (
-            <button onClick={() => setStep(step - 1)} style={{ flex: 1, padding: '14px', borderRadius: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(16,185,129,0.15)', color: '#9ca3af', fontSize: '14px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+            <button onClick={() => setStep(step - 1)} style={{ flex: 1, padding: '14px', borderRadius: '12px', background: 'var(--sd-ink-05)', border: '1px solid var(--sd-em-15)', color: 'var(--sd-text-body)', fontSize: '14px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
               <ChevronLeft size={16} /> Back
             </button>
           )}
           {step < STEPS.length - 1 ? (
-            <button onClick={() => setStep(step + 1)} style={{ flex: 1, padding: '14px', borderRadius: '12px', background: 'linear-gradient(135deg, #10b981, #059669)', border: 'none', color: 'white', fontSize: '14px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', boxShadow: '0 4px 15px rgba(16,185,129,0.3)' }}>
+            <button onClick={() => setStep(step + 1)} style={{ flex: 1, padding: '14px', borderRadius: '12px', background: 'linear-gradient(135deg, #10b981, #059669)', border: 'none', color: 'white', fontSize: '14px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', boxShadow: '0 4px 15px var(--sd-em-30)' }}>
               Next <ChevronRight size={16} />
             </button>
           ) : (
-            <button onClick={handleSave} disabled={saving} style={{ flex: 1, padding: '14px', borderRadius: '12px', background: saving ? '#065f46' : 'linear-gradient(135deg, #10b981, #059669)', border: 'none', color: 'white', fontSize: '14px', fontWeight: '600', cursor: saving ? 'not-allowed' : 'pointer', boxShadow: '0 4px 15px rgba(16,185,129,0.3)' }}>
+            <button onClick={handleSave} disabled={saving} style={{ flex: 1, padding: '14px', borderRadius: '12px', background: saving ? '#065f46' : 'linear-gradient(135deg, #10b981, #059669)', border: 'none', color: 'white', fontSize: '14px', fontWeight: '600', cursor: saving ? 'not-allowed' : 'pointer', boxShadow: '0 4px 15px var(--sd-em-30)' }}>
               {saving ? 'Saving...' : '✓ Save Entry'}
             </button>
           )}
@@ -436,9 +436,9 @@ const Header = () => (
         <div style={{ marginBottom: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
             <Moon size={16} color="#818cf8" />
-            <h2 style={{ fontSize: '15px', fontWeight: '600', color: '#d1fae5' }}>Part A — Night & Awakening</h2>
+            <h2 style={{ fontSize: '15px', fontWeight: '600', color: 'var(--sd-text-heading)' }}>Part A — Night & Awakening</h2>
           </div>
-          <p style={{ fontSize: '12px', color: '#4b5563', marginLeft: '24px' }}>Complete in the morning within 1 hour of waking up</p>
+          <p style={{ fontSize: '12px', color: 'var(--sd-text-subtle)', marginLeft: '24px' }}>Complete in the morning within 1 hour of waking up</p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <Input label="Q1. What time did you get into bed?" type="time" value={form.q1_bed_time} onChange={set('q1_bed_time')} />
@@ -463,9 +463,9 @@ const Header = () => (
         <div style={{ marginBottom: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
             <Sun size={16} color="#f59e0b" />
-            <h2 style={{ fontSize: '15px', fontWeight: '600', color: '#d1fae5' }}>Part B — Daytime Behaviours</h2>
+            <h2 style={{ fontSize: '15px', fontWeight: '600', color: 'var(--sd-text-heading)' }}>Part B — Daytime Behaviours</h2>
           </div>
-          <p style={{ fontSize: '12px', color: '#4b5563', marginLeft: '24px' }}>Complete in the evening</p>
+          <p style={{ fontSize: '12px', color: 'var(--sd-text-subtle)', marginLeft: '24px' }}>Complete in the evening</p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <Counter label="Q11a. How many times did you nap or doze?" value={form.q11a_nap_count} onChange={setVal('q11a_nap_count')} max={10} />
@@ -485,9 +485,9 @@ const Header = () => (
             <Textarea label="Q14b. List medication(s), dose, and time taken" placeholder="e.g. Sleepwell 50mg 11pm" value={form.q14b_medication_details} onChange={set('q14b_medication_details')} rows={2} />
           )}
           <Textarea label="Q15. Comments (optional)" placeholder="Note any unusual events — illness, stress, travel, etc." value={form.q15_comments} onChange={set('q15_comments')} rows={3} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', borderRadius: '12px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(16,185,129,0.1)' }}>
-            <input type="checkbox" id="is_complete" checked={form.is_complete} onChange={(e) => setForm({ ...form, is_complete: e.target.checked })} style={{ accentColor: '#10b981', width: '16px', height: '16px', cursor: 'pointer' }} />
-            <label htmlFor="is_complete" style={{ fontSize: '13px', color: '#9ca3af', cursor: 'pointer' }}>Mark this entry as complete for the day</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', borderRadius: '12px', background: 'var(--sd-inset-20)', border: '1px solid var(--sd-em-10)' }}>
+            <input type="checkbox" id="is_complete" checked={form.is_complete} onChange={(e) => setForm({ ...form, is_complete: e.target.checked })} style={{ accentColor: 'var(--sd-accent)', width: '16px', height: '16px', cursor: 'pointer' }} />
+            <label htmlFor="is_complete" style={{ fontSize: '13px', color: 'var(--sd-text-body)', cursor: 'pointer' }}>Mark this entry as complete for the day</label>
           </div>
         </div>
       </div>

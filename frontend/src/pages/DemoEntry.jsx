@@ -23,7 +23,7 @@ export default function DemoEntry() {
   }, []);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#020c12', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--sd-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <LoadingSpinner size="lg" text="Loading demo..." />
     </div>
   );

@@ -19,6 +19,130 @@
   --color-text-muted: #374151;
 }
 
+
+/* ==========================================================================
+   Theme tokens (dark = default, light = html[data-theme="light"])
+   Every colour used by the UI is a variable so the whole app can switch
+   theme from one place. Dark values are the app's original colours.
+   The theme is set by ThemeContext (and a tiny script in index.html so the
+   right theme is applied before the first paint).
+   ========================================================================== */
+:root {
+  /* Surfaces */
+  --sd-bg: #020c12;
+  --sd-bg-alt: #051a14;
+  --sd-surface: rgba(15, 30, 24, 0.6);
+  --sd-surface-80: rgba(15, 30, 24, 0.8);
+  --sd-surface-50: rgba(15, 30, 24, 0.5);
+  --sd-surface-40: rgba(15, 30, 24, 0.4);
+  --sd-surface-solid: #0f1e18;
+  --sd-nav: rgba(5, 20, 14, 0.97);
+  --sd-inset-20: rgba(0, 0, 0, 0.2);
+  --sd-inset-30: rgba(0, 0, 0, 0.3);
+
+  /* Overlays, shadows and neutral tints */
+  --sd-shadow-50: rgba(0, 0, 0, 0.5);
+  --sd-shadow-60: rgba(0, 0, 0, 0.6);
+  --sd-overlay: rgba(0, 0, 0, 0.7);
+  --sd-ink-04: rgba(255, 255, 255, 0.04);
+  --sd-ink-05: rgba(255, 255, 255, 0.05);
+  --sd-ink-06: rgba(255, 255, 255, 0.06);
+  --sd-ink-08: rgba(255, 255, 255, 0.08);
+  --sd-ink-10: rgba(255, 255, 255, 0.1);
+
+  /* Text */
+  --sd-text-strong: #f0fdf4;
+  --sd-text-strong-2: #f9fafb;
+  --sd-text-heading: #d1fae5;
+  --sd-text-body: #9ca3af;
+  --sd-text-muted: #6b7280;
+  --sd-text-subtle: #4b5563;
+  --sd-text-faint: #374151;
+  --sd-text-ghost: #1f2937;
+
+  /* Accent text colours */
+  --sd-accent: #10b981;
+  --sd-accent-soft: #6ee7b7;
+  --sd-danger: #f87171;
+  --sd-danger-soft: #fca5a5;
+
+  /* Emerald tints (borders, active states, glows) */
+  --sd-em-05: rgba(16, 185, 129, 0.05);
+  --sd-em-06: rgba(16, 185, 129, 0.06);
+  --sd-em-08: rgba(16, 185, 129, 0.08);
+  --sd-em-10: rgba(16, 185, 129, 0.1);
+  --sd-em-12: rgba(16, 185, 129, 0.12);
+  --sd-em-15: rgba(16, 185, 129, 0.15);
+  --sd-em-20: rgba(16, 185, 129, 0.2);
+  --sd-em-25: rgba(16, 185, 129, 0.25);
+  --sd-em-30: rgba(16, 185, 129, 0.3);
+  --sd-em-40: rgba(16, 185, 129, 0.4);
+  --sd-em-50: rgba(16, 185, 129, 0.5);
+}
+
+html[data-theme="light"] {
+  /* Existing app-wide variables */
+  --color-bg: #f1f7f4;
+  --color-bg-card: #ffffff;
+  --color-bg-input: #f4f8f6;
+  --color-border: #cfe3da;
+  --color-text-primary: #0b1f17;
+  --color-text-secondary: #5b6573;
+  --color-text-muted: #9aa4b0;
+  --color-primary: #059669;
+
+  /* Surfaces */
+  --sd-bg: #f1f7f4;
+  --sd-bg-alt: #e3f1ea;
+  --sd-surface: rgba(255, 255, 255, 0.88);
+  --sd-surface-80: rgba(255, 255, 255, 0.94);
+  --sd-surface-50: rgba(255, 255, 255, 0.8);
+  --sd-surface-40: rgba(255, 255, 255, 0.7);
+  --sd-surface-solid: #ffffff;
+  --sd-nav: rgba(255, 255, 255, 0.97);
+  --sd-inset-20: rgba(6, 78, 59, 0.05);
+  --sd-inset-30: rgba(6, 78, 59, 0.06);
+
+  /* Overlays, shadows and neutral tints */
+  --sd-shadow-50: rgba(6, 50, 38, 0.16);
+  --sd-shadow-60: rgba(6, 50, 38, 0.2);
+  --sd-overlay: rgba(6, 30, 24, 0.5);
+  --sd-ink-04: rgba(6, 50, 38, 0.05);
+  --sd-ink-05: rgba(6, 50, 38, 0.06);
+  --sd-ink-06: rgba(6, 50, 38, 0.09);
+  --sd-ink-08: rgba(6, 50, 38, 0.11);
+  --sd-ink-10: rgba(6, 50, 38, 0.14);
+
+  /* Text */
+  --sd-text-strong: #0b1f17;
+  --sd-text-strong-2: #0b1f17;
+  --sd-text-heading: #064e3b;
+  --sd-text-body: #4b5563;
+  --sd-text-muted: #5b6573;
+  --sd-text-subtle: #7b8592;
+  --sd-text-faint: #9aa4b0;
+  --sd-text-ghost: #cdd5dd;
+
+  /* Accent text colours (darker so they stay readable on white) */
+  --sd-accent: #047857;
+  --sd-accent-soft: #065f46;
+  --sd-danger: #dc2626;
+  --sd-danger-soft: #b91c1c;
+
+  /* Emerald tints use a deeper emerald with a bit more strength on light */
+  --sd-em-05: rgba(5, 150, 105, 0.08);
+  --sd-em-06: rgba(5, 150, 105, 0.09);
+  --sd-em-08: rgba(5, 150, 105, 0.12);
+  --sd-em-10: rgba(5, 150, 105, 0.16);
+  --sd-em-12: rgba(5, 150, 105, 0.18);
+  --sd-em-15: rgba(5, 150, 105, 0.2);
+  --sd-em-20: rgba(5, 150, 105, 0.28);
+  --sd-em-25: rgba(5, 150, 105, 0.34);
+  --sd-em-30: rgba(5, 150, 105, 0.4);
+  --sd-em-40: rgba(5, 150, 105, 0.55);
+  --sd-em-50: rgba(5, 150, 105, 0.7);
+}
+
 body {
   background-color: #020c12;
 }
@@ -117,4 +241,41 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
+}
+
+/* ==========================================================================
+   Light theme overrides for native controls
+   (inline styles set colorScheme: 'dark' on inputs, so !important is needed)
+   ========================================================================== */
+html[data-theme="light"] input,
+html[data-theme="light"] select,
+html[data-theme="light"] textarea {
+  color-scheme: light !important;
+}
+
+html[data-theme="light"] input[type="time"],
+html[data-theme="light"] input[type="date"] {
+  color-scheme: light;
+}
+
+html[data-theme="light"] input[type="time"]::-webkit-calendar-picker-indicator,
+html[data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: none;
+}
+
+html[data-theme="light"] input:-webkit-autofill,
+html[data-theme="light"] input:-webkit-autofill:hover,
+html[data-theme="light"] input:-webkit-autofill:focus,
+html[data-theme="light"] input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px #eef6f2 inset !important;
+  -webkit-text-fill-color: #0b1f17 !important;
+  caret-color: #0b1f17;
+}
+
+/* Smooth cross-fade when the theme is switched */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, fill 0.25s ease, stroke 0.25s ease !important;
 }

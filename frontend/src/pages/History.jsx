@@ -23,17 +23,17 @@ function EntryRow({ entry, onDelete }) {
 
   return (
     <div style={{
-      background: 'rgba(15,30,24,0.5)',
-      border: '1px solid rgba(16,185,129,0.1)',
+      background: 'var(--sd-surface-50)',
+      border: '1px solid var(--sd-em-10)',
       borderRadius: '14px', overflow: 'hidden', marginBottom: '12px',
     }}>
       {/* Top row — date + actions */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '14px 16px', borderBottom: '1px solid rgba(16,185,129,0.06)',
+        padding: '14px 16px', borderBottom: '1px solid var(--sd-em-06)',
       }}>
         <div>
-          <p style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5' }}>
+          <p style={{ fontSize: '14px', fontWeight: '600', color: 'var(--sd-text-heading)' }}>
             {new Date(entry.date + 'T00:00:00').toLocaleDateString('en-CA', {
               weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
             })}
@@ -41,9 +41,9 @@ function EntryRow({ entry, onDelete }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
             <span style={{
               fontSize: '11px', fontWeight: '500', padding: '2px 8px', borderRadius: '6px',
-              background: entry.is_complete ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.05)',
-              color: entry.is_complete ? '#10b981' : '#4b5563',
-              border: entry.is_complete ? '1px solid rgba(16,185,129,0.2)' : '1px solid rgba(255,255,255,0.05)',
+              background: entry.is_complete ? 'var(--sd-em-15)' : 'var(--sd-ink-05)',
+              color: entry.is_complete ? 'var(--sd-accent)' : 'var(--sd-text-subtle)',
+              border: entry.is_complete ? '1px solid var(--sd-em-20)' : '1px solid var(--sd-ink-05)',
             }}>
               {entry.is_complete ? '✓ Complete' : 'Partial'}
             </span>
@@ -52,19 +52,19 @@ function EntryRow({ entry, onDelete }) {
         <div style={{ display: 'flex', gap: '8px' }}>
           <button
             onClick={() => navigate(`/entry/${entry.date}`)}
-            style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: '8px', padding: '8px 10px', cursor: 'pointer', color: '#10b981', display: 'flex', alignItems: 'center' }}
+            style={{ background: 'var(--sd-em-10)', border: '1px solid var(--sd-em-20)', borderRadius: '8px', padding: '8px 10px', cursor: 'pointer', color: 'var(--sd-accent)', display: 'flex', alignItems: 'center' }}
           >
             <Edit2 size={13} />
           </button>
           <button
             onClick={() => onDelete(entry.date)}
-            style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '8px', padding: '8px 10px', cursor: 'pointer', color: '#f87171', display: 'flex', alignItems: 'center' }}
+            style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '8px', padding: '8px 10px', cursor: 'pointer', color: 'var(--sd-danger)', display: 'flex', alignItems: 'center' }}
           >
             <Trash2 size={13} />
           </button>
           <button
             onClick={() => setExpanded(!expanded)}
-            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '8px 10px', cursor: 'pointer', color: '#6b7280', display: 'flex', alignItems: 'center' }}
+            style={{ background: 'var(--sd-ink-05)', border: '1px solid var(--sd-ink-08)', borderRadius: '8px', padding: '8px 10px', cursor: 'pointer', color: 'var(--sd-text-muted)', display: 'flex', alignItems: 'center' }}
           >
             {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
           </button>
@@ -78,12 +78,12 @@ function EntryRow({ entry, onDelete }) {
       }}>
         {[
           { label: 'TST', value: entry.tst_min ? formatMinutes(entry.tst_min) : '—', color: '#818cf8' },
-          { label: 'TIB', value: entry.tib_min ? formatMinutes(entry.tib_min) : '—', color: '#10b981' },
+          { label: 'TIB', value: entry.tib_min ? formatMinutes(entry.tib_min) : '—', color: 'var(--sd-accent)' },
           { label: 'SE', value: entry.sleep_efficiency ? `${parseFloat(entry.sleep_efficiency).toFixed(1)}%` : '—', color: seColor },
-          { label: 'Quality', value: qualityLabels[entry.q9_sleep_quality] || '—', color: '#9ca3af' },
+          { label: 'Quality', value: qualityLabels[entry.q9_sleep_quality] || '—', color: 'var(--sd-text-body)' },
         ].map(({ label, value, color }) => (
           <div key={label} style={{ textAlign: 'center' }}>
-            <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '3px' }}>{label}</p>
+            <p style={{ fontSize: '10px', color: 'var(--sd-text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '3px' }}>{label}</p>
             <p style={{ fontSize: '13px', fontWeight: '600', color }}>{value}</p>
           </div>
         ))}
@@ -91,7 +91,7 @@ function EntryRow({ entry, onDelete }) {
 
       {/* Expanded detail */}
       {expanded && (
-        <div style={{ padding: '16px', borderTop: '1px solid rgba(16,185,129,0.08)', background: 'rgba(0,0,0,0.2)' }}>
+        <div style={{ padding: '16px', borderTop: '1px solid var(--sd-em-08)', background: 'var(--sd-inset-20)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
             {[
               { label: 'Bed Time (Q1)', value: fmt(entry.q1_bed_time) },
@@ -114,21 +114,21 @@ function EntryRow({ entry, onDelete }) {
               { label: 'Medication (Q14a)', value: entry.q14a_medication_taken === true ? 'Yes' : entry.q14a_medication_taken === false ? 'No' : '—' },
             ].map(({ label, value }) => (
               <div key={label}>
-                <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '2px' }}>{label}</p>
-                <p style={{ fontSize: '12px', color: '#9ca3af' }}>{value}</p>
+                <p style={{ fontSize: '10px', color: 'var(--sd-text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '2px' }}>{label}</p>
+                <p style={{ fontSize: '12px', color: 'var(--sd-text-body)' }}>{value}</p>
               </div>
             ))}
           </div>
           {entry.q14b_medication_details && (
             <div style={{ marginTop: '10px' }}>
-              <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>Medication Details (Q14b)</p>
-              <p style={{ fontSize: '12px', color: '#9ca3af' }}>{entry.q14b_medication_details}</p>
+              <p style={{ fontSize: '10px', color: 'var(--sd-text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>Medication Details (Q14b)</p>
+              <p style={{ fontSize: '12px', color: 'var(--sd-text-body)' }}>{entry.q14b_medication_details}</p>
             </div>
           )}
           {entry.q15_comments && (
             <div style={{ marginTop: '10px' }}>
-              <p style={{ fontSize: '10px', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>Comments (Q15)</p>
-              <p style={{ fontSize: '12px', color: '#9ca3af' }}>{entry.q15_comments}</p>
+              <p style={{ fontSize: '10px', color: 'var(--sd-text-subtle)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>Comments (Q15)</p>
+              <p style={{ fontSize: '12px', color: 'var(--sd-text-body)' }}>{entry.q15_comments}</p>
             </div>
           )}
         </div>
@@ -168,8 +168,8 @@ export default function History() {
     <div style={{ padding: 'clamp(16px, 4vw, 28px)', maxWidth: '900px', width: '100%', overflowX: 'hidden' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <h1 style={{ fontSize: '22px', fontWeight: '700', color: '#f0fdf4' }}>History</h1>
-          <p style={{ fontSize: '14px', color: '#6b7280' }}>{entries.length} entries total</p>
+          <h1 style={{ fontSize: '22px', fontWeight: '700', color: 'var(--sd-text-strong)' }}>History</h1>
+          <p style={{ fontSize: '14px', color: 'var(--sd-text-muted)' }}>{entries.length} entries total</p>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
           {[
@@ -183,9 +183,9 @@ export default function History() {
               onClick={() => setFilter(value)}
               style={{
                 padding: '6px 14px', borderRadius: '8px', fontSize: '13px', fontWeight: '500',
-                border: filter === value ? '1px solid rgba(16,185,129,0.4)' : '1px solid rgba(255,255,255,0.06)',
-                background: filter === value ? 'rgba(16,185,129,0.15)' : 'transparent',
-                color: filter === value ? '#10b981' : '#6b7280',
+                border: filter === value ? '1px solid var(--sd-em-40)' : '1px solid var(--sd-ink-06)',
+                background: filter === value ? 'var(--sd-em-15)' : 'transparent',
+                color: filter === value ? 'var(--sd-accent)' : 'var(--sd-text-muted)',
                 cursor: 'pointer',
               }}
             >
@@ -196,13 +196,13 @@ export default function History() {
       </div>
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '60px', color: '#4b5563' }}>Loading entries...</div>
+        <div style={{ textAlign: 'center', padding: '60px', color: 'var(--sd-text-subtle)' }}>Loading entries...</div>
       ) : entries.length === 0 ? (
         <div style={{
-          background: 'rgba(15,30,24,0.4)', border: '1px solid rgba(16,185,129,0.1)',
+          background: 'var(--sd-surface-40)', border: '1px solid var(--sd-em-10)',
           borderRadius: '16px', padding: '48px', textAlign: 'center',
         }}>
-          <p style={{ color: '#4b5563', marginBottom: '16px' }}>No entries found for this period.</p>
+          <p style={{ color: 'var(--sd-text-subtle)', marginBottom: '16px' }}>No entries found for this period.</p>
           <button
             onClick={() => navigate(`/entry/${new Date().toISOString().split('T')[0]}`)}
             style={{ padding: '10px 20px', borderRadius: '10px', background: 'linear-gradient(135deg, #10b981, #059669)', border: 'none', color: 'white', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}

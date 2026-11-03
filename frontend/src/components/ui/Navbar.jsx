@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import ThemeToggle from './ThemeToggle';
 import {
   LayoutDashboard, Calendar, BookOpen,
   History, Download, Settings, LogOut, Moon,
@@ -35,8 +36,8 @@ export default function Navbar() {
     return (
       <nav style={{
         position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 40,
-        background: 'rgba(5, 20, 14, 0.97)',
-        borderTop: '1px solid rgba(16,185,129,0.1)',
+        background: 'var(--sd-nav)',
+        borderTop: '1px solid var(--sd-em-10)',
         backdropFilter: 'blur(20px)',
         display: 'flex', justifyContent: 'space-around', alignItems: 'center',
         padding: '8px 0 16px',
@@ -55,7 +56,7 @@ export default function Navbar() {
               display: 'flex', flexDirection: 'column', alignItems: 'center',
               gap: '3px', padding: '6px 12px', borderRadius: '10px',
               fontSize: '10px', fontWeight: '500', textDecoration: 'none',
-              color: isActive ? '#10b981' : '#4b5563',
+              color: isActive ? 'var(--sd-accent)' : 'var(--sd-text-subtle)',
               transition: 'color 0.15s ease',
             })}
           >
@@ -63,6 +64,7 @@ export default function Navbar() {
             <span>{label}</span>
           </NavLink>
         ))}
+        <ThemeToggle variant="nav" />
       </nav>
     );
   }
@@ -71,8 +73,8 @@ export default function Navbar() {
     <aside style={{
       position: 'fixed', left: 0, top: 0, bottom: 0,
       width: '240px',
-      background: 'rgba(5, 20, 14, 0.97)',
-      borderRight: '1px solid rgba(16,185,129,0.1)',
+      background: 'var(--sd-nav)',
+      borderRight: '1px solid var(--sd-em-10)',
       backdropFilter: 'blur(20px)',
       display: 'flex', flexDirection: 'column',
       padding: '24px 16px',
@@ -93,7 +95,7 @@ export default function Navbar() {
         </div>
         <span style={{
           fontSize: '16px', fontWeight: '700',
-          color: '#f0fdf4', letterSpacing: '-0.3px',
+          color: 'var(--sd-text-strong)', letterSpacing: '-0.3px',
         }}>
           Sleep Diary
         </span>
@@ -111,9 +113,9 @@ export default function Navbar() {
               fontSize: '14px', fontWeight: '500',
               textDecoration: 'none',
               transition: 'all 0.15s ease',
-              background: isActive ? 'rgba(16,185,129,0.15)' : 'transparent',
-              color: isActive ? '#10b981' : '#6b7280',
-              border: isActive ? '1px solid rgba(16,185,129,0.2)' : '1px solid transparent',
+              background: isActive ? 'var(--sd-em-15)' : 'transparent',
+              color: isActive ? 'var(--sd-accent)' : 'var(--sd-text-muted)',
+              border: isActive ? '1px solid var(--sd-em-20)' : '1px solid transparent',
             })}
           >
             <Icon size={17} />
@@ -123,37 +125,38 @@ export default function Navbar() {
       </nav>
 
       {/* User + logout */}
-      <div style={{ borderTop: '1px solid rgba(16,185,129,0.1)', paddingTop: '16px' }}>
+      <div style={{ borderTop: '1px solid var(--sd-em-10)', paddingTop: '16px' }}>
         <div style={{ padding: '8px 12px', marginBottom: '4px' }}>
           <p style={{
             fontSize: '13px', fontWeight: '600',
-            color: '#d1fae5', marginBottom: '2px',
+            color: 'var(--sd-text-heading)', marginBottom: '2px',
           }}>
             {user?.full_name || user?.first_name}
           </p>
           <p style={{
-            fontSize: '12px', color: '#4b5563',
+            fontSize: '12px', color: 'var(--sd-text-subtle)',
             overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
           }}>
             {user?.email}
           </p>
         </div>
+        <ThemeToggle variant="row" />
         <button
           onClick={handleLogout}
           style={{
             display: 'flex', alignItems: 'center', gap: '10px',
             padding: '10px 12px', borderRadius: '12px', width: '100%',
             background: 'transparent', border: '1px solid transparent',
-            fontSize: '14px', fontWeight: '500', color: '#6b7280',
+            fontSize: '14px', fontWeight: '500', color: 'var(--sd-text-muted)',
             cursor: 'pointer', transition: 'all 0.15s ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.color = '#f87171';
+            e.currentTarget.style.color = 'var(--sd-danger)';
             e.currentTarget.style.background = 'rgba(239,68,68,0.08)';
             e.currentTarget.style.borderColor = 'rgba(239,68,68,0.15)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.color = '#6b7280';
+            e.currentTarget.style.color = 'var(--sd-text-muted)';
             e.currentTarget.style.background = 'transparent';
             e.currentTarget.style.borderColor = 'transparent';
           }}

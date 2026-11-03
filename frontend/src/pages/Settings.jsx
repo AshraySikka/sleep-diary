@@ -5,8 +5,8 @@ import { Input, Select } from '../components/ui/Input';
 import { User, Bell, Shield, Mail } from 'lucide-react';
 
 const sectionStyle = {
-  background: 'rgba(15,30,24,0.6)',
-  border: '1px solid rgba(16,185,129,0.12)',
+  background: 'var(--sd-surface)',
+  border: '1px solid var(--sd-em-12)',
   borderRadius: '16px', padding: '24px', marginBottom: '16px',
 };
 
@@ -240,16 +240,16 @@ export default function Settings() {
 
   return (
     <div style={{ padding: 'clamp(16px, 4vw, 28px)', maxWidth: '680px', width: '100%' }}>
-      <h1 style={{ fontSize: '22px', fontWeight: '700', color: '#f0fdf4', marginBottom: '6px' }}>Settings</h1>
-      <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '24px' }}>Manage your profile and preferences</p>
+      <h1 style={{ fontSize: '22px', fontWeight: '700', color: 'var(--sd-text-strong)', marginBottom: '6px' }}>Settings</h1>
+      <p style={{ fontSize: '14px', color: 'var(--sd-text-muted)', marginBottom: '24px' }}>Manage your profile and preferences</p>
 
       {error && (
-        <div style={{ marginBottom: '16px', padding: '12px 16px', borderRadius: '12px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#fca5a5', fontSize: '14px' }}>
+        <div style={{ marginBottom: '16px', padding: '12px 16px', borderRadius: '12px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: 'var(--sd-danger-soft)', fontSize: '14px' }}>
           {error}
         </div>
       )}
       {success && (
-        <div style={{ marginBottom: '16px', padding: '12px 16px', borderRadius: '12px', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', color: '#6ee7b7', fontSize: '14px' }}>
+        <div style={{ marginBottom: '16px', padding: '12px 16px', borderRadius: '12px', background: 'var(--sd-em-10)', border: '1px solid var(--sd-em-20)', color: 'var(--sd-accent-soft)', fontSize: '14px' }}>
           {success}
         </div>
       )}
@@ -258,14 +258,14 @@ export default function Settings() {
       <div style={sectionStyle}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '18px' }}>
           <User size={15} color="#10b981" />
-          <h2 style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5' }}>Account</h2>
+          <h2 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--sd-text-heading)' }}>Account</h2>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '12px 16px', borderRadius: '10px', background: 'rgba(0,0,0,0.2)', marginBottom: '4px' }}>
-          <p style={{ fontSize: '15px', fontWeight: '600', color: '#f0fdf4' }}>{user?.full_name}</p>
-          <p style={{ fontSize: '13px', color: '#6b7280' }}>{user?.email}</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '12px 16px', borderRadius: '10px', background: 'var(--sd-inset-20)', marginBottom: '4px' }}>
+          <p style={{ fontSize: '15px', fontWeight: '600', color: 'var(--sd-text-strong)' }}>{user?.full_name}</p>
+          <p style={{ fontSize: '13px', color: 'var(--sd-text-muted)' }}>{user?.email}</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
-            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: user?.is_verified ? '#10b981' : '#f59e0b' }} />
-            <span style={{ fontSize: '12px', color: user?.is_verified ? '#10b981' : '#f59e0b' }}>
+            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: user?.is_verified ? 'var(--sd-accent)' : '#f59e0b' }} />
+            <span style={{ fontSize: '12px', color: user?.is_verified ? 'var(--sd-accent)' : '#f59e0b' }}>
               {user?.is_verified ? 'Email verified' : 'Email not verified'}
             </span>
           </div>
@@ -277,11 +277,11 @@ export default function Settings() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Shield size={15} color="#10b981" />
-            <h2 style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5' }}>Body Metrics</h2>
+            <h2 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--sd-text-heading)' }}>Body Metrics</h2>
           </div>
           {bmi && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '12px', color: '#4b5563' }}>BMI</span>
+              <span style={{ fontSize: '12px', color: 'var(--sd-text-subtle)' }}>BMI</span>
               <span style={{ fontSize: '16px', fontWeight: '700', color: bmiColor }}>{bmi}</span>
               <span style={{ fontSize: '11px', color: bmiColor, padding: '2px 8px', borderRadius: '6px', background: `${bmiColor}15`, border: `1px solid ${bmiColor}30` }}>{bmiCategory}</span>
             </div>
@@ -311,7 +311,7 @@ export default function Settings() {
       <div style={sectionStyle}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '18px' }}>
           <Mail size={15} color="#10b981" />
-          <h2 style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5' }}>Clinician Email</h2>
+          <h2 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--sd-text-heading)' }}>Clinician Email</h2>
         </div>
         <Input
           label="Your doctor or sleep specialist's email"
@@ -327,19 +327,19 @@ export default function Settings() {
       <div style={sectionStyle}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '18px' }}>
           <Bell size={15} color="#10b981" />
-          <h2 style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5' }}>Morning Reminder</h2>
+          <h2 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--sd-text-heading)' }}>Morning Reminder</h2>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: '14px 16px', borderRadius: '12px',
-            background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(16,185,129,0.08)',
+            background: 'var(--sd-inset-20)', border: '1px solid var(--sd-em-08)',
           }}>
             <div>
-              <p style={{ fontSize: '13px', fontWeight: '500', color: '#d1fae5', marginBottom: '2px' }}>
+              <p style={{ fontSize: '13px', fontWeight: '500', color: 'var(--sd-text-heading)', marginBottom: '2px' }}>
                 Daily sleep reminder
               </p>
-              <p style={{ fontSize: '12px', color: '#6b7280' }}>
+              <p style={{ fontSize: '12px', color: 'var(--sd-text-muted)' }}>
                 Reminds you to log your sleep each morning
               </p>
             </div>
@@ -351,7 +351,7 @@ export default function Settings() {
                 width: '44px', height: '24px', borderRadius: '12px', border: 'none',
                 background: profile.notification_enabled
                   ? 'linear-gradient(135deg, #10b981, #059669)'
-                  : 'rgba(255,255,255,0.1)',
+                  : 'var(--sd-ink-10)',
                 cursor: enableLoading ? 'not-allowed' : 'pointer',
                 position: 'relative', transition: 'background 0.2s ease',
                 flexShrink: 0, opacity: enableLoading ? 0.6 : 1,
@@ -383,8 +383,8 @@ export default function Settings() {
               disabled={testSending}
               style={{
                 padding: '10px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: '500',
-                background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)',
-                color: '#10b981', cursor: testSending ? 'not-allowed' : 'pointer',
+                background: 'var(--sd-em-10)', border: '1px solid var(--sd-em-20)',
+                color: 'var(--sd-accent)', cursor: testSending ? 'not-allowed' : 'pointer',
                 width: '100%', opacity: testSending ? 0.6 : 1,
               }}
             >
@@ -404,7 +404,7 @@ export default function Settings() {
           background: saving ? '#065f46' : 'linear-gradient(135deg, #10b981, #059669)',
           border: 'none', color: 'white', fontSize: '15px', fontWeight: '600',
           cursor: saving ? 'not-allowed' : 'pointer',
-          boxShadow: '0 4px 15px rgba(16,185,129,0.25)',
+          boxShadow: '0 4px 15px var(--sd-em-25)',
         }}
       >
         {saving ? 'Saving...' : 'Save Settings'}
@@ -415,18 +415,18 @@ export default function Settings() {
         onClick={() => setTermsOpen(true)}
         style={{
           marginTop: '16px', padding: '14px 18px', borderRadius: '12px',
-          background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.04)',
+          background: 'var(--sd-inset-20)', border: '1px solid var(--sd-ink-04)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           cursor: 'pointer',
         }}
       >
         <div>
-          <p style={{ fontSize: '13px', color: '#6b7280' }}>Terms & Conditions</p>
-          <p style={{ fontSize: '12px', color: '#374151' }}>
+          <p style={{ fontSize: '13px', color: 'var(--sd-text-muted)' }}>Terms & Conditions</p>
+          <p style={{ fontSize: '12px', color: 'var(--sd-text-faint)' }}>
             Accepted on {user?.terms_accepted_at ? new Date(user.terms_accepted_at).toLocaleDateString() : 'signup'}
           </p>
         </div>
-        <span style={{ fontSize: '11px', color: '#10b981', padding: '3px 10px', borderRadius: '6px', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}>
+        <span style={{ fontSize: '11px', color: 'var(--sd-accent)', padding: '3px 10px', borderRadius: '6px', background: 'var(--sd-em-10)', border: '1px solid var(--sd-em-20)' }}>
           ✓ View
         </span>
       </div>
@@ -438,7 +438,7 @@ export default function Settings() {
         style={{
           marginTop: '12px', width: '100%', padding: '14px', borderRadius: '12px',
           background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)',
-          color: '#f87171', fontSize: '15px', fontWeight: '600',
+          color: 'var(--sd-danger)', fontSize: '15px', fontWeight: '600',
           cursor: 'pointer',
         }}
       >
@@ -453,33 +453,33 @@ export default function Settings() {
           padding: '24px',
         }}>
           <div
-            style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
+            style={{ position: 'absolute', inset: 0, background: 'var(--sd-overlay)', backdropFilter: 'blur(4px)' }}
             onClick={() => setTermsOpen(false)}
           />
           <div style={{
             position: 'relative', width: '100%', maxWidth: '560px',
-            background: '#0f1e18', border: '1px solid rgba(16,185,129,0.2)',
+            background: 'var(--sd-surface-solid)', border: '1px solid var(--sd-em-20)',
             borderRadius: '20px', maxHeight: '80vh', display: 'flex', flexDirection: 'column',
-            boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+            boxShadow: '0 25px 50px var(--sd-shadow-50)',
           }}>
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              padding: '20px 24px', borderBottom: '1px solid rgba(16,185,129,0.1)',
+              padding: '20px 24px', borderBottom: '1px solid var(--sd-em-10)',
             }}>
-              <h2 style={{ fontSize: '16px', fontWeight: '600', color: '#f0fdf4' }}>Terms and Conditions</h2>
+              <h2 style={{ fontSize: '16px', fontWeight: '600', color: 'var(--sd-text-strong)' }}>Terms and Conditions</h2>
               <button
                 onClick={() => setTermsOpen(false)}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280', fontSize: '22px', lineHeight: 1 }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--sd-text-muted)', fontSize: '22px', lineHeight: 1 }}
               >
                 ×
               </button>
             </div>
             <div style={{ overflowY: 'auto', padding: '24px' }}>
-              <pre style={{ fontSize: '13px', color: '#9ca3af', whiteSpace: 'pre-wrap', fontFamily: 'inherit', lineHeight: '1.7' }}>
+              <pre style={{ fontSize: '13px', color: 'var(--sd-text-body)', whiteSpace: 'pre-wrap', fontFamily: 'inherit', lineHeight: '1.7' }}>
                 {TERMS_TEXT}
               </pre>
             </div>
-            <div style={{ padding: '16px 24px', borderTop: '1px solid rgba(16,185,129,0.1)' }}>
+            <div style={{ padding: '16px 24px', borderTop: '1px solid var(--sd-em-10)' }}>
               <button
                 onClick={() => setTermsOpen(false)}
                 style={{

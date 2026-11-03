@@ -16,7 +16,7 @@ export default function Tooltip({ text, className = '' }) {
         onFocus={() => setVisible(true)}
         onBlur={() => setVisible(false)}
         onClick={() => setVisible(!visible)}
-        style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280', padding: '2px', display: 'flex', alignItems: 'center' }}
+        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--sd-text-muted)', padding: '2px', display: 'flex', alignItems: 'center' }}
         aria-label="Formula information"
       >
         <Info size={14} />
@@ -34,15 +34,15 @@ export default function Tooltip({ text, className = '' }) {
             left: '50%',
             transform: 'translateX(-50%)',
             width: '260px',
-            background: '#0f1e18',
-            border: '1px solid rgba(16,185,129,0.2)',
+            background: 'var(--sd-surface-solid)',
+            border: '1px solid var(--sd-em-20)',
             borderRadius: '12px',
             padding: '12px 14px',
             fontSize: '12px',
             lineHeight: '1.6',
-            color: '#9ca3af',
+            color: 'var(--sd-text-body)',
             zIndex: 99,
-            boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+            boxShadow: '0 8px 32px var(--sd-shadow-60)',
           }}>
             {text}
           </div>

@@ -78,33 +78,33 @@ export default function Export() {
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px' }}>
         <div style={{
           width: '40px', height: '40px', borderRadius: '12px',
-          background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.2)',
+          background: 'var(--sd-em-15)', border: '1px solid var(--sd-em-20)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <FileText size={18} color="#10b981" />
         </div>
         <div>
-          <h1 style={{ fontSize: '22px', fontWeight: '700', color: '#f0fdf4' }}>Export Report</h1>
-          <p style={{ fontSize: '13px', color: '#6b7280' }}>Generate a PDF of your sleep diary entries</p>
+          <h1 style={{ fontSize: '22px', fontWeight: '700', color: 'var(--sd-text-strong)' }}>Export Report</h1>
+          <p style={{ fontSize: '13px', color: 'var(--sd-text-muted)' }}>Generate a PDF of your sleep diary entries</p>
         </div>
       </div>
 
       {error && (
-        <div style={{ marginBottom: '16px', padding: '12px 16px', borderRadius: '12px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#fca5a5', fontSize: '14px' }}>
+        <div style={{ marginBottom: '16px', padding: '12px 16px', borderRadius: '12px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: 'var(--sd-danger-soft)', fontSize: '14px' }}>
           {error}
         </div>
       )}
       {success && (
-        <div style={{ marginBottom: '16px', padding: '12px 16px', borderRadius: '12px', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', color: '#6ee7b7', fontSize: '14px' }}>
+        <div style={{ marginBottom: '16px', padding: '12px 16px', borderRadius: '12px', background: 'var(--sd-em-10)', border: '1px solid var(--sd-em-20)', color: 'var(--sd-accent-soft)', fontSize: '14px' }}>
           {success}
         </div>
       )}
 
       {/* Date range */}
-      <div style={{ background: 'rgba(15,30,24,0.6)', border: '1px solid rgba(16,185,129,0.12)', borderRadius: '16px', padding: '24px', marginBottom: '16px' }}>
+      <div style={{ background: 'var(--sd-surface)', border: '1px solid var(--sd-em-12)', borderRadius: '16px', padding: '24px', marginBottom: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
           <Calendar size={15} color="#10b981" />
-          <h2 style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5' }}>Select Date Range</h2>
+          <h2 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--sd-text-heading)' }}>Select Date Range</h2>
         </div>
 
         {/* Presets */}
@@ -120,8 +120,8 @@ export default function Export() {
               onClick={() => setPreset(days)}
               style={{
                 padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: '500',
-                background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.15)',
-                color: '#10b981', cursor: 'pointer',
+                background: 'var(--sd-em-08)', border: '1px solid var(--sd-em-15)',
+                color: 'var(--sd-accent)', cursor: 'pointer',
               }}
             >
               {label}
@@ -146,14 +146,14 @@ export default function Export() {
       </div>
 
       {/* Download PDF */}
-      <div style={{ background: 'rgba(15,30,24,0.6)', border: '1px solid rgba(16,185,129,0.12)', borderRadius: '16px', padding: '24px', marginBottom: '16px' }}>
+      <div style={{ background: 'var(--sd-surface)', border: '1px solid var(--sd-em-12)', borderRadius: '16px', padding: '24px', marginBottom: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
               <Download size={15} color="#818cf8" />
-              <h2 style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5' }}>Download PDF</h2>
+              <h2 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--sd-text-heading)' }}>Download PDF</h2>
             </div>
-            <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.5', maxWidth: '340px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--sd-text-muted)', lineHeight: '1.5', maxWidth: '340px' }}>
               Generate a formatted PDF report with all your sleep entries, summary statistics, and a complete data table.
             </p>
           </div>
@@ -175,12 +175,12 @@ export default function Export() {
       </div>
 
       {/* Email to clinician */}
-      <div style={{ background: 'rgba(15,30,24,0.6)', border: '1px solid rgba(16,185,129,0.12)', borderRadius: '16px', padding: '24px' }}>
+      <div style={{ background: 'var(--sd-surface)', border: '1px solid var(--sd-em-12)', borderRadius: '16px', padding: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
           <Mail size={15} color="#10b981" />
-          <h2 style={{ fontSize: '14px', fontWeight: '600', color: '#d1fae5' }}>Email to Clinician</h2>
+          <h2 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--sd-text-heading)' }}>Email to Clinician</h2>
         </div>
-        <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.5', marginBottom: '16px' }}>
+        <p style={{ fontSize: '13px', color: 'var(--sd-text-muted)', lineHeight: '1.5', marginBottom: '16px' }}>
           Send the PDF report directly to your doctor, therapist, or sleep specialist. A copy will be sent from the app's email address.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -200,7 +200,7 @@ export default function Export() {
               background: emailing ? '#065f46' : 'linear-gradient(135deg, #10b981, #059669)',
               border: 'none', color: 'white',
               cursor: emailing ? 'not-allowed' : 'pointer',
-              boxShadow: '0 4px 15px rgba(16,185,129,0.25)',
+              boxShadow: '0 4px 15px var(--sd-em-25)',
             }}
           >
             <Mail size={15} />
@@ -210,8 +210,8 @@ export default function Export() {
       </div>
 
       {/* Report content note */}
-      <div style={{ marginTop: '16px', padding: '14px 18px', borderRadius: '12px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.04)' }}>
-        <p style={{ fontSize: '12px', color: '#4b5563', lineHeight: '1.6' }}>
+      <div style={{ marginTop: '16px', padding: '14px 18px', borderRadius: '12px', background: 'var(--sd-inset-20)', border: '1px solid var(--sd-ink-04)' }}>
+        <p style={{ fontSize: '12px', color: 'var(--sd-text-subtle)', lineHeight: '1.6' }}>
           The PDF report includes: patient name, date range, summary statistics (avg SE, avg TST, avg latency),
           and a full data table with all 15+ CSD-M fields for each date.
           All metrics are calculated using validated CSD-M formulas.

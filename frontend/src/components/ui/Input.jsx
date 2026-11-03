@@ -9,9 +9,9 @@ export function Input({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
       {label && (
-        <label style={{ fontSize: '13px', fontWeight: '500', color: '#9ca3af' }}>
+        <label style={{ fontSize: '13px', fontWeight: '500', color: 'var(--sd-text-body)' }}>
           {label}
-          {required && <span style={{ color: '#f87171', marginLeft: '4px' }}>*</span>}
+          {required && <span style={{ color: 'var(--sd-danger)', marginLeft: '4px' }}>*</span>}
         </label>
       )}
       <input
@@ -20,30 +20,30 @@ export function Input({
           padding: '12px 16px',
           borderRadius: '10px',
           fontSize: '14px',
-          background: 'rgba(0,0,0,0.3)',
-          border: error ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(16,185,129,0.15)',
-          color: '#f0fdf4',
+          background: 'var(--sd-inset-30)',
+          border: error ? '1px solid rgba(239,68,68,0.5)' : '1px solid var(--sd-em-15)',
+          color: 'var(--sd-text-strong)',
           outline: 'none',
           transition: 'border-color 0.2s ease',
           colorScheme: 'dark',
         }}
         onFocus={(e) => {
-          e.target.style.borderColor = 'rgba(16,185,129,0.5)';
-          e.target.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.08)';
+          e.target.style.borderColor = 'var(--sd-em-50)';
+          e.target.style.boxShadow = '0 0 0 3px var(--sd-em-08)';
           props.onFocus?.(e);
         }}
         onBlur={(e) => {
-          e.target.style.borderColor = error ? 'rgba(239,68,68,0.5)' : 'rgba(16,185,129,0.15)';
+          e.target.style.borderColor = error ? 'rgba(239,68,68,0.5)' : 'var(--sd-em-15)';
           e.target.style.boxShadow = 'none';
           props.onBlur?.(e);
         }}
         {...props}
       />
       {hint && !error && (
-        <p style={{ fontSize: '12px', color: '#6b7280' }}>{hint}</p>
+        <p style={{ fontSize: '12px', color: 'var(--sd-text-muted)' }}>{hint}</p>
       )}
       {error && (
-        <p style={{ fontSize: '12px', color: '#f87171' }}>{error}</p>
+        <p style={{ fontSize: '12px', color: 'var(--sd-danger)' }}>{error}</p>
       )}
     </div>
   );
@@ -61,9 +61,9 @@ export function Select({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
       {label && (
-        <label style={{ fontSize: '13px', fontWeight: '500', color: '#9ca3af' }}>
+        <label style={{ fontSize: '13px', fontWeight: '500', color: 'var(--sd-text-body)' }}>
           {label}
-          {required && <span style={{ color: '#f87171', marginLeft: '4px' }}>*</span>}
+          {required && <span style={{ color: 'var(--sd-danger)', marginLeft: '4px' }}>*</span>}
         </label>
       )}
       <select
@@ -72,22 +72,22 @@ export function Select({
           padding: '12px 16px',
           borderRadius: '10px',
           fontSize: '14px',
-          background: 'rgba(0,0,0,0.3)',
-          border: error ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(16,185,129,0.15)',
-          color: '#f0fdf4',
+          background: 'var(--sd-inset-30)',
+          border: error ? '1px solid rgba(239,68,68,0.5)' : '1px solid var(--sd-em-15)',
+          color: 'var(--sd-text-strong)',
           outline: 'none',
         }}
         {...props}
       >
-        <option value="" style={{ background: '#0f1e18' }}>{placeholder}</option>
+        <option value="" style={{ background: 'var(--sd-surface-solid)' }}>{placeholder}</option>
         {options.map((opt) => (
-          <option key={opt.value} value={opt.value} style={{ background: '#0f1e18' }}>
+          <option key={opt.value} value={opt.value} style={{ background: 'var(--sd-surface-solid)' }}>
             {opt.label}
           </option>
         ))}
       </select>
-      {hint && !error && <p style={{ fontSize: '12px', color: '#6b7280' }}>{hint}</p>}
-      {error && <p style={{ fontSize: '12px', color: '#f87171' }}>{error}</p>}
+      {hint && !error && <p style={{ fontSize: '12px', color: 'var(--sd-text-muted)' }}>{hint}</p>}
+      {error && <p style={{ fontSize: '12px', color: 'var(--sd-danger)' }}>{error}</p>}
     </div>
   );
 }
@@ -103,9 +103,9 @@ export function Textarea({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
       {label && (
-        <label style={{ fontSize: '13px', fontWeight: '500', color: '#9ca3af' }}>
+        <label style={{ fontSize: '13px', fontWeight: '500', color: 'var(--sd-text-body)' }}>
           {label}
-          {required && <span style={{ color: '#f87171', marginLeft: '4px' }}>*</span>}
+          {required && <span style={{ color: 'var(--sd-danger)', marginLeft: '4px' }}>*</span>}
         </label>
       )}
       <textarea
@@ -115,17 +115,17 @@ export function Textarea({
           padding: '12px 16px',
           borderRadius: '10px',
           fontSize: '14px',
-          background: 'rgba(0,0,0,0.3)',
-          border: error ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(16,185,129,0.15)',
-          color: '#f0fdf4',
+          background: 'var(--sd-inset-30)',
+          border: error ? '1px solid rgba(239,68,68,0.5)' : '1px solid var(--sd-em-15)',
+          color: 'var(--sd-text-strong)',
           outline: 'none',
           resize: 'none',
           fontFamily: 'inherit',
         }}
         {...props}
       />
-      {hint && !error && <p style={{ fontSize: '12px', color: '#6b7280' }}>{hint}</p>}
-      {error && <p style={{ fontSize: '12px', color: '#f87171' }}>{error}</p>}
+      {hint && !error && <p style={{ fontSize: '12px', color: 'var(--sd-text-muted)' }}>{hint}</p>}
+      {error && <p style={{ fontSize: '12px', color: 'var(--sd-danger)' }}>{error}</p>}
     </div>
   );
 }

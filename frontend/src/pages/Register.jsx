@@ -33,12 +33,12 @@ You are solely responsible for the accuracy of data entered and any decisions ma
 By creating an account, you acknowledge that you have read, understood, and agree to these Terms and Conditions.`;
 
 const cardStyle = {
-  background: 'rgba(15, 30, 24, 0.8)',
-  border: '1px solid rgba(16,185,129,0.15)',
+  background: 'var(--sd-surface-80)',
+  border: '1px solid var(--sd-em-15)',
   borderRadius: '20px',
   padding: '40px',
   backdropFilter: 'blur(20px)',
-  boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+  boxShadow: '0 25px 50px var(--sd-shadow-50)',
 };
 
 const btnPrimary = (loading) => ({
@@ -51,17 +51,17 @@ const btnPrimary = (loading) => ({
   fontSize: '15px',
   fontWeight: '600',
   cursor: loading ? 'not-allowed' : 'pointer',
-  boxShadow: '0 4px 15px rgba(16,185,129,0.3)',
+  boxShadow: '0 4px 15px var(--sd-em-30)',
   transition: 'all 0.2s ease',
 });
 
 const btnSecondary = {
   width: '100%',
   padding: '14px',
-  background: 'rgba(255,255,255,0.05)',
-  border: '1px solid rgba(16,185,129,0.15)',
+  background: 'var(--sd-ink-05)',
+  border: '1px solid var(--sd-em-15)',
   borderRadius: '12px',
-  color: '#9ca3af',
+  color: 'var(--sd-text-body)',
   fontSize: '15px',
   fontWeight: '600',
   cursor: 'pointer',
@@ -128,7 +128,7 @@ export default function Register() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #020c12 0%, #051a14 50%, #020c12 100%)',
+      background: 'linear-gradient(135deg, var(--sd-bg) 0%, var(--sd-bg-alt) 50%, var(--sd-bg) 100%)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: '24px',
       paddingTop: 'max(24px, env(safe-area-inset-top))'
@@ -136,7 +136,7 @@ export default function Register() {
       <div style={{
         position: 'fixed', top: '20%', left: '50%', transform: 'translateX(-50%)',
         width: '600px', height: '400px',
-        background: 'radial-gradient(ellipse, rgba(16,185,129,0.06) 0%, transparent 70%)',
+        background: 'radial-gradient(ellipse, var(--sd-em-06) 0%, transparent 70%)',
         pointerEvents: 'none',
       }} />
 
@@ -150,7 +150,7 @@ export default function Register() {
           }}>
             <Moon size={20} color="white" />
           </div>
-          <span style={{ fontSize: '22px', fontWeight: '700', color: '#f0fdf4', letterSpacing: '-0.5px' }}>
+          <span style={{ fontSize: '22px', fontWeight: '700', color: 'var(--sd-text-strong)', letterSpacing: '-0.5px' }}>
             Sleep Diary
           </span>
         </div>
@@ -164,21 +164,21 @@ export default function Register() {
                   width: '28px', height: '28px', borderRadius: '50%',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: '12px', fontWeight: '600',
-                  background: step >= s ? 'linear-gradient(135deg, #10b981, #059669)' : 'rgba(255,255,255,0.05)',
-                  color: step >= s ? 'white' : '#6b7280',
-                  border: step >= s ? 'none' : '1px solid rgba(255,255,255,0.1)',
+                  background: step >= s ? 'linear-gradient(135deg, #10b981, #059669)' : 'var(--sd-ink-05)',
+                  color: step >= s ? 'white' : 'var(--sd-text-muted)',
+                  border: step >= s ? 'none' : '1px solid var(--sd-ink-10)',
                 }}>
                   {s}
                 </div>
                 {s < 2 && (
                   <div style={{
                     width: '32px', height: '1px',
-                    background: step > s ? '#10b981' : 'rgba(255,255,255,0.1)',
+                    background: step > s ? 'var(--sd-accent)' : 'var(--sd-ink-10)',
                   }} />
                 )}
               </div>
             ))}
-            <span style={{ fontSize: '13px', color: '#6b7280', marginLeft: '4px' }}>
+            <span style={{ fontSize: '13px', color: 'var(--sd-text-muted)', marginLeft: '4px' }}>
               {step === 1 ? 'Account Details' : 'Your Profile'}
             </span>
           </div>
@@ -187,7 +187,7 @@ export default function Register() {
             <div style={{
               marginBottom: '20px', padding: '12px 16px', borderRadius: '12px',
               background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
-              color: '#fca5a5', fontSize: '14px',
+              color: 'var(--sd-danger-soft)', fontSize: '14px',
             }}>
               {error}
             </div>
@@ -207,21 +207,21 @@ export default function Register() {
               <div style={{
                 display: 'flex', alignItems: 'flex-start', gap: '12px',
                 padding: '14px 16px', borderRadius: '12px',
-                background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(16,185,129,0.1)',
+                background: 'var(--sd-inset-20)', border: '1px solid var(--sd-em-10)',
               }}>
                 <input
                   type="checkbox"
                   id="terms"
                   checked={termsAccepted}
                   onChange={(e) => setTermsAccepted(e.target.checked)}
-                  style={{ marginTop: '2px', accentColor: '#10b981', cursor: 'pointer' }}
+                  style={{ marginTop: '2px', accentColor: 'var(--sd-accent)', cursor: 'pointer' }}
                 />
-                <label htmlFor="terms" style={{ fontSize: '13px', color: '#9ca3af', cursor: 'pointer', lineHeight: '1.5' }}>
+                <label htmlFor="terms" style={{ fontSize: '13px', color: 'var(--sd-text-body)', cursor: 'pointer', lineHeight: '1.5' }}>
                   I have read and agree to the{' '}
                   <button
                     type="button"
                     onClick={() => setTermsOpen(true)}
-                    style={{ color: '#10b981', background: 'none', border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: '600', padding: 0 }}
+                    style={{ color: 'var(--sd-accent)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: '600', padding: 0 }}
                   >
                     Terms and Conditions
                   </button>
@@ -236,7 +236,7 @@ export default function Register() {
 
           {step === 2 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-              <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '-8px' }}>
+              <p style={{ fontSize: '13px', color: 'var(--sd-text-muted)', marginTop: '-8px' }}>
                 Optional — used to calculate BMI and age on your dashboard.
               </p>
               <Input label="Date of Birth" type="date" value={form.date_of_birth} onChange={set('date_of_birth')} />
@@ -265,25 +265,25 @@ export default function Register() {
             </div>
           )}
 
-          <p style={{ textAlign: 'center', fontSize: '14px', color: '#6b7280', marginTop: '24px' }}>
+          <p style={{ textAlign: 'center', fontSize: '14px', color: 'var(--sd-text-muted)', marginTop: '24px' }}>
             Already have an account?{' '}
-            <Link to="/login" style={{ color: '#10b981', fontWeight: '600', textDecoration: 'none' }}>
+            <Link to="/login" style={{ color: 'var(--sd-accent)', fontWeight: '600', textDecoration: 'none' }}>
               Sign in
             </Link>
           </p>
         </div>
 
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        <p style={{ fontSize: '12px', color: '#374151', marginBottom: '4px' }}>
+        <p style={{ fontSize: '12px', color: 'var(--sd-text-faint)', marginBottom: '4px' }}>
             Based on the Consensus Sleep Diary — Modified (CSD-M)
         </p>
-        <p style={{ fontSize: '11px', color: '#374151' }}>
+        <p style={{ fontSize: '11px', color: 'var(--sd-text-faint)' }}>
             Built by{' '}
-            <a href="mailto:ashray15.sikka@gmail.com" style={{ color: '#10b981', textDecoration: 'none', fontWeight: '500' }}>
+            <a href="mailto:ashray15.sikka@gmail.com" style={{ color: 'var(--sd-accent)', textDecoration: 'none', fontWeight: '500' }}>
             Ashray Sikka
             </a>
             {' '}·{' '}
-            <a href="https://github.com/AshraySikka" target="_blank" rel="noreferrer" style={{ color: '#10b981', textDecoration: 'none', fontWeight: '500' }}>
+            <a href="https://github.com/AshraySikka" target="_blank" rel="noreferrer" style={{ color: 'var(--sd-accent)', textDecoration: 'none', fontWeight: '500' }}>
             GitHub
             </a>
         </p>
@@ -296,29 +296,29 @@ export default function Register() {
           position: 'fixed', inset: 0, zIndex: 50,
           display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px',
         }}>
-          <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
+          <div style={{ position: 'absolute', inset: 0, background: 'var(--sd-overlay)', backdropFilter: 'blur(4px)' }}
             onClick={() => setTermsOpen(false)} />
           <div style={{
             position: 'relative', width: '100%', maxWidth: '560px',
-            background: '#0f1e18', border: '1px solid rgba(16,185,129,0.2)',
+            background: 'var(--sd-surface-solid)', border: '1px solid var(--sd-em-20)',
             borderRadius: '20px', maxHeight: '80vh', display: 'flex', flexDirection: 'column',
-            boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+            boxShadow: '0 25px 50px var(--sd-shadow-50)',
           }}>
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              padding: '20px 24px', borderBottom: '1px solid rgba(16,185,129,0.1)',
+              padding: '20px 24px', borderBottom: '1px solid var(--sd-em-10)',
             }}>
-              <h2 style={{ fontSize: '16px', fontWeight: '600', color: '#f0fdf4' }}>Terms and Conditions</h2>
-              <button onClick={() => setTermsOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280' }}>
+              <h2 style={{ fontSize: '16px', fontWeight: '600', color: 'var(--sd-text-strong)' }}>Terms and Conditions</h2>
+              <button onClick={() => setTermsOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--sd-text-muted)' }}>
                 <X size={18} />
               </button>
             </div>
             <div style={{ overflowY: 'auto', padding: '24px' }}>
-              <pre style={{ fontSize: '13px', color: '#9ca3af', whiteSpace: 'pre-wrap', fontFamily: 'inherit', lineHeight: '1.7' }}>
+              <pre style={{ fontSize: '13px', color: 'var(--sd-text-body)', whiteSpace: 'pre-wrap', fontFamily: 'inherit', lineHeight: '1.7' }}>
                 {TERMS_TEXT}
               </pre>
             </div>
-            <div style={{ padding: '16px 24px', borderTop: '1px solid rgba(16,185,129,0.1)' }}>
+            <div style={{ padding: '16px 24px', borderTop: '1px solid var(--sd-em-10)' }}>
               <button
                 style={btnPrimary(false)}
                 onClick={() => { setTermsAccepted(true); setTermsOpen(false); }}
