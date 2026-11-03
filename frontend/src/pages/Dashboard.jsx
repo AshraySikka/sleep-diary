@@ -47,7 +47,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [trendData, setTrendData] = useState([]);
-  const [days, setDays] = useState(7);
+  const [days, setDays] = useState('all');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
